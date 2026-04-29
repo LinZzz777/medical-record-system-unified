@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medical.record.system.mapper.UserMapper">
+
+    <!-- 根据角色ID查询用户列表 -->
+    <select id="selectByRoleId" resultType="com.medical.record.system.entity.User">
+        SELECT u.*
+        FROM Users u
+        WHERE u.role = #{roleId}
+          AND (u.deleted = 0 OR u.deleted IS NULL)
+        ORDER BY u.createdAt DESC
+    </select>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" resultType="com.medical.record.system.entity.User">
+        SELECT *
+        FROM Users
+        WHERE username = #{username}
+          AND (deleted = 0 OR deleted IS NULL)
+    </select>
+
+    <!-- 批量更新用户状态 -->
+    <update id="updateStatusBatch">
+        UPDATE Users
+        SET [status] = #{status}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

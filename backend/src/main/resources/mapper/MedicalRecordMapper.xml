@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medical.record.system.mapper.MedicalRecordMapper">
+
+    <!-- 根据条件查询病案列表 -->
+    <select id="selectByCondition" resultType="com.medical.record.system.entity.MedicalRecord">
+        SELECT *
+        FROM MedicalRecords
+        WHERE 1=1
+        <if test="recordNumber != null and recordNumber != ''">
+            AND recordNumber LIKE CONCAT('%', #{recordNumber}, '%')
+        </if>
+        <if test="patientName != null and patientName != ''">
+            AND patientName LIKE CONCAT('%', #{patientName}, '%')
+        </if>
+        <if test="department != null and department != ''">
+            AND department = #{department}
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        ORDER BY createdAt DESC
+    </select>
+
+    <!-- 根据状态查询病案数量 -->
+    <select id="countByStatus" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM MedicalRecords
+        WHERE status = #{status}
+    </select>
+
+    <!-- 根据科室查询病案数量 -->
+    <select id="countByDepartment" resultType="com.medical.record.system.entity.MedicalRecord">
+        SELECT department, COUNT(*) as count
+        FROM MedicalRecords
+        GROUP BY department
+        ORDER BY count DESC
+    </select>
+
+</mapper>

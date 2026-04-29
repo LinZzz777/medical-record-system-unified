@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medical.record.system.mapper.AuditLogMapper">
+
+    <!-- 根据用户查询审计日志 -->
+    <select id="selectByUsername" resultType="com.medical.record.system.entity.AuditLog">
+        SELECT *
+        FROM audit_logs
+        WHERE username = #{username}
+          AND deleted = 0
+        ORDER BY created_time DESC
+    </select>
+
+    <!-- 根据模块查询审计日志 -->
+    <select id="selectByModule" resultType="com.medical.record.system.entity.AuditLog">
+        SELECT *
+        FROM audit_logs
+        WHERE module = #{module}
+          AND deleted = 0
+        ORDER BY created_time DESC
+    </select>
+
+    <!-- 根据时间范围查询审计日志 -->
+    <select id="selectByTimeRange" resultType="com.medical.record.system.entity.AuditLog">
+        SELECT *
+        FROM audit_logs
+        WHERE created_time BETWEEN #{startTime} AND #{endTime}
+          AND deleted = 0
+        ORDER BY created_time DESC
+    </select>
+
+    <!-- 根据操作类型查询审计日志 -->
+    <select id="selectByOperation" resultType="com.medical.record.system.entity.AuditLog">
+        SELECT *
+        FROM audit_logs
+        WHERE operation = #{operation}
+          AND deleted = 0
+        ORDER BY created_time DESC
+    </select>
+
+    <!-- 分页查询审计日志 -->
+    <select id="selectAuditLogs" resultType="com.medical.record.system.entity.AuditLog">
+        SELECT *
+        FROM audit_logs
+        WHERE deleted = 0
+        <if test="username != null and username != ''">
+            AND username = #{username}
+        </if>
+        <if test="operationType != null and operationType != ''">
+            AND operation LIKE CONCAT(#{operationType}, '%')
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND created_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND created_time &lt;= #{endTime}
+        </if>
+        ORDER BY created_time DESC
+    </select>
+
+</mapper>
