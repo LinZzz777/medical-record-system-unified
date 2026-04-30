@@ -20,7 +20,7 @@ public class BorrowApplicationTableInitializer implements ApplicationRunner {
             try {
                 jdbcTemplate.execute(
                         "CREATE TABLE BorrowApplications (" +
-                        "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                        "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                         "  recordIds VARCHAR(500)," +
                         "  reason VARCHAR(500)," +
                         "  borrowType VARCHAR(50)," +

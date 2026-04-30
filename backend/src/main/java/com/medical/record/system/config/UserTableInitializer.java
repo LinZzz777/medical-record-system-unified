@@ -21,7 +21,7 @@ public class UserTableInitializer implements ApplicationRunner {
         try {
             jdbcTemplate.execute(
                 "CREATE TABLE Users (" +
-                "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "  employeeNumber VARCHAR(50)," +
                 "  username VARCHAR(50) NOT NULL UNIQUE," +
                 "  password VARCHAR(100) NOT NULL," +
@@ -33,7 +33,7 @@ public class UserTableInitializer implements ApplicationRunner {
                 "  address VARCHAR(200)," +
                 "  position VARCHAR(50)," +
                 "  status INT DEFAULT 1," +
-                "  createdAt DATETIME DEFAULT GETDATE()," +
+                "  createdAt DATETIME DEFAULT NOW()," +
                 "  deleted INT DEFAULT 0" +
                 ")");
             log.info("用户表 Users 创建成功");
@@ -100,15 +100,14 @@ public class UserTableInitializer implements ApplicationRunner {
     private void removeRoleConstraints() {
         try {
             List<String> constraints = jdbcTemplate.queryForList(
-                "SELECT c.name " +
-                "FROM sys.check_constraints c " +
-                "JOIN sys.tables t ON c.parent_object_id = t.object_id " +
-                "WHERE t.name = 'Users' AND c.definition LIKE '%role%'",
+                "SELECT CONSTRAINT_NAME " +
+                "FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS " +
+                "WHERE TABLE_NAME = 'Users' AND CONSTRAINT_TYPE = 'CHECK'",
                 String.class
             );
             for (String constraint : constraints) {
                 try {
-                    jdbcTemplate.execute("ALTER TABLE Users DROP CONSTRAINT [" + constraint + "]");
+                    jdbcTemplate.execute("ALTER TABLE Users DROP CHECK `" + constraint + "`");
                     log.info("已删除角色列约束: {}", constraint);
                 } catch (Exception ex) {
                     log.info("删除约束失败（可忽略）: {} - {}", constraint, ex.getMessage());

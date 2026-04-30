@@ -31,7 +31,7 @@
         SELECT *
         FROM BorrowApplications
         WHERE status = 'approved'
-          AND expectedReturnDate &lt; GETDATE()
+          AND expectedReturnDate &lt; NOW()
         ORDER BY expectedReturnDate ASC
     </select>
 

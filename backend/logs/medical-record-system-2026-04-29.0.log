@@ -1,0 +1,790 @@
+2026-04-29 08:42:58 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 10364 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 08:42:58 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 08:42:58 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 08:42:59 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 08:42:59 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-29 08:42:59 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 08:42:59 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 08:42:59 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 08:42:59 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 08:42:59 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1191 ms
+2026-04-29 08:43:00 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 08:43:00 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 08:43:00 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 08:43:00 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 08:43:00 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 08:43:00 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 08:43:00 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 08:43:00 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 08:43:01 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 08:43:01 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 930e59fb-1bb6-4b84-9321-52f0375dbb2a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 08:43:01 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 08:43:01 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@10cb5047, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3a00237d, org.springframework.security.web.context.SecurityContextHolderFilter@c8531b9, org.springframework.security.web.header.HeaderWriterFilter@70e8c019, org.springframework.web.filter.CorsFilter@bc88295, org.springframework.security.web.authentication.logout.LogoutFilter@2665a2e7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5e976553, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3c108c05, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@341df373, org.springframework.security.web.access.ExceptionTranslationFilter@5c70c771, org.springframework.security.web.access.intercept.AuthorizationFilter@26c2f767]
+2026-04-29 08:43:01 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 08:43:01 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 08:43:01 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 08:43:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.675 seconds (process running for 4.011)
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 添加成功
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 添加成功
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 添加成功
+2026-04-29 08:43:01 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 添加成功
+2026-04-29 08:43:02 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 08:43:02 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 08:43:02 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列添加成功
+2026-04-29 08:44:05 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 08:44:05 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 08:44:05 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 08:55:39 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 08:55:39 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 08:55:39 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 08:56:09 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 4572 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 08:56:09 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 08:56:09 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 08:56:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 08:56:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-29 08:56:10 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 08:56:10 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 08:56:10 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 08:56:10 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 08:56:10 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1108 ms
+2026-04-29 08:56:10 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 08:56:10 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 08:56:10 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 08:56:10 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 08:56:10 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 08:56:11 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 08:56:11 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 08:56:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 08:56:11 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 08:56:11 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 42cb8018-2a0a-4eac-8069-e88bf9e81ef6
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 08:56:12 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 08:56:12 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6a7ab205, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@10cb5047, org.springframework.security.web.context.SecurityContextHolderFilter@346690d6, org.springframework.security.web.header.HeaderWriterFilter@6b2efcae, org.springframework.web.filter.CorsFilter@3a00237d, org.springframework.security.web.authentication.logout.LogoutFilter@3fa50a24, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@70e8c019, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2a79da3a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@bc88295, org.springframework.security.web.access.ExceptionTranslationFilter@35fac3ba, org.springframework.security.web.access.intercept.AuthorizationFilter@e2498a3]
+2026-04-29 08:56:12 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 08:56:12 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 08:56:12 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 08:56:12 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.492 seconds (process running for 3.781)
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 08:56:12 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 08:57:12 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 08:57:12 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 08:57:12 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 09:19:01 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:19:01 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 09:19:01 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 09:19:20 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 19244 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 09:19:20 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 09:19:20 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 09:19:21 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 09:19:21 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-29 09:19:21 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 09:19:21 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 09:19:21 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 09:19:21 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 09:19:21 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1074 ms
+2026-04-29 09:19:22 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 09:19:22 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 09:19:22 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 09:19:22 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 09:19:22 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 09:19:22 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 09:19:22 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 09:19:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:19:23 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 09:19:23 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: a87fbea2-d4fa-46d8-97b9-068a58ca3d28
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 09:19:23 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 09:19:23 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@799206ad, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@60251ddb, org.springframework.security.web.context.SecurityContextHolderFilter@28e24663, org.springframework.security.web.header.HeaderWriterFilter@16120270, org.springframework.web.filter.CorsFilter@2059c3ff, org.springframework.security.web.authentication.logout.LogoutFilter@361483eb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@f996445, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@48697181, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f8ab988, org.springframework.security.web.access.ExceptionTranslationFilter@3efb863c, org.springframework.security.web.access.intercept.AuthorizationFilter@304e1e4e]
+2026-04-29 09:19:23 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 09:19:23 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 09:19:23 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 09:19:23 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.368 seconds (process running for 3.646)
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 09:19:23 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表为空，插入默认用户
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - 默认管理员创建失败（可能已存在）: StatementCallback; SQL [INSERT INTO Users (employeeNumber, username, password, name, role, department, phone, email, status) VALUES ('E001', 'admin', 'admin123', '系统管理员', 'admin', '信息科', '13800138000', 'admin@hospital.com', 1)]; 违反了 UNIQUE KEY 约束“UQ__Users__F3DBC572FDBA6E4D”。不能在对象“dbo.Users”中插入重复键。重复键值为 (admin)。
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - 默认病案科主任 director_med 创建成功
+2026-04-29 09:19:24 [main] INFO  c.m.r.s.config.UserTableInitializer - 默认医生 doctor_zhang 创建成功
+2026-04-29 09:19:38 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 09:19:38 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 09:19:38 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 09:19:38 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=false
+2026-04-29 09:19:39 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=false
+2026-04-29 09:20:28 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=doctor, userFound=false
+2026-04-29 09:20:42 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=false
+2026-04-29 09:30:13 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:30:13 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 09:30:13 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 09:30:30 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 1820 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 09:30:30 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 09:30:30 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 09:30:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 09:30:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-04-29 09:30:31 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 09:30:31 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 09:30:31 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 09:30:31 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 09:30:31 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1095 ms
+2026-04-29 09:30:32 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 09:30:32 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 09:30:32 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 09:30:32 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 09:30:32 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 09:30:32 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 09:30:32 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 09:30:32 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:30:33 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 09:30:33 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: c6e855b3-9478-4913-873d-cac36548df86
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 09:30:33 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 09:30:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@558ed473, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@514f2020, org.springframework.security.web.context.SecurityContextHolderFilter@50a095cb, org.springframework.security.web.header.HeaderWriterFilter@7263b0c4, org.springframework.web.filter.CorsFilter@2e1c5d1f, org.springframework.security.web.authentication.logout.LogoutFilter@1b3a95d9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6b2efcae, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@8aa1562, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2d2afc39, org.springframework.security.web.access.ExceptionTranslationFilter@f996445, org.springframework.security.web.access.intercept.AuthorizationFilter@4a36a35d]
+2026-04-29 09:30:33 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 09:30:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 09:30:33 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 09:30:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.699 seconds (process running for 3.979)
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 09:30:34 [main] INFO  c.m.r.s.config.UserTableInitializer - 已修复 7 个用户的 deleted=NULL 问题，设置为 deleted=0
+2026-04-29 09:31:01 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 09:31:01 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 09:31:01 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 09:31:01 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 09:31:01 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 09:31:25 [http-nio-8080-exec-1] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [/api] threw exception [Request processing failed: org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+### The error may exist in com/medical/record/system/mapper/RoleMapper.java (best guess)
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT  id,role_name AS roleName,description,status,created_time AS createdTime,updated_time AS updatedTime,deleted  FROM sys_role  WHERE deleted=0
+### Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+; bad SQL grammar []] with root cause
+com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:259)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1695)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePreparedStatement(SQLServerPreparedStatement.java:648)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecCmd.doExecute(SQLServerPreparedStatement.java:567)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7675)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4137)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:272)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:246)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.execute(SQLServerPreparedStatement.java:544)
+	at com.alibaba.druid.pool.DruidPooledPreparedStatement.execute(DruidPooledPreparedStatement.java:483)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy135.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:90)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	at jdk.proxy2/jdk.proxy2.$Proxy98.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.executeForMany(MybatisMapperMethod.java:164)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:77)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy$PlainMethodInvoker.invoke(MybatisMapperProxy.java:152)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:89)
+	at jdk.proxy2/jdk.proxy2.$Proxy110.selectList(Unknown Source)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:407)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:428)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:352)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at com.medical.record.system.service.impl.RoleServiceImpl$$SpringCGLIB$$0.list(<generated>)
+	at com.medical.record.system.controller.RoleController.getRoleList(RoleController.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:254)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:182)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:219)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-04-29 09:31:55 [http-nio-8080-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [/api] threw exception [Request processing failed: org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+### The error may exist in com/medical/record/system/mapper/RoleMapper.java (best guess)
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT  id,role_name AS roleName,description,status,created_time AS createdTime,updated_time AS updatedTime,deleted  FROM sys_role  WHERE deleted=0
+### Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+; bad SQL grammar []] with root cause
+com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:259)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1695)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePreparedStatement(SQLServerPreparedStatement.java:648)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecCmd.doExecute(SQLServerPreparedStatement.java:567)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7675)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4137)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:272)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:246)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.execute(SQLServerPreparedStatement.java:544)
+	at com.alibaba.druid.pool.DruidPooledPreparedStatement.execute(DruidPooledPreparedStatement.java:483)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy135.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:90)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	at jdk.proxy2/jdk.proxy2.$Proxy98.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.executeForMany(MybatisMapperMethod.java:164)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:77)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy$PlainMethodInvoker.invoke(MybatisMapperProxy.java:152)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:89)
+	at jdk.proxy2/jdk.proxy2.$Proxy110.selectList(Unknown Source)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:407)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:428)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:352)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at com.medical.record.system.service.impl.RoleServiceImpl$$SpringCGLIB$$0.list(<generated>)
+	at com.medical.record.system.controller.RoleController.getRoleList(RoleController.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:254)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:182)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:219)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-04-29 09:32:29 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=director_med, userFound=true
+2026-04-29 09:32:29 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 09:34:05 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=user, userFound=true
+2026-04-29 09:34:05 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 09:34:41 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=director_med, userFound=true
+2026-04-29 09:34:41 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 09:35:01 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 09:35:01 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 09:35:06 [http-nio-8080-exec-10] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [/api] threw exception [Request processing failed: org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+### The error may exist in com/medical/record/system/mapper/RoleMapper.java (best guess)
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT  id,role_name AS roleName,description,status,created_time AS createdTime,updated_time AS updatedTime,deleted  FROM sys_role  WHERE deleted=0
+### Cause: com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+; bad SQL grammar []] with root cause
+com.microsoft.sqlserver.jdbc.SQLServerException: 对象名 'sys_role' 无效。
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:259)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1695)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePreparedStatement(SQLServerPreparedStatement.java:648)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecCmd.doExecute(SQLServerPreparedStatement.java:567)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7675)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4137)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:272)
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:246)
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.execute(SQLServerPreparedStatement.java:544)
+	at com.alibaba.druid.pool.DruidPooledPreparedStatement.execute(DruidPooledPreparedStatement.java:483)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy135.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:90)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	at jdk.proxy2/jdk.proxy2.$Proxy98.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.executeForMany(MybatisMapperMethod.java:164)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:77)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy$PlainMethodInvoker.invoke(MybatisMapperProxy.java:152)
+	at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:89)
+	at jdk.proxy2/jdk.proxy2.$Proxy110.selectList(Unknown Source)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:407)
+	at com.baomidou.mybatisplus.extension.service.IService.list(IService.java:428)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:352)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:713)
+	at com.medical.record.system.service.impl.RoleServiceImpl$$SpringCGLIB$$0.list(<generated>)
+	at com.medical.record.system.controller.RoleController.getRoleList(RoleController.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:254)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:182)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:219)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2026-04-29 09:35:25 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.time.LocalDateTime` from String "2026-03-03 09:37:28": Failed to deserialize java.time.LocalDateTime: (java.time.format.DateTimeParseException) Text '2026-03-03 09:37:28' could not be parsed at index 10]
+2026-04-29 09:35:47 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.time.LocalDateTime` from String "2026-03-03 17:57:33": Failed to deserialize java.time.LocalDateTime: (java.time.format.DateTimeParseException) Text '2026-03-03 17:57:33' could not be parsed at index 10]
+2026-04-29 09:41:01 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.time.LocalDateTime` from String "2026-03-03 17:57:33": Failed to deserialize java.time.LocalDateTime: (java.time.format.DateTimeParseException) Text '2026-03-03 17:57:33' could not be parsed at index 10]
+2026-04-29 09:59:01 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:59:01 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 09:59:01 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 09:59:59 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 23092 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 09:59:59 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 09:59:59 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 09:59:59 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 09:59:59 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JPA repository interfaces.
+2026-04-29 10:00:00 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 10:00:00 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 10:00:00 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 10:00:00 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 10:00:00 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1107 ms
+2026-04-29 10:00:00 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:00:00 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 10:00:00 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 10:00:00 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:00:00 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 10:00:01 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 10:00:01 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:00:01 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:00:01 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 10:00:01 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 81b56c62-d573-4abb-879e-656df44e1936
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 10:00:01 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 10:00:02 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2f8ab988, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@46c475ba, org.springframework.security.web.context.SecurityContextHolderFilter@2ee5c08d, org.springframework.security.web.header.HeaderWriterFilter@74babce8, org.springframework.web.filter.CorsFilter@e47637c, org.springframework.security.web.authentication.logout.LogoutFilter@14983265, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@48697181, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7282f7b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@606f0f70, org.springframework.security.web.access.ExceptionTranslationFilter@5527dbb0, org.springframework.security.web.access.intercept.AuthorizationFilter@60251ddb]
+2026-04-29 10:00:02 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 10:00:02 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 10:00:02 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 10:00:02 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.577 seconds (process running for 3.876)
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色表 sys_role 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 权限表 sys_permission 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色权限关联表 sys_role_permission 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 菜单表 sys_menu 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色菜单关联表 sys_role_menu 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 admin 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 dept_director 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 doctor 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 nurse 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 user 创建成功
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 10:00:02 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 10:04:51 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 10:04:51 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 10:04:51 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 10:06:49 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=doctor1, userFound=true
+2026-04-29 10:06:49 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 10:07:26 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=BinAn, userFound=true
+2026-04-29 10:07:26 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 10:11:37 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 10:11:37 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 10:47:12 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=user, userFound=true
+2026-04-29 10:47:12 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 10:47:31 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=BinAn, userFound=true
+2026-04-29 10:47:31 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 10:47:40 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 10:47:40 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:00:42 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP013, userFound=true
+2026-04-29 11:00:42 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:01:09 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP01, userFound=true
+2026-04-29 11:01:09 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:01:25 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 11:01:25 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:01:58 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=E002, userFound=true
+2026-04-29 11:01:58 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=false
+2026-04-29 11:02:01 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=E002, userFound=true
+2026-04-29 11:02:01 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=false
+2026-04-29 11:02:06 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 11:02:06 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:02:19 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=E002, userFound=true
+2026-04-29 11:02:19 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:02:28 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 11:02:28 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:34:51 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 11:34:51 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 11:34:51 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 11:35:09 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 1568 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 11:35:09 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 11:35:09 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 11:35:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 11:35:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-29 11:35:10 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 11:35:10 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 11:35:10 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 11:35:10 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 11:35:10 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1119 ms
+2026-04-29 11:35:10 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 11:35:10 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 11:35:10 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 11:35:10 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 11:35:10 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 11:35:11 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 11:35:11 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 11:35:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 11:35:12 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 11:35:12 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 53fdfe09-1177-4e30-8b28-0722f0973bc8
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 11:35:12 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 11:35:12 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1a53ac0c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7fdf7359, org.springframework.security.web.context.SecurityContextHolderFilter@35fac3ba, org.springframework.security.web.header.HeaderWriterFilter@7282f7b1, org.springframework.web.filter.CorsFilter@4a36a35d, org.springframework.security.web.authentication.logout.LogoutFilter@5464aeec, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f2afa8b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6b2efcae, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@52ba21e4, org.springframework.security.web.access.ExceptionTranslationFilter@2ee5c08d, org.springframework.security.web.access.intercept.AuthorizationFilter@e47637c]
+2026-04-29 11:35:12 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 11:35:12 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 11:35:12 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 11:35:12 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.793 seconds (process running for 4.086)
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色表 sys_role 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  role_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 权限表 sys_permission 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_permission (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  perm_code VARCHAR(50) NOT NULL,  perm_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_permission' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色权限关联表 sys_role_permission 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role_permission (  role_id BIGINT NOT NULL,  permission_id BIGINT NOT NULL)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role_permission' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 菜单表 sys_menu 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_menu (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  parent_id BIGINT,  name VARCHAR(50) NOT NULL,  path VARCHAR(200),  component VARCHAR(200),  icon VARCHAR(50),  sort INT,  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_menu' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色菜单关联表 sys_role_menu 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role_menu (  role_id BIGINT NOT NULL,  menu_id BIGINT NOT NULL)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role_menu' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 admin 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 主任 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 dept_director 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 doctor 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 nurse 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 user 创建成功
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 11:35:12 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 11:35:14 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 11:35:14 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 11:35:14 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 11:35:32 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP01, userFound=true
+2026-04-29 11:35:32 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 11:35:49 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 11:35:49 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:13:40 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 14:13:40 [http-nio-8080-exec-5] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:29:34 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP0271, userFound=true
+2026-04-29 14:29:34 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:30:07 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP027, userFound=true
+2026-04-29 14:30:07 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:30:30 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP03, userFound=true
+2026-04-29 14:30:30 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:30:53 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=ADMIN, userFound=true
+2026-04-29 14:30:53 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:31:45 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP01, userFound=true
+2026-04-29 14:31:45 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:32:00 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=ADMIN, userFound=true
+2026-04-29 14:32:00 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:32:14 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP013, userFound=true
+2026-04-29 14:32:14 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:32:56 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP01, userFound=true
+2026-04-29 14:32:56 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:33:07 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 14:33:07 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:33:49 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP03, userFound=true
+2026-04-29 14:33:49 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:34:01 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=ADMIN, userFound=true
+2026-04-29 14:34:01 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:34:25 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP03, userFound=true
+2026-04-29 14:34:25 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:34:40 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=E002, userFound=true
+2026-04-29 14:34:40 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:34:55 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 14:34:55 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:36:04 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP03, userFound=true
+2026-04-29 14:36:04 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=0, passwordMatch=true
+2026-04-29 14:36:11 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=E002, userFound=true
+2026-04-29 14:36:11 [http-nio-8080-exec-4] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=0, passwordMatch=true
+2026-04-29 14:36:17 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=ADMIN, userFound=true
+2026-04-29 14:36:17 [http-nio-8080-exec-7] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:36:33 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP03, userFound=true
+2026-04-29 14:36:33 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 14:37:02 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=ADMIN, userFound=true
+2026-04-29 14:37:02 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:14:02 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 15:14:02 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 15:14:02 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-29 15:14:17 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 11108 (D:\cusproject\syst\medical-record-system-unified\backend\target\classes started by A in D:\cusproject\syst\medical-record-system-unified\backend)
+2026-04-29 15:14:17 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-29 15:14:17 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 15:14:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 15:14:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-29 15:14:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-29 15:14:18 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-29 15:14:18 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-29 15:14:18 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-29 15:14:18 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1149 ms
+2026-04-29 15:14:18 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-29 15:14:18 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-29 15:14:19 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-29 15:14:19 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 15:14:19 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-29 15:14:19 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: SQLServerDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-29 15:14:19 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 15:14:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 15:14:20 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 15:14:20 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 56236df8-b2e7-49f7-853c-a583decad451
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-29 15:14:20 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-29 15:14:20 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2059c3ff, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f8ab988, org.springframework.security.web.context.SecurityContextHolderFilter@2ee5c08d, org.springframework.security.web.header.HeaderWriterFilter@74babce8, org.springframework.web.filter.CorsFilter@46c475ba, org.springframework.security.web.authentication.logout.LogoutFilter@14983265, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@48697181, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7282f7b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e47637c, org.springframework.security.web.access.ExceptionTranslationFilter@5527dbb0, org.springframework.security.web.access.intercept.AuthorizationFilter@799206ad]
+2026-04-29 15:14:20 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-29 15:14:20 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-29 15:14:20 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 15:14:20 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.649 seconds (process running for 3.959)
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE audit_logs (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'audit_logs' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 BorrowApplications 已存在，尝试添加缺失列: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE BorrowApplications (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  recordIds VARCHAR(500),  reason VARCHAR(500),  borrowType VARCHAR(50),  expectedReturnDate VARCHAR(50),  status VARCHAR(50) DEFAULT 'pending',  submitTime DATETIME,  userId BIGINT,  userName VARCHAR(50),  approver VARCHAR(50),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50),  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'BorrowApplications' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApprover VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApprover'。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptApproveTime DATETIME]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptApproveTime'。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD deptRejectionReason VARCHAR(500)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'deptRejectionReason'。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE BorrowApplications ADD userDepartment VARCHAR(50)]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'BorrowApplications' 中多次指定了列名 'userDepartment'。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色表 sys_role 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  role_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 权限表 sys_permission 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_permission (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  perm_code VARCHAR(50) NOT NULL,  perm_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_permission' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色权限关联表 sys_role_permission 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role_permission (  role_id BIGINT NOT NULL,  permission_id BIGINT NOT NULL)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role_permission' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 菜单表 sys_menu 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_menu (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  parent_id BIGINT,  name VARCHAR(50) NOT NULL,  path VARCHAR(200),  component VARCHAR(200),  icon VARCHAR(50),  sort INT,  status INT DEFAULT 1,  created_time DATETIME DEFAULT GETDATE(),  updated_time DATETIME,  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_menu' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色菜单关联表 sys_role_menu 已存在: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE sys_role_menu (  role_id BIGINT NOT NULL,  menu_id BIGINT NOT NULL)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'sys_role_menu' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 admin 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 主任 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 dept_director 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 doctor 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 nurse 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 user 创建成功
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; uncategorized SQLException for SQL [CREATE TABLE Users (  id BIGINT IDENTITY(1,1) PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT GETDATE(),  deleted INT DEFAULT 0)]; SQL state [S0001]; error code [2714]; 数据库中已存在名为 'Users' 的对象。
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-29 15:14:20 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; uncategorized SQLException for SQL [ALTER TABLE Users ADD deleted INT DEFAULT 0]; SQL state [S0004]; error code [2705]; 各表中的列名必须唯一。在表 'Users' 中多次指定了列名 'deleted'。
+2026-04-29 15:14:45 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 15:14:45 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-29 15:14:45 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-29 15:14:49 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 15:14:49 [http-nio-8080-exec-2] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:26:15 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP027, userFound=true
+2026-04-29 15:26:15 [http-nio-8080-exec-9] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:26:36 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP0271, userFound=true
+2026-04-29 15:26:36 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:27:02 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP027, userFound=true
+2026-04-29 15:27:02 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:28:40 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP0271, userFound=true
+2026-04-29 15:28:40 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 15:29:03 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP027, userFound=true
+2026-04-29 15:29:03 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 16:00:30 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-29 16:00:30 [http-nio-8080-exec-3] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 16:00:59 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP027, userFound=true
+2026-04-29 16:00:59 [http-nio-8080-exec-6] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 16:02:12 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP013, userFound=true
+2026-04-29 16:02:12 [http-nio-8080-exec-8] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 16:02:52 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP01, userFound=true
+2026-04-29 16:02:52 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-29 16:08:10 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 16:08:10 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-04-29 16:08:10 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

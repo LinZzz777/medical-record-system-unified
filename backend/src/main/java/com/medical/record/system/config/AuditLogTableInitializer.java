@@ -19,7 +19,7 @@ public class AuditLogTableInitializer implements ApplicationRunner {
         try {
             jdbcTemplate.execute(
                     "CREATE TABLE audit_logs (" +
-                    "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                    "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                     "  username VARCHAR(50)," +
                     "  operation VARCHAR(100)," +
                     "  module VARCHAR(50)," +
@@ -27,7 +27,7 @@ public class AuditLogTableInitializer implements ApplicationRunner {
                     "  user_agent VARCHAR(500)," +
                     "  details VARCHAR(500)," +
                     "  status INT DEFAULT 1," +
-                    "  created_time DATETIME DEFAULT GETDATE()," +
+                    "  created_time DATETIME DEFAULT NOW()," +
                     "  deleted INT DEFAULT 0" +
                     ")");
             log.info("审计日志表 audit_logs 创建成功");

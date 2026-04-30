@@ -28,11 +28,11 @@ public class SysTablesInitializer implements ApplicationRunner {
         try {
             jdbcTemplate.execute(
                 "CREATE TABLE sys_role (" +
-                "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "  role_name VARCHAR(50) NOT NULL," +
                 "  description VARCHAR(200)," +
                 "  status INT DEFAULT 1," +
-                "  created_time DATETIME DEFAULT GETDATE()," +
+                "  created_time DATETIME DEFAULT NOW()," +
                 "  updated_time DATETIME," +
                 "  deleted INT DEFAULT 0" +
                 ")");
@@ -46,12 +46,12 @@ public class SysTablesInitializer implements ApplicationRunner {
         try {
             jdbcTemplate.execute(
                 "CREATE TABLE sys_permission (" +
-                "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "  perm_code VARCHAR(50) NOT NULL," +
                 "  perm_name VARCHAR(50) NOT NULL," +
                 "  description VARCHAR(200)," +
                 "  status INT DEFAULT 1," +
-                "  created_time DATETIME DEFAULT GETDATE()," +
+                "  created_time DATETIME DEFAULT NOW()," +
                 "  updated_time DATETIME," +
                 "  deleted INT DEFAULT 0" +
                 ")");
@@ -78,7 +78,7 @@ public class SysTablesInitializer implements ApplicationRunner {
         try {
             jdbcTemplate.execute(
                 "CREATE TABLE sys_menu (" +
-                "  id BIGINT IDENTITY(1,1) PRIMARY KEY," +
+                "  id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "  parent_id BIGINT," +
                 "  name VARCHAR(50) NOT NULL," +
                 "  path VARCHAR(200)," +
@@ -86,7 +86,7 @@ public class SysTablesInitializer implements ApplicationRunner {
                 "  icon VARCHAR(50)," +
                 "  sort INT," +
                 "  status INT DEFAULT 1," +
-                "  created_time DATETIME DEFAULT GETDATE()," +
+                "  created_time DATETIME DEFAULT NOW()," +
                 "  updated_time DATETIME," +
                 "  deleted INT DEFAULT 0" +
                 ")");
