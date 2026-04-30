@@ -140,21 +140,6 @@
           </router-link>
         </template>
 
-        <router-link
-          v-if="isAdmin"
-          to="/test"
-          class="nav-item"
-          :class="{ active: activeMenu === '/test' }"
-        >
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.7 6.3C14.3 5.9 14.3 5.3 14.7 4.9L16.1 3.5C16.5 3.1 17.1 3.1 17.5 3.5L20.5 6.5C20.9 6.9 20.9 7.5 20.5 7.9L19.1 9.3M14.7 6.3L19.1 10.7M3 21L9.3 14.7M19.1 10.7L16.1 13.7C15.7 14.1 15.1 14.1 14.7 13.7L7.3 6.3C6.9 5.9 6.9 5.3 7.3 4.9L10.3 1.9C10.7 1.5 11.3 1.5 11.7 1.9L19.1 9.3M19.1 10.7L21 12.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="nav-label">调试页面</span>
-          </transition>
-        </router-link>
       </nav>
 
       <!-- Sidebar Footer -->
@@ -276,8 +261,7 @@ const pageTitles: Record<string, string> = {
   '/borrow-history': '借阅历史',
   '/review': '审核管理',
   '/users': '用户管理',
-  '/audit': '审计日志',
-  '/test': '调试页面'
+  '/audit': '审计日志'
 }
 
 const currentPageTitle = computed(() => pageTitles[route.path] || '仪表盘')
@@ -380,6 +364,20 @@ onUnmounted(() => {
 .layout-aside.aside-collapsed {
   width: var(--sidebar-collapsed-width);
   min-width: var(--sidebar-collapsed-width);
+}
+
+.layout-aside.aside-collapsed .aside-header {
+  padding: 20px 12px;
+  justify-content: center;
+}
+
+.layout-aside.aside-collapsed .logo-wrapper {
+  display: none;
+}
+
+.layout-aside.aside-collapsed .collapse-btn {
+  width: 40px;
+  height: 40px;
 }
 
 .aside-header {

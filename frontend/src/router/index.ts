@@ -50,11 +50,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'AuditLogs',
         component: () => import('../views/AuditLogs.vue'),
         meta: { requiresAdmin: true }
-      },
-      {
-        path: '/test',
-        name: 'Test',
-        component: () => import('../views/Test.vue')
       }
     ]
   }
