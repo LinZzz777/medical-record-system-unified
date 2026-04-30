@@ -84,6 +84,7 @@
       </div>
 
       <!-- Table -->
+      <div class="table-scroll-wrapper">
       <el-table :data="filteredApplications" style="width: 100%; height: 500px" border class="data-table">
         <el-table-column prop="id" :label="t.applicationId" width="80" />
         <el-table-column prop="recordNumbers" :label="t.recordNumbers" show-overflow-tooltip />
@@ -121,10 +122,11 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <!-- Detail Dialog -->
-    <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" width="700px" class="detail-dialog">
+    <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" class="detail-dialog responsive-dialog">
       <div v-if="selectedApplication" class="application-detail">
         <div class="detail-section">
           <h3 class="detail-section-title">{{ t.basicInfo }}</h3>
@@ -685,6 +687,17 @@ onMounted(() => {
   flex-wrap: wrap;
 }
 
+/* Table scroll wrapper */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive dialog */
+.responsive-dialog {
+  max-width: 700px;
+}
+
 /* Detail Dialog */
 .application-detail {
   padding: 4px;
@@ -796,9 +809,35 @@ onMounted(() => {
   }
 }
 
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .action-buttons .el-button {
+    width: 100%;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -24px;
+    padding: 0 24px;
+  }
+}
+
 @media (max-width: 480px) {
   .status-stats {
     grid-template-columns: 1fr;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+
+  .responsive-dialog {
+    width: 96vw !important;
+    max-width: none;
   }
 }
 </style>

@@ -28,7 +28,7 @@
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
-          <el-select v-model="searchForm.status" placeholder="筛选状态" clearable style="width: 150px" @change="filterApplications">
+          <el-select v-model="searchForm.status" placeholder="筛选状态" clearable class="review-select-status" @change="filterApplications">
             <el-option label="待科室审批" value="pending" />
             <el-option label="待终审" value="dept_approved" />
             <el-option label="已批准" value="approved" />
@@ -38,11 +38,11 @@
             <el-option label="已取消" value="cancelled" />
             <el-option label="已过期" value="overdue" />
           </el-select>
-          <el-select v-model="searchForm.borrowType" placeholder="借阅类型" clearable style="width: 130px" @change="filterApplications">
+          <el-select v-model="searchForm.borrowType" placeholder="借阅类型" clearable class="review-select-type" @change="filterApplications">
             <el-option label="院内借阅" value="院内借阅" />
             <el-option label="院外借阅" value="院外借阅" />
           </el-select>
-          <el-input v-model="searchForm.keyword" placeholder="搜索申请人/病案号" clearable style="width: 200px" @input="filterApplications" />
+          <el-input v-model="searchForm.keyword" placeholder="搜索申请人/病案号" clearable class="review-input-keyword" @input="filterApplications" />
         </div>
         <div class="toolbar-right">
           <el-button type="primary" @click="refreshData">刷新</el-button>
@@ -56,6 +56,7 @@
       </div>
 
       <!-- Table -->
+      <div class="table-scroll-wrapper">
       <el-table :data="filteredApplications" style="width: 100%" border @selection-change="handleSelectionChange" class="data-table">
         <el-table-column type="selection" width="55" :selectable="canApprove" />
         <el-table-column prop="id" label="申请ID" width="70" />
@@ -91,10 +92,11 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <!-- Detail Dialog -->
-    <el-dialog v-model="detailDialogVisible" title="申请详情" width="700px">
+    <el-dialog v-model="detailDialogVisible" title="申请详情" class="responsive-dialog">
       <div v-if="selectedApplication" class="application-detail">
         <div class="detail-section">
           <h3 class="detail-section-title">基本信息</h3>
@@ -516,6 +518,33 @@ onMounted(() => { loadApplications() })
   flex-wrap: wrap;
 }
 
+/* Responsive filter controls */
+.review-select-status {
+  width: 150px;
+  max-width: 100%;
+}
+
+.review-select-type {
+  width: 130px;
+  max-width: 100%;
+}
+
+.review-input-keyword {
+  width: 200px;
+  max-width: 100%;
+}
+
+/* Responsive dialog */
+.responsive-dialog {
+  max-width: 700px;
+}
+
+/* Table scroll wrapper */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Detail Dialog */
 .application-detail {
   padding: 4px;
@@ -596,6 +625,42 @@ onMounted(() => { loadApplications() })
 
   .detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .review-select-status,
+  .review-select-type,
+  .review-input-keyword {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .action-buttons .el-button {
+    width: 100%;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -24px;
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .review-container {
+    padding: var(--space-sm);
+  }
+
+  .responsive-dialog {
+    width: 96vw !important;
+    max-width: none;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
   }
 }
 </style>

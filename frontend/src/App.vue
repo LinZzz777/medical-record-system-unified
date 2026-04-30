@@ -22,7 +22,7 @@ html, body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-page);
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -62,6 +62,12 @@ html, body {
 @media (max-width: 480px) {
   html {
     font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  html {
+    font-size: 11px;
   }
 }
 
@@ -140,6 +146,97 @@ html, body {
 .el-dialog__footer {
   padding: var(--space-md) var(--space-lg);
   border-top: 1px solid var(--color-divider);
+}
+
+/* Responsive Dialog */
+@media (max-width: 768px) {
+  .el-dialog {
+    width: 92vw !important;
+    margin: 5vh auto !important;
+    max-height: 90vh;
+  }
+
+  .el-dialog__body {
+    max-height: calc(90vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .el-dialog {
+    width: 96vw !important;
+    margin: 2vh auto !important;
+  }
+}
+
+/* Responsive Tables */
+.el-table {
+  overflow-x: auto;
+}
+
+.el-table .cell {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .el-table {
+    font-size: var(--font-size-sm);
+  }
+
+  .el-table th,
+  .el-table td {
+    padding: 6px 0;
+  }
+
+  .el-table .el-table__fixed-right {
+    right: 0 !important;
+  }
+}
+
+/* Touch Target Minimum 44px */
+@media (max-width: 768px) {
+  .el-button {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+  }
+
+  .el-button + .el-button {
+    margin-left: 8px;
+  }
+
+  .el-radio__input,
+  .el-checkbox__input {
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+  }
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+  .el-pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .el-pagination .el-pagination__sizes {
+    display: none;
+  }
+
+  .el-pagination .el-pagination__jump {
+    display: none;
+  }
+}
+
+/* Responsive Date Picker */
+@media (max-width: 768px) {
+  .el-date-editor--datetimerange {
+    width: 100% !important;
+  }
+
+  .el-date-editor--datetimerange .el-input__wrapper {
+    width: 100%;
+  }
 }
 
 .el-form-item__label {

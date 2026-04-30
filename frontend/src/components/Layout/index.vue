@@ -3,7 +3,7 @@
     <!-- Sidebar -->
     <aside
       class="layout-aside"
-      :class="{ 'aside-collapsed': isCollapse }"
+      :class="{ 'aside-collapsed': isCollapse, 'mobile-open': showMobileMenu }"
     >
       <div class="aside-header">
         <div class="logo-wrapper">
@@ -228,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import store from '../../store'
@@ -292,11 +292,19 @@ const handleLogout = async () => {
   router.push('/login')
 }
 
+let resizeTimer: ReturnType<typeof setTimeout> | null = null
 const handleResize = () => {
-  if (window.innerWidth < 768) {
-    showMobileMenu.value = false
-  }
+  if (resizeTimer) clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(() => {
+    if (window.innerWidth >= 768) {
+      showMobileMenu.value = false
+    }
+  }, 150)
 }
+
+watch(showMobileMenu, (isOpen) => {
+  document.body.style.overflow = isOpen ? 'hidden' : ''
+})
 
 // Idle timeout
 const IDLE_TIMEOUT_MS = 30 * 60 * 1000
@@ -337,6 +345,7 @@ onUnmounted(() => {
     window.removeEventListener(event, resetActivityTimer)
   })
   clearActivityTimer()
+  document.body.style.overflow = ''
 })
 </script>
 
@@ -745,6 +754,21 @@ onUnmounted(() => {
 
   .breadcrumb-current {
     font-size: var(--font-size-base);
+  }
+
+  .mobile-menu-btn {
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+  }
+
+  .header-action {
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
   }
 }
 

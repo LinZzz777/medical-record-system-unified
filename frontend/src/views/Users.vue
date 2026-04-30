@@ -23,7 +23,7 @@
           <el-input v-model="searchForm.name" :placeholder="t.enterName" clearable />
         </el-form-item>
         <el-form-item :label="t.department">
-          <el-select v-model="searchForm.department" :placeholder="t.enterDepartment" clearable filterable style="width: 180px">
+          <el-select v-model="searchForm.department" :placeholder="t.enterDepartment" clearable filterable class="users-dept-select">
             <el-option v-for="dept in departmentOptions" :key="dept" :label="dept" :value="dept" />
           </el-select>
         </el-form-item>
@@ -33,6 +33,7 @@
       </el-form>
 
       <!-- Table -->
+      <div class="table-scroll-wrapper">
       <el-table :data="filteredUsers" style="width: 100%" border class="data-table">
         <el-table-column prop="id" label="ID" width="70" />
         <el-table-column :label="t.employeeNumber" prop="employeeNumber" width="110" />
@@ -64,10 +65,11 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <!-- Dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" class="responsive-dialog">
       <el-form :model="userForm" label-width="100px" class="user-form">
         <el-form-item :label="t.employeeNumber">
           <el-input v-model="userForm.employeeNumber" :placeholder="t.enterEmployeeNumber" />
@@ -299,6 +301,21 @@ onMounted(() => { loadUsers(); loadRoles() })
   padding: 8px 0;
 }
 
+/* Responsive */
+.users-dept-select {
+  width: 180px;
+  max-width: 100%;
+}
+
+.responsive-dialog {
+  max-width: 520px;
+}
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 768px) {
   .users-container {
     padding: var(--space-md);
@@ -321,6 +338,40 @@ onMounted(() => { loadUsers(); loadRoles() })
 
   .search-form .el-form-item {
     margin-right: 0;
+  }
+
+  .users-dept-select {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .action-buttons .el-button {
+    width: 100%;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -24px;
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-container {
+    padding: var(--space-sm);
+  }
+
+  .responsive-dialog {
+    width: 96vw !important;
+    max-width: none;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
   }
 }
 </style>

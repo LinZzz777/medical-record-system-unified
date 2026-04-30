@@ -47,6 +47,7 @@
             </el-form-item>
           </el-form>
 
+          <div class="table-scroll-wrapper">
           <el-table :data="records" style="width: 100%; height: 400px" border @selection-change="handleSelectionChange" class="data-table">
             <el-table-column type="selection" width="55" :selectable="isRecordSelectable" />
             <el-table-column prop="recordNumber" label="病案号" width="180" />
@@ -61,6 +62,7 @@
             <el-table-column prop="admissionDate" label="入院日期" width="130" />
             <el-table-column prop="dischargeDate" label="出院日期" width="130" />
           </el-table>
+          </div>
         </div>
 
         <!-- Step 2: Review -->
@@ -79,6 +81,7 @@
                 <el-tag type="success" effect="dark">{{ selectedRecords.length }} 份病案</el-tag>
               </div>
             </template>
+            <div class="table-scroll-wrapper">
             <el-table :data="selectedRecords" style="width: 100%" border>
               <el-table-column prop="recordNumber" label="病案号" width="180" />
               <el-table-column prop="patientName" label="患者姓名" width="120" />
@@ -90,6 +93,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-card>
 
           <div v-else class="empty-state">
@@ -421,8 +425,8 @@ watch(() => route.query.status, () => { syncSearchFormFromRoute() })
   margin-bottom: 12px;
 }
 
-:deep(.el-select) { min-width: 180px; }
-:deep(.el-input) { min-width: 180px; }
+:deep(.el-select) { min-width: 0; width: 100%; }
+:deep(.el-input) { min-width: 0; width: 100%; }
 
 .data-table {
   border-radius: var(--radius-md);
@@ -507,6 +511,12 @@ watch(() => route.query.status, () => { syncSearchFormFromRoute() })
   gap: 10px;
 }
 
+/* Table scroll wrapper */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .borrow-container {
@@ -551,6 +561,26 @@ watch(() => route.query.status, () => { syncSearchFormFromRoute() })
 
   .nav-right {
     justify-content: center;
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -24px;
+    padding: 0 24px;
+  }
+
+  .borrow-form {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .borrow-container {
+    padding: var(--space-sm);
+  }
+
+  .table-scroll-wrapper {
+    margin: 0 -16px;
+    padding: 0 16px;
   }
 }
 </style>

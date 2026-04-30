@@ -385,8 +385,8 @@ const initBorrowTrendChart = (data?: SeriesTrendData) => {
   borrowTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
-    yAxis: { type: 'value', name: '借阅次数', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13, rotate: window.innerWidth < 768 ? 45 : 0 } },
+    yAxis: { type: 'value', name: '借阅次数', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13 } },
     series: [{
       name: '借阅量',
       type: 'line',
@@ -412,7 +412,12 @@ const initBorrowTypeChart = (data?: Record<string, number>) => {
   borrowTypeInstance = echarts.init(container)
   borrowTypeInstance.setOption({
     tooltip: { trigger: 'item', formatter: '{a}<br/>{b}: {c} ({d}%)' },
-    legend: { orient: 'vertical', left: 'left', textStyle: { color: '#5f6368' } },
+    legend: {
+      orient: window.innerWidth < 768 ? 'horizontal' : 'vertical',
+      left: window.innerWidth < 768 ? 'center' : 'left',
+      bottom: window.innerWidth < 768 ? 'bottom' : undefined,
+      textStyle: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 11 : 13 }
+    },
     color: [chartColors.primary, chartColors.success, chartColors.warning, chartColors.purple],
     series: [{
       name: '借阅类型',
@@ -439,8 +444,8 @@ const initDepartmentChart = (data?: Record<string, number>) => {
   departmentInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'value', name: '借阅次数', axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
-    yAxis: { type: 'category', data: Object.keys(data || {}), axisLabel: { color: '#5f6368' } },
+    xAxis: { type: 'value', name: '借阅次数', axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13 } },
+    yAxis: { type: 'category', data: Object.keys(data || {}), axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13, formatter: (val: string) => window.innerWidth < 768 && val.length > 6 ? val.slice(0, 6) + '...' : val } },
     series: [{
       name: '借阅次数',
       type: 'bar',
@@ -486,8 +491,8 @@ const initOverdueTrendChart = (data?: SeriesTrendData) => {
   overdueTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
-    yAxis: { type: 'value', name: '逾期数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13, rotate: window.innerWidth < 768 ? 45 : 0 } },
+    yAxis: { type: 'value', name: '逾期数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13 } },
     series: [{
       name: '逾期数量',
       type: 'line',
@@ -514,8 +519,8 @@ const initApprovalEfficiencyChart = (data?: Record<string, number>) => {
   approvalEfficiencyInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', data: Object.keys(data || {}), axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
-    yAxis: { type: 'value', name: '申请数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    xAxis: { type: 'category', data: Object.keys(data || {}), axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13 } },
+    yAxis: { type: 'value', name: '申请数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368', fontSize: window.innerWidth < 768 ? 10 : 13 } },
     series: [{
       name: '处理数量',
       type: 'bar',
@@ -564,14 +569,18 @@ const initReturnTimelinessChart = (data?: Record<string, number>) => {
   })
 }
 
+let chartResizeTimer: ReturnType<typeof setTimeout> | null = null
 const handleResize = () => {
-  borrowTrendInstance?.resize()
-  borrowTypeInstance?.resize()
-  departmentInstance?.resize()
-  statusInstance?.resize()
-  overdueTrendInstance?.resize()
-  approvalEfficiencyInstance?.resize()
-  returnTimelinessInstance?.resize()
+  if (chartResizeTimer) clearTimeout(chartResizeTimer)
+  chartResizeTimer = setTimeout(() => {
+    borrowTrendInstance?.resize()
+    borrowTypeInstance?.resize()
+    departmentInstance?.resize()
+    statusInstance?.resize()
+    overdueTrendInstance?.resize()
+    approvalEfficiencyInstance?.resize()
+    returnTimelinessInstance?.resize()
+  }, 200)
 }
 
 onMounted(() => {
@@ -807,6 +816,31 @@ onUnmounted(() => {
 
   .chart-container {
     height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: var(--space-sm);
+  }
+
+  .stat-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .stat-card-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .stat-card-value {
+    font-size: var(--font-size-3xl);
+  }
+
+  .chart-container {
+    height: 240px;
   }
 }
 </style>

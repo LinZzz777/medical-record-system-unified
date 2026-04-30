@@ -32,7 +32,7 @@
             format="YYYY-MM-DD HH:mm:ss"
             value-format="YYYY-MM-DD HH:mm:ss"
             :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
-            style="width: 380px"
+            class="audit-date-picker"
           />
         </el-form-item>
         <el-form-item>
@@ -190,6 +190,11 @@ onMounted(() => { loadAuditLogs() })
   margin-bottom: 12px;
 }
 
+.audit-date-picker {
+  width: 380px;
+  max-width: 100%;
+}
+
 .data-table {
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -217,6 +222,22 @@ onMounted(() => { loadAuditLogs() })
 
   .search-form .el-form-item {
     margin-right: 0;
+  }
+
+  .audit-date-picker {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .audit-logs-container {
+    padding: var(--space-sm);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 </style>
