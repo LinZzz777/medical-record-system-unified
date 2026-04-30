@@ -92,8 +92,12 @@ public class BorrowApplicationController {
     @PostMapping("/create")
     @OperationLog(module = "Borrow", operation = "BORROW_APPLY", detail = "'user=' + #p0.userName + ', records=' + #p0.recordIds")
     public Map<String, Object> createBorrowApplication(@RequestBody BorrowApplication borrowApplication) {
-        boolean success = borrowApplicationService.createBorrowApplication(borrowApplication);
-        return Map.of("success", success);
+        try {
+            boolean success = borrowApplicationService.createBorrowApplication(borrowApplication);
+            return Map.of("success", success);
+        } catch (Exception e) {
+            return Map.of("success", false, "message", "申请提交失败: " + e.getMessage());
+        }
     }
 
     /**

@@ -5,69 +5,71 @@
     <!-- 根据用户ID查询借阅申请列表 -->
     <select id="selectByUserId" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE userId = #{userId}
+        FROM borrowapplications
+        WHERE userId = #{userId} AND (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 根据状态查询借阅申请列表 -->
     <select id="selectByStatus" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE status = #{status}
+        FROM borrowapplications
+        WHERE status = #{status} AND (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 查询待审批的借阅申请列表 -->
     <select id="selectPendingApplications" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE status = 'pending'
+        FROM borrowapplications
+        WHERE status = 'pending' AND (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 查询已过期的借阅申请列表 -->
     <select id="selectOverdueApplications" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
+        FROM borrowapplications
         WHERE status = 'approved'
           AND expectedReturnDate &lt; NOW()
+          AND (deleted = 0 OR deleted IS NULL)
         ORDER BY expectedReturnDate ASC
     </select>
 
     <!-- 查询所有借阅申请列表 -->
     <select id="selectAllApplications" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
+        FROM borrowapplications
+        WHERE (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 根据ID查询借阅申请 -->
     <select id="selectById" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE id = #{id}
+        FROM borrowapplications
+        WHERE id = #{id} AND (deleted = 0 OR deleted IS NULL)
     </select>
 
     <!-- 根据申请人科室查询借阅申请列表 -->
     <select id="selectByUserDepartment" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE userDepartment = #{department}
+        FROM borrowapplications
+        WHERE userDepartment = #{department} AND (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 查询科室已审批待病案科终审的申请列表 -->
     <select id="selectDeptApprovedApplications" resultType="com.medical.record.system.entity.BorrowApplication">
         SELECT *
-        FROM BorrowApplications
-        WHERE status = 'dept_approved'
+        FROM borrowapplications
+        WHERE status = 'dept_approved' AND (deleted = 0 OR deleted IS NULL)
         ORDER BY submitTime DESC
     </select>
 
     <!-- 更新状态（兼容deleted字段为NULL的历史数据） -->
     <update id="updateStatusByIdIncludingNullDeleted">
-        UPDATE BorrowApplications
+        UPDATE borrowapplications
         SET status = #{status},
             updatedTime = #{updatedTime}
         WHERE id = #{id}

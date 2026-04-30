@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("BorrowApplications")
+@TableName("borrowapplications")
 public class BorrowApplication {
 
     @TableId(type = IdType.AUTO)

@@ -32,7 +32,6 @@ public class AuditLog {
     @TableField("created_time")
     private LocalDateTime createdTime;
 
-    @TableField("deleted")
     @TableLogic
     private Integer deleted;
 

@@ -428,8 +428,8 @@ const submitApplication = async () => {
       }
     )
     
-    // 格式化日期，去掉时区信息，避免数据截断
-      const formattedDate = borrowForm.expectedReturnDate ? new Date(borrowForm.expectedReturnDate).toLocaleDateString('zh-CN') : ''
+    // 格式化日期为 YYYY-MM-DD 格式
+      const formattedDate = borrowForm.expectedReturnDate ? new Date(borrowForm.expectedReturnDate).toISOString().split('T')[0] : ''
       
       const response = await service.post('/borrow-applications/create', {
         recordIds: recordIds.join(','),
