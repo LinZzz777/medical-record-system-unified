@@ -1,22 +1,21 @@
 <template>
   <div class="borrow-history-container">
-    <el-card class="borrow-history-card">
-      <template #header>
-        <div class="card-header">
-          <span>&#20511;&#38405;&#21382;&#21490;&#19982;&#29366;&#24577;&#36319;&#36394;</span>
-          <el-tooltip
-            content="&#26597;&#30475;&#25152;&#26377;&#20511;&#38405;&#30003;&#35831;&#30340;&#23457;&#25209;&#29366;&#24577;&#21644;&#22788;&#29702;&#36827;&#24230;"
-            placement="top"
-          >
-            <el-icon><QuestionFilled /></el-icon>
-          </el-tooltip>
-        </div>
-      </template>
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">借阅历史与状态跟踪</h1>
+        <p class="page-subtitle">查看所有借阅申请的审批状态和处理进度</p>
+      </div>
+      <el-tooltip content="查看所有借阅申请的审批状态和处理进度" placement="top">
+        <el-icon class="help-icon"><QuestionFilled /></el-icon>
+      </el-tooltip>
+    </div>
 
+    <el-card class="history-card" :body-style="{ padding: '24px' }">
+      <!-- Search Section -->
       <div class="search-section">
         <el-form :model="searchForm" :inline="true" class="search-form">
           <el-form-item :label="t.status">
-            <el-select v-model="searchForm.status" :placeholder="t.selectStatus" clearable>
+            <el-select v-model="searchForm.status" :placeholder="t.selectStatus" clearable style="width: 160px">
               <el-option :label="t.all" value="" />
               <el-option :label="t.pending" value="pending" />
               <el-option :label="t.deptApproved" value="dept_approved" />
@@ -30,7 +29,7 @@
           </el-form-item>
 
           <el-form-item :label="t.borrowType">
-            <el-select v-model="searchForm.borrowType" :placeholder="t.selectBorrowType" clearable>
+            <el-select v-model="searchForm.borrowType" :placeholder="t.selectBorrowType" clearable style="width: 160px">
               <el-option :label="t.all" value="" />
               <el-option :label="t.internalBorrow" :value="t.internalBorrow" />
               <el-option :label="t.externalBorrow" :value="t.externalBorrow" />
@@ -38,23 +37,11 @@
           </el-form-item>
 
           <el-form-item :label="t.submitTimeLabel">
-            <el-date-picker
-              v-model="searchForm.submitTimeStart"
-              type="date"
-              :placeholder="t.selectSubmitDate"
-              clearable
-              value-format="YYYY-MM-DD"
-            />
+            <el-date-picker v-model="searchForm.submitTimeStart" type="date" :placeholder="t.selectSubmitDate" clearable value-format="YYYY-MM-DD" style="width: 160px" />
           </el-form-item>
 
           <el-form-item :label="t.expectedReturnDate">
-            <el-date-picker
-              v-model="searchForm.expectedReturnDate"
-              type="date"
-              :placeholder="t.selectExactDate"
-              clearable
-              value-format="YYYY-MM-DD"
-            />
+            <el-date-picker v-model="searchForm.expectedReturnDate" type="date" :placeholder="t.selectExactDate" clearable value-format="YYYY-MM-DD" style="width: 160px" />
           </el-form-item>
 
           <el-form-item>
@@ -62,156 +49,132 @@
             <el-button @click="resetSearch">{{ t.reset }}</el-button>
           </el-form-item>
         </el-form>
+      </div>
 
-        <div class="status-stats">
-          <div class="status-stat-item">
-            <span class="status-count">{{ pendingCount }}</span>
-            <span class="status-label">{{ t.pending }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ deptApprovedCount }}</span>
-            <span class="status-label">{{ t.deptApproved }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ approvedCount }}</span>
-            <span class="status-label">{{ t.approved }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ rejectedCount }}</span>
-            <span class="status-label">{{ t.rejected }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ pickedCount }}</span>
-            <span class="status-label">{{ t.picked }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ completedCount }}</span>
-            <span class="status-label">{{ t.completed }}</span>
-          </div>
-          <div class="status-stat-item">
-            <span class="status-count">{{ overdueCount }}</span>
-            <span class="status-label">{{ t.overdue }}</span>
-          </div>
+      <!-- Status Stats -->
+      <div class="status-stats">
+        <div class="status-stat-item">
+          <span class="status-count status-count--warning">{{ pendingCount }}</span>
+          <span class="status-label">{{ t.pending }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--primary">{{ deptApprovedCount }}</span>
+          <span class="status-label">{{ t.deptApproved }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--success">{{ approvedCount }}</span>
+          <span class="status-label">{{ t.approved }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--danger">{{ rejectedCount }}</span>
+          <span class="status-label">{{ t.rejected }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--info">{{ pickedCount }}</span>
+          <span class="status-label">{{ t.picked }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--default">{{ completedCount }}</span>
+          <span class="status-label">{{ t.completed }}</span>
+        </div>
+        <div class="status-stat-item">
+          <span class="status-count status-count--danger">{{ overdueCount }}</span>
+          <span class="status-label">{{ t.overdue }}</span>
         </div>
       </div>
 
-      <el-table :data="filteredApplications" style="width: 100%; height: 500px" border>
-        <el-table-column prop="id" :label="t.applicationId" width="100" />
+      <!-- Table -->
+      <el-table :data="filteredApplications" style="width: 100%; height: 500px" border class="data-table">
+        <el-table-column prop="id" :label="t.applicationId" width="80" />
         <el-table-column prop="recordNumbers" :label="t.recordNumbers" show-overflow-tooltip />
         <el-table-column prop="borrowType" :label="t.borrowType" width="120">
           <template #default="{ row }">
-            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'">
-              {{ row.borrowType }}
-            </el-tag>
+            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" effect="plain" size="small">{{ row.borrowType }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="reason" :label="t.reason" show-overflow-tooltip />
-        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="150">
+        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="130">
           <template #default="{ row }">
-            <span :class="{ overdue: isOverdue(row.expectedReturnDate) }">
-              {{ row.expectedReturnDate || '-' }}
-            </span>
+            <span :class="{ 'text-danger': isOverdue(row.expectedReturnDate) }">{{ row.expectedReturnDate || '-' }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="t.status" width="180">
+        <el-table-column :label="t.status" width="140">
           <template #default="{ row }">
-            <div class="status-container">
-              <el-tag :type="getStatusType(row)" effect="dark">
-                {{ getStatusText(row) }}
-              </el-tag>
+            <div class="status-cell">
+              <el-tag :type="getStatusType(row)" effect="dark" size="small">{{ getStatusText(row) }}</el-tag>
               <el-tooltip :content="getStatusDescription(row)" placement="top">
-                <el-icon class="status-icon"><InfoFilled /></el-icon>
+                <el-icon class="status-info-icon"><InfoFilled /></el-icon>
               </el-tooltip>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="submitTime" :label="t.submitTime" width="180" />
-        <el-table-column prop="updatedTime" :label="t.updateTime" width="180" />
-        <el-table-column :label="t.actions" width="280" fixed="right">
+        <el-table-column prop="submitTime" :label="t.submitTime" width="160" />
+        <el-table-column prop="updatedTime" :label="t.updateTime" width="160" />
+        <el-table-column :label="t.actions" width="260" fixed="right">
           <template #default="{ row }">
-            <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
-
-            <!-- 申请人本人操作 -->
-            <el-button
-              v-if="isOwnApplication(row) && (row.status === 'pending' || row.status === 'dept_approved')"
-              type="danger"
-              size="small"
-              @click="cancelApplication(row.id)"
-            >
-              {{ t.cancel }}
-            </el-button>
-            <el-button
-              v-if="isOwnApplication(row) && row.status === 'approved'"
-              type="primary"
-              size="small"
-              @click="pickupApplication(row.id)"
-            >
-              {{ t.pickup }}
-            </el-button>
-            <el-button
-              v-if="isOwnApplication(row) && row.status === 'picked'"
-              type="success"
-              size="small"
-              @click="completeApplication(row.id)"
-            >
-              {{ t.complete }}
-            </el-button>
+            <div class="action-buttons">
+              <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
+              <el-button v-if="isOwnApplication(row) && (row.status === 'pending' || row.status === 'dept_approved')" type="danger" size="small" @click="cancelApplication(row.id)">{{ t.cancel }}</el-button>
+              <el-button v-if="isOwnApplication(row) && row.status === 'approved'" type="primary" size="small" @click="pickupApplication(row.id)">{{ t.pickup }}</el-button>
+              <el-button v-if="isOwnApplication(row) && row.status === 'picked'" type="success" size="small" @click="completeApplication(row.id)">{{ t.complete }}</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
+    </el-card>
 
-      <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" width="800px">
-        <div v-if="selectedApplication" class="application-detail">
-          <div class="detail-section">
-            <h3>{{ t.basicInfo }}</h3>
+    <!-- Detail Dialog -->
+    <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" width="700px" class="detail-dialog">
+      <div v-if="selectedApplication" class="application-detail">
+        <div class="detail-section">
+          <h3 class="detail-section-title">{{ t.basicInfo }}</h3>
+          <div class="detail-grid">
             <div class="detail-item">
-              <span class="label">{{ t.applicationId }}:</span>
-              <span class="value">{{ selectedApplication.id }}</span>
+              <span class="detail-label">{{ t.applicationId }}</span>
+              <span class="detail-value">{{ selectedApplication.id }}</span>
             </div>
             <div class="detail-item">
-              <span class="label">{{ t.recordNumbers }}:</span>
-              <span class="value">{{ selectedApplication.recordNumbers || '-' }}</span>
+              <span class="detail-label">{{ t.recordNumbers }}</span>
+              <span class="detail-value">{{ selectedApplication.recordNumbers || '-' }}</span>
             </div>
             <div class="detail-item">
-              <span class="label">{{ t.borrowType }}:</span>
-              <span class="value">{{ selectedApplication.borrowType || '-' }}</span>
+              <span class="detail-label">{{ t.borrowType }}</span>
+              <span class="detail-value">{{ selectedApplication.borrowType || '-' }}</span>
             </div>
             <div class="detail-item">
-              <span class="label">{{ t.reason }}:</span>
-              <span class="value">{{ selectedApplication.reason || '-' }}</span>
+              <span class="detail-label">{{ t.expectedReturnDate }}</span>
+              <span class="detail-value">{{ selectedApplication.expectedReturnDate || '-' }}</span>
+            </div>
+            <div class="detail-item detail-item--full">
+              <span class="detail-label">{{ t.reason }}</span>
+              <span class="detail-value">{{ selectedApplication.reason || '-' }}</span>
             </div>
             <div class="detail-item">
-              <span class="label">{{ t.expectedReturnDate }}:</span>
-              <span class="value">{{ selectedApplication.expectedReturnDate || '-' }}</span>
+              <span class="detail-label">{{ t.applicant }}</span>
+              <span class="detail-value">{{ selectedApplication.userName || '-' }}</span>
             </div>
-            <div class="detail-item">
-              <span class="label">{{ t.applicant }}:</span>
-              <span class="value">{{ selectedApplication.userName || '-' }}</span>
-            </div>
-          </div>
-
-          <div class="detail-section">
-            <h3>{{ t.statusTimeline }}</h3>
-            <el-timeline>
-              <el-timeline-item
-                v-for="(event, index) in selectedApplication.statusHistory"
-                :key="index"
-                :timestamp="event.time"
-                :type="getStatusType(event.status)"
-              >
-                <el-card shadow="hover" class="timeline-card">
-                  <div class="timeline-content">
-                    <div class="status-title">{{ getStatusText(event.status) }}</div>
-                    <div class="status-desc">{{ getStatusDescription(event.status) }}</div>
-                    <div v-if="event.comment" class="status-comment">{{ t.comment }}: {{ event.comment }}</div>
-                  </div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
           </div>
         </div>
-      </el-dialog>
-    </el-card>
+
+        <div class="detail-section">
+          <h3 class="detail-section-title">{{ t.statusTimeline }}</h3>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(event, index) in selectedApplication.statusHistory"
+              :key="index"
+              :timestamp="event.time"
+              :type="getStatusType(event.status)"
+            >
+              <div class="timeline-card">
+                <div class="timeline-title">{{ getStatusText(event.status) }}</div>
+                <div class="timeline-desc">{{ getStatusDescription(event.status) }}</div>
+                <div v-if="event.comment" class="timeline-comment">{{ t.comment }}: {{ event.comment }}</div>
+              </div>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -252,46 +215,46 @@ interface StatusEvent {
 const route = useRoute()
 
 const t = {
-  all: '\u5168\u90e8',
-  status: '\u72b6\u6001',
-  overdue: '\u5df2\u8fc7\u671f',
-  pending: '\u5f85\u5ba1\u6279',
-  deptApproved: '\u79d1\u5ba4\u5df2\u5ba1\u6279',
-  approved: '\u5df2\u6279\u51c6',
-  rejected: '\u5df2\u9a73\u56de',
-  picked: '\u5df2\u53d6\u4ef6',
-  completed: '\u5df2\u5b8c\u6210',
-  cancelled: '\u5df2\u53d6\u6d88',
-  borrowType: '\u501f\u9605\u7c7b\u578b',
-  internalBorrow: '\u9662\u5185\u501f\u9605',
-  externalBorrow: '\u9662\u5916\u501f\u9605',
-  submitTimeLabel: '\u7533\u8bf7\u65f6\u95f4',
-  expectedReturnDate: '\u9884\u8ba1\u5f52\u8fd8\u65e5\u671f',
-  selectStatus: '\u8bf7\u9009\u62e9\u72b6\u6001',
-  selectBorrowType: '\u8bf7\u9009\u62e9\u501f\u9605\u7c7b\u578b',
-  selectSubmitDate: '\u8bf7\u9009\u62e9\u7533\u8bf7\u65e5\u671f',
-  selectExactDate: '\u8bf7\u9009\u62e9\u5177\u4f53\u65e5\u671f',
-  search: '\u67e5\u8be2',
-  reset: '\u91cd\u7f6e',
-  applicationId: '\u7533\u8bf7ID',
-  recordNumbers: '\u75c5\u6848\u53f7',
-  reason: '\u501f\u9605\u539f\u56e0',
-  submitTime: '\u63d0\u4ea4\u65f6\u95f4',
-  updateTime: '\u66f4\u65b0\u65f6\u95f4',
-  actions: '\u64cd\u4f5c',
-  detail: '\u8be6\u60c5',
-  approve: '\u6279\u51c6',
-  reject: '\u9a73\u56de',
-  deptApprove: '\u79d1\u5ba4\u5ba1\u6279',
-  finalApprove: '\u7ec8\u5ba1',
-  cancel: '\u53d6\u6d88',
-  pickup: '\u53d6\u4ef6',
-  complete: '\u5f52\u8fd8',
-  detailTitle: '\u7533\u8bf7\u8be6\u60c5',
-  basicInfo: '\u57fa\u672c\u4fe1\u606f',
-  applicant: '\u7533\u8bf7\u4eba',
-  statusTimeline: '\u72b6\u6001\u8ddf\u8e2a',
-  comment: '\u5907\u6ce8'
+  all: '全部',
+  status: '状态',
+  overdue: '已过期',
+  pending: '待审批',
+  deptApproved: '科室已批准',
+  approved: '已批准',
+  rejected: '已驳回',
+  picked: '已取件',
+  completed: '已完成',
+  cancelled: '已取消',
+  borrowType: '借阅类型',
+  internalBorrow: '院内借阅',
+  externalBorrow: '院外借阅',
+  submitTimeLabel: '申请时间',
+  expectedReturnDate: '预计归还日期',
+  selectStatus: '请选择状态',
+  selectBorrowType: '请选择借阅类型',
+  selectSubmitDate: '请选择申请日期',
+  selectExactDate: '请选择具体日期',
+  search: '查询',
+  reset: '重置',
+  applicationId: '申请ID',
+  recordNumbers: '病案号',
+  reason: '借阅原因',
+  submitTime: '提交时间',
+  updateTime: '更新时间',
+  actions: '操作',
+  detail: '详情',
+  approve: '批准',
+  reject: '驳回',
+  deptApprove: '科室审批',
+  finalApprove: '终审',
+  cancel: '取消',
+  pickup: '取件',
+  complete: '归还',
+  detailTitle: '申请详情',
+  basicInfo: '基本信息',
+  applicant: '申请人',
+  statusTimeline: '状态跟踪',
+  comment: '备注'
 }
 
 const searchForm = reactive({
@@ -316,133 +279,104 @@ const isMedRecordsDirector = computed(() => store.getters.isMedRecordsDirector)
 const currentUserDepartment = computed(() => store.getters.userDepartment)
 const currentUserId = computed(() => store.state.user?.id)
 
-const isOwnApplication = (app: BorrowApplication) => {
-  return currentUserId.value != null && app.userId === currentUserId.value
-}
+const isOwnApplication = (app: BorrowApplication) => currentUserId.value != null && app.userId === currentUserId.value
 
 const isOverdue = (expectedReturnDate?: string) => {
   if (!expectedReturnDate) return false
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const returnDate = new Date(expectedReturnDate)
-  if (Number.isNaN(returnDate.getTime())) return false
-  return returnDate < today
+  const today = new Date(); today.setHours(0, 0, 0, 0)
+  const d = new Date(expectedReturnDate)
+  return !Number.isNaN(d.getTime()) && d < today
 }
 
-const isApplicationOverdue = (application: BorrowApplication | null | undefined) => {
-  if (!application) return false
-  if (['completed', 'cancelled', 'rejected'].includes(application.status)) return false
-  return isOverdue(application.expectedReturnDate)
+const isApplicationOverdue = (app: BorrowApplication | null | undefined) => {
+  if (!app) return false
+  if (['completed', 'cancelled', 'rejected'].includes(app.status)) return false
+  return isOverdue(app.expectedReturnDate)
 }
 
-const isReturnedOnTime = (application: BorrowApplication) => {
-  if (application.status !== 'completed' || !application.expectedReturnDate) return false
-  const expectedDate = new Date(application.expectedReturnDate)
-  const completedDate = new Date(getApprovalProcessedTime(application))
+const isReturnedOnTime = (app: BorrowApplication) => {
+  if (app.status !== 'completed' || !app.expectedReturnDate) return false
+  const expectedDate = new Date(app.expectedReturnDate)
+  const completedDate = new Date(getApprovalProcessedTime(app))
   if (Number.isNaN(expectedDate.getTime()) || Number.isNaN(completedDate.getTime())) return false
   expectedDate.setHours(23, 59, 59, 999)
   return completedDate.getTime() <= expectedDate.getTime()
 }
 
-const isReturnedOverdue = (application: BorrowApplication) => {
-  if (application.status !== 'completed' || !application.expectedReturnDate) return false
-  const expectedDate = new Date(application.expectedReturnDate)
-  const completedDate = new Date(getApprovalProcessedTime(application))
+const isReturnedOverdue = (app: BorrowApplication) => {
+  if (app.status !== 'completed' || !app.expectedReturnDate) return false
+  const expectedDate = new Date(app.expectedReturnDate)
+  const completedDate = new Date(getApprovalProcessedTime(app))
   if (Number.isNaN(expectedDate.getTime()) || Number.isNaN(completedDate.getTime())) return false
   expectedDate.setHours(23, 59, 59, 999)
   return completedDate.getTime() > expectedDate.getTime()
 }
 
-const isUnreturned = (application: BorrowApplication) => isApplicationOverdue(application)
+const isUnreturned = (app: BorrowApplication) => isApplicationOverdue(app)
 
-const getApprovalProcessedTime = (application: BorrowApplication) => {
-  if (application.status === 'completed' && application.returnTime) {
-    return application.returnTime
-  }
-  if (application.approveTime) {
-    return application.approveTime
-  }
-  if (application.updatedTime) {
-    return application.updatedTime
-  }
+const getApprovalProcessedTime = (app: BorrowApplication) => {
+  if (app.status === 'completed' && app.returnTime) return app.returnTime
+  if (app.approveTime) return app.approveTime
+  if (app.updatedTime) return app.updatedTime
   return ''
 }
 
-const getApprovalDurationHours = (application: BorrowApplication) => {
-  if (!application.submitTime) return -1
-  if (application.status === 'pending') return -1
-
-  const start = new Date(application.submitTime).getTime()
-  const end = new Date(getApprovalProcessedTime(application)).getTime()
+const getApprovalDurationHours = (app: BorrowApplication) => {
+  if (!app.submitTime || app.status === 'pending') return -1
+  const start = new Date(app.submitTime).getTime()
+  const end = new Date(getApprovalProcessedTime(app)).getTime()
   if (Number.isNaN(start) || Number.isNaN(end) || end < start) return -1
-
   return (end - start) / (1000 * 60 * 60)
 }
 
-const pendingCount = computed(() => applications.value.filter((app) => app.status === 'pending').length)
-const deptApprovedCount = computed(() => applications.value.filter((app) => app.status === 'dept_approved').length)
-const approvedCount = computed(() => applications.value.filter((app) => app.status === 'approved').length)
-const rejectedCount = computed(() => applications.value.filter((app) => app.status === 'rejected').length)
-const pickedCount = computed(() => applications.value.filter((app) => app.status === 'picked').length)
-const completedCount = computed(() => applications.value.filter((app) => app.status === 'completed').length)
-const overdueCount = computed(() => applications.value.filter((app) => isApplicationOverdue(app)).length)
+const pendingCount = computed(() => applications.value.filter(a => a.status === 'pending').length)
+const deptApprovedCount = computed(() => applications.value.filter(a => a.status === 'dept_approved').length)
+const approvedCount = computed(() => applications.value.filter(a => a.status === 'approved').length)
+const rejectedCount = computed(() => applications.value.filter(a => a.status === 'rejected').length)
+const pickedCount = computed(() => applications.value.filter(a => a.status === 'picked').length)
+const completedCount = computed(() => applications.value.filter(a => a.status === 'completed').length)
+const overdueCount = computed(() => applications.value.filter(a => isApplicationOverdue(a)).length)
 
 const filteredApplications = computed(() => {
   let filtered = applications.value.slice()
-
   if (searchForm.status) {
-    if (searchForm.status === 'overdue') {
-      filtered = filtered.filter((app) => isApplicationOverdue(app))
-    } else {
-      filtered = filtered.filter((app) => app.status === searchForm.status)
-    }
+    if (searchForm.status === 'overdue') filtered = filtered.filter(a => isApplicationOverdue(a))
+    else filtered = filtered.filter(a => a.status === searchForm.status)
   }
-
-  if (searchForm.borrowType) {
-    filtered = filtered.filter((app) => app.borrowType === searchForm.borrowType)
-  }
-
+  if (searchForm.borrowType) filtered = filtered.filter(a => a.borrowType === searchForm.borrowType)
   if (exactSubmitDate.value) {
     const start = new Date(`${exactSubmitDate.value}T00:00:00`).getTime()
     const end = new Date(`${exactSubmitDate.value}T23:59:59`).getTime()
-    filtered = filtered.filter((app) => {
-      if (!app.submitTime) return false
-      const submit = new Date(app.submitTime).getTime()
+    filtered = filtered.filter(a => {
+      if (!a.submitTime) return false
+      const submit = new Date(a.submitTime).getTime()
       return !Number.isNaN(submit) && submit >= start && submit <= end
     })
   }
-
   if (searchForm.submitTimeStart) {
     const start = new Date(`${searchForm.submitTimeStart}T00:00:00`).getTime()
     const end = new Date(`${searchForm.submitTimeStart}T23:59:59`).getTime()
-    filtered = filtered.filter((app) => {
-      if (!app.submitTime) return false
-      const submit = new Date(app.submitTime).getTime()
+    filtered = filtered.filter(a => {
+      if (!a.submitTime) return false
+      const submit = new Date(a.submitTime).getTime()
       return !Number.isNaN(submit) && submit >= start && submit <= end
     })
   }
-
   if (searchForm.expectedReturnDate) {
-    filtered = filtered.filter((app) => {
-      if (!app.expectedReturnDate) return false
-      const returnDate = new Date(app.expectedReturnDate)
-      if (Number.isNaN(returnDate.getTime())) return false
-      const normalizedDate = `${returnDate.getFullYear()}-${String(returnDate.getMonth() + 1).padStart(2, '0')}-${String(returnDate.getDate()).padStart(2, '0')}`
-      return normalizedDate === searchForm.expectedReturnDate
+    filtered = filtered.filter(a => {
+      if (!a.expectedReturnDate) return false
+      const d = new Date(a.expectedReturnDate)
+      if (Number.isNaN(d.getTime())) return false
+      const normalized = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      return normalized === searchForm.expectedReturnDate
     })
   }
-
-  if (returnStatusFilter.value === 'onTime') {
-    filtered = filtered.filter((app) => isReturnedOnTime(app))
-  } else if (returnStatusFilter.value === 'overdueReturn') {
-    filtered = filtered.filter((app) => isReturnedOverdue(app))
-  } else if (returnStatusFilter.value === 'unreturned') {
-    filtered = filtered.filter((app) => isUnreturned(app))
-  }
-
+  if (returnStatusFilter.value === 'onTime') filtered = filtered.filter(a => isReturnedOnTime(a))
+  else if (returnStatusFilter.value === 'overdueReturn') filtered = filtered.filter(a => isReturnedOverdue(a))
+  else if (returnStatusFilter.value === 'unreturned') filtered = filtered.filter(a => isUnreturned(a))
   if (approvalBucketFilter.value) {
-    filtered = filtered.filter((app) => {
-      const hours = getApprovalDurationHours(app)
+    filtered = filtered.filter(a => {
+      const hours = getApprovalDurationHours(a)
       if (hours < 0) return false
       if (approvalBucketFilter.value === 'lt4h') return hours < 4
       if (approvalBucketFilter.value === '4to24h') return hours >= 4 && hours < 24
@@ -451,183 +385,97 @@ const filteredApplications = computed(() => {
       return true
     })
   }
-
-  if (onlyOverdue.value) {
-    filtered = filtered.filter((app) => isApplicationOverdue(app))
-  }
-
+  if (onlyOverdue.value) filtered = filtered.filter(a => isApplicationOverdue(a))
   return filtered
 })
 
 const getStatusType = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
-    return 'danger'
-  }
-
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return 'danger'
   switch (status) {
-    case 'pending':
-      return 'warning'
-    case 'dept_approved':
-      return 'primary'
-    case 'approved':
-      return 'success'
-    case 'rejected':
-      return 'danger'
-    case 'picked':
-      return 'primary'
-    case 'completed':
-      return 'info'
-    case 'cancelled':
-      return 'info'
-    default:
-      return ''
+    case 'pending': return 'warning'
+    case 'dept_approved': return 'primary'
+    case 'approved': return 'success'
+    case 'rejected': return 'danger'
+    case 'picked': return 'primary'
+    case 'completed': return 'info'
+    case 'cancelled': return 'info'
+    default: return ''
   }
 }
 
 const getStatusText = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
-    return t.overdue
-  }
-
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return t.overdue
   switch (status) {
-    case 'pending':
-      return t.pending
-    case 'dept_approved':
-      return t.deptApproved
-    case 'approved':
-      return t.approved
-    case 'rejected':
-      return t.rejected
-    case 'picked':
-      return t.picked
-    case 'completed':
-      return t.completed
-    case 'cancelled':
-      return t.cancelled
-    default:
-      return status
+    case 'pending': return t.pending
+    case 'dept_approved': return t.deptApproved
+    case 'approved': return t.approved
+    case 'rejected': return t.rejected
+    case 'picked': return t.picked
+    case 'completed': return t.completed
+    case 'cancelled': return t.cancelled
+    default: return status
   }
 }
 
 const getStatusDescription = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
-    return '\u5df2\u8d85\u8fc7\u9884\u8ba1\u5f52\u8fd8\u65e5\u671f\uff0c\u8bf7\u5c3d\u5feb\u5f52\u8fd8\u6216\u5904\u7406'
-  }
-
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return '已超过预计归还日期，请尽快归还或处理'
   switch (status) {
-    case 'pending':
-      return '\u7533\u8bf7\u5df2\u63d0\u4ea4\uff0c\u7b49\u5f85\u79d1\u5ba4\u4e3b\u4efb\u5ba1\u6279'
-    case 'dept_approved':
-      return '\u7b49\u5f85\u75c5\u6848\u79d1\u4e3b\u4efb\u7ec8\u5ba1'
-    case 'approved':
-      return '\u7533\u8bf7\u5df2\u6279\u51c6\uff0c\u53ef\u4ee5\u524d\u5f80\u53d6\u4ef6'
-    case 'rejected':
-      return '\u7533\u8bf7\u5df2\u88ab\u9a73\u56de\uff0c\u8bf7\u67e5\u770b\u9a73\u56de\u539f\u56e0'
-    case 'picked':
-      return '\u5df2\u6210\u529f\u53d6\u4ef6\uff0c\u8bf7\u6309\u65f6\u5f52\u8fd8'
-    case 'completed':
-      return '\u75c5\u6848\u5df2\u6210\u529f\u5f52\u8fd8'
-    case 'cancelled':
-      return '\u7533\u8bf7\u5df2\u53d6\u6d88'
-    default:
-      return ''
+    case 'pending': return '申请已提交，等待科室主任批准'
+    case 'dept_approved': return '等待病案科主任终审'
+    case 'approved': return '申请已批准，可以前往取件'
+    case 'rejected': return '申请已被驳回，请查看驳回原因'
+    case 'picked': return '已成功取件，请按时归还'
+    case 'completed': return '病案已成功归还'
+    case 'cancelled': return '申请已取消'
+    default: return ''
   }
 }
 
-const generateStatusHistory = (application: BorrowApplication): StatusEvent[] => {
+const generateStatusHistory = (app: BorrowApplication): StatusEvent[] => {
   const history: StatusEvent[] = []
-  const isAutoApproved = application.approver === '\u81ea\u52a8\u5ba1\u6279'
-  const isSkipDept = application.deptApprover === '\u8df3\u8fc7\u79d1\u5ba4\u5ba1\u6279'
-
+  const isAutoApproved = app.approver === '自动审批'
+  const isSkipDept = app.deptApprover === '跳过科室审批'
   if (!isAutoApproved && !isSkipDept) {
-    history.push({
-      status: 'pending',
-      time: application.submitTime || '',
-      comment: '\u7533\u8bf7\u5df2\u63d0\u4ea4'
-    })
+    history.push({ status: 'pending', time: app.submitTime || '', comment: '申请已提交' })
   }
-
-  if (['dept_approved', 'approved', 'picked', 'completed'].includes(application.status)) {
+  if (['dept_approved', 'approved', 'picked', 'completed'].includes(app.status)) {
     if (isSkipDept) {
-      history.push({
-        status: 'dept_approved',
-        time: application.deptApproveTime || application.submitTime || '',
-        comment: '\u79d1\u5ba4\u4e3b\u4efb\u7533\u8bf7\uff0c\u8df3\u8fc7\u79d1\u5ba4\u5ba1\u6279'
-      })
+      history.push({ status: 'dept_approved', time: app.deptApproveTime || app.submitTime || '', comment: '科室主任申请，跳过科室审批' })
     } else if (!isAutoApproved) {
-      history.push({
-        status: 'dept_approved',
-        time: application.deptApproveTime || '',
-        comment: `\u79d1\u5ba4\u4e3b\u4efb${application.deptApprover || ''}\u5df2\u5ba1\u6279\u901a\u8fc7`
-      })
+      history.push({ status: 'dept_approved', time: app.deptApproveTime || '', comment: `科室主任${app.deptApprover || ''}已审批通过` })
     }
   }
-
-  if (['approved', 'picked', 'completed'].includes(application.status)) {
+  if (['approved', 'picked', 'completed'].includes(app.status)) {
     if (isAutoApproved) {
-      history.push({
-        status: 'approved',
-        time: application.approveTime || '',
-        comment: '\u75c5\u6848\u79d1\u4e3b\u4efb\u7533\u8bf7\uff0c\u81ea\u52a8\u5ba1\u6279\u901a\u8fc7'
-      })
+      history.push({ status: 'approved', time: app.approveTime || '', comment: '病案科主任申请，自动审批通过' })
     } else {
-      history.push({
-        status: 'approved',
-        time: application.approveTime || '',
-        comment: `\u75c5\u6848\u79d1\u4e3b\u4efb${application.approver || ''}\u5df2\u7ec8\u5ba1\u901a\u8fc7`
-      })
+      history.push({ status: 'approved', time: app.approveTime || '', comment: `病案科主任${app.approver || ''}已终审通过` })
     }
   }
-
-  if (['picked', 'completed'].includes(application.status)) {
-    history.push({
-      status: 'picked',
-      time: application.updatedTime || '',
-      comment: '\u5df2\u6210\u529f\u53d6\u4ef6'
-    })
+  if (['picked', 'completed'].includes(app.status)) {
+    history.push({ status: 'picked', time: app.updatedTime || '', comment: '已成功取件' })
   }
-
-  if (application.status === 'completed') {
-    history.push({
-      status: 'completed',
-      time: application.returnTime || '',
-      comment: '\u5df2\u5f52\u8fd8\u75c5\u6848'
-    })
+  if (app.status === 'completed') {
+    history.push({ status: 'completed', time: app.returnTime || '', comment: '已归还病案' })
   }
-
-  if (application.status === 'rejected') {
-    history.push({
-      status: 'rejected',
-      time: application.approveTime || application.deptApproveTime || '',
-      comment: '\u7533\u8bf7\u88ab\u9a73\u56de'
-    })
+  if (app.status === 'rejected') {
+    history.push({ status: 'rejected', time: app.approveTime || app.deptApproveTime || '', comment: '申请被驳回' })
   }
-
-  if (application.status === 'cancelled') {
-    history.push({
-      status: 'cancelled',
-      time: application.updatedTime || '',
-      comment: '\u7533\u8bf7\u4eba\u4e3b\u52a8\u53d6\u6d88'
-    })
+  if (app.status === 'cancelled') {
+    history.push({ status: 'cancelled', time: app.updatedTime || '', comment: '申请人主动取消' })
   }
-
   return history.reverse()
 }
 
 const searchApplications = async () => {
   try {
     const user = store.state.user
-    if (!user?.id) {
-      ElMessage.error('\u7528\u6237\u4fe1\u606f\u4e0d\u5b8c\u6574\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55')
-      return
-    }
-
+    if (!user?.id) { ElMessage.error('用户信息不完整，请重新登录'); return }
     let response: BorrowApplication[]
     if (isMedRecordsDirector.value && !forceMine.value) {
-      // \u75c5\u6848\u79d1\u4e3b\u4efb\u770b\u5230\u6240\u6709\u79d1\u5ba4\u5df2\u5ba1\u6279\u7684\u7533\u8bf7 \u4ee5\u53ca\u81ea\u5df1\u7684\u7533\u8bf7
       const deptApproved = await service.get<BorrowApplication[]>('/borrow-applications/dept-approved') || []
       const myOwn = await service.get<BorrowApplication[]>(`/borrow-applications/by-user/${user.id}`) || []
       const merged = new Map<number, BorrowApplication>()
@@ -635,23 +483,16 @@ const searchApplications = async () => {
       for (const app of myOwn) merged.set(app.id, app)
       response = Array.from(merged.values())
     } else if (isDeptDirector.value && !forceMine.value) {
-      // \u79d1\u5ba4\u4e3b\u4efb\u770b\u5230\u81ea\u5df1\u79d1\u5ba4\u7684\u7533\u8bf7
       response = await service.get<BorrowApplication[]>(`/borrow-applications/by-dept/${encodeURIComponent(currentUserDepartment.value)}`)
     } else if (isAdmin.value && !forceMine.value) {
-      // \u7ba1\u7406\u5458\u770b\u5230\u6240\u6709\u7533\u8bf7
       response = await service.get<BorrowApplication[]>('/borrow-applications/list')
     } else {
-      // \u666e\u901a\u7528\u6237\u770b\u5230\u81ea\u5df1\u7684\u7533\u8bf7
       response = await service.get<BorrowApplication[]>(`/borrow-applications/by-user/${user.id}`)
     }
-
-    applications.value = (response || []).map((app) => ({
-      ...app,
-      statusHistory: generateStatusHistory(app)
-    }))
+    applications.value = (response || []).map(app => ({ ...app, statusHistory: generateStatusHistory(app) }))
   } catch (error) {
     console.error('Failed to load borrow applications:', error)
-    ElMessage.error('\u67e5\u8be2\u501f\u9605\u7533\u8bf7\u5931\u8d25')
+    ElMessage.error('查询借阅申请失败')
   }
 }
 
@@ -669,255 +510,272 @@ const resetSearch = () => {
 
 const cancelApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('\u786e\u5b9a\u8981\u53d6\u6d88\u8fd9\u4e2a\u501f\u9605\u7533\u8bf7\u5417\uff1f', '\u786e\u8ba4\u53d6\u6d88', {
-      confirmButtonText: '\u786e\u5b9a',
-      cancelButtonText: '\u53d6\u6d88',
-      type: 'warning'
-    })
-
+    await ElMessageBox.confirm('确定要取消这个借阅申请吗？', '确认取消', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
     const user = store.state.user
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/cancel`, { userId: user?.id })
-    if (response?.success) {
-      ElMessage.success('\u7533\u8bf7\u5df2\u53d6\u6d88')
-      searchApplications()
-    } else {
-      ElMessage.error('\u53d6\u6d88\u7533\u8bf7\u5931\u8d25')
-    }
+    if (response?.success) { ElMessage.success('申请已取消'); searchApplications() }
+    else ElMessage.error('取消申请失败')
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') {
-      ElMessage.error('\u53d6\u6d88\u7533\u8bf7\u5931\u8d25')
-    }
+    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('取消申请失败')
   }
 }
 
 const pickupApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('\u786e\u8ba4\u5df2\u53d6\u5230\u75c5\u6848\u5417\uff1f', '\u786e\u8ba4\u53d6\u4ef6', {
-      confirmButtonText: '\u786e\u5b9a',
-      cancelButtonText: '\u53d6\u6d88',
-      type: 'warning'
-    })
-
+    await ElMessageBox.confirm('确认已取到病案吗？', '确认取件', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/pickup`, {})
-    if (response?.success) {
-      ElMessage.success('\u53d6\u4ef6\u6210\u529f')
-      searchApplications()
-    } else {
-      ElMessage.error('\u53d6\u4ef6\u5931\u8d25')
-    }
+    if (response?.success) { ElMessage.success('取件成功'); searchApplications() }
+    else ElMessage.error('取件失败')
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') {
-      ElMessage.error('\u53d6\u4ef6\u5931\u8d25')
-    }
+    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('取件失败')
   }
 }
 
 const completeApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('\u786e\u8ba4\u5df2\u5f52\u8fd8\u75c5\u6848\u5417\uff1f', '\u786e\u8ba4\u5f52\u8fd8', {
-      confirmButtonText: '\u786e\u5b9a',
-      cancelButtonText: '\u53d6\u6d88',
-      type: 'warning'
-    })
-
+    await ElMessageBox.confirm('确认已归还病案吗？', '确认归还', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/complete`, {})
-    if (response?.success) {
-      ElMessage.success('\u5f52\u8fd8\u6210\u529f')
-      searchApplications()
-    } else {
-      ElMessage.error('\u5f52\u8fd8\u5931\u8d25')
-    }
+    if (response?.success) { ElMessage.success('归还成功'); searchApplications() }
+    else ElMessage.error('归还失败')
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') {
-      ElMessage.error('\u5f52\u8fd8\u5931\u8d25')
-    }
+    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('归还失败')
   }
 }
 
-const viewDetail = (application: BorrowApplication) => {
-  selectedApplication.value = application
+const viewDetail = (app: BorrowApplication) => {
+  selectedApplication.value = app
   detailDialogVisible.value = true
 }
 
 onMounted(() => {
-  if (route.query.mine === '1') {
-    forceMine.value = true
-  }
-  if (typeof route.query.status === 'string') {
-    searchForm.status = route.query.status
-  }
-  if (typeof route.query.borrowType === 'string') {
-    searchForm.borrowType = route.query.borrowType
-  }
-  if (typeof route.query.submitTimeStart === 'string') {
-    searchForm.submitTimeStart = route.query.submitTimeStart
-  }
-  if (typeof route.query.submitTimeDate === 'string') {
-    exactSubmitDate.value = route.query.submitTimeDate
-    searchForm.submitTimeStart = route.query.submitTimeDate
-  }
-  if (typeof route.query.expectedReturnDate === 'string') {
-    searchForm.expectedReturnDate = route.query.expectedReturnDate
-  }
-  if (typeof route.query.returnStatus === 'string') {
-    returnStatusFilter.value = route.query.returnStatus
-  }
-  if (typeof route.query.approvalBucket === 'string') {
-    approvalBucketFilter.value = route.query.approvalBucket
-  }
-  if (route.query.overdue === '1') {
-    onlyOverdue.value = true
-    if (!searchForm.status) {
-      searchForm.status = 'overdue'
-    }
-  }
+  if (route.query.mine === '1') forceMine.value = true
+  if (typeof route.query.status === 'string') searchForm.status = route.query.status
+  if (typeof route.query.borrowType === 'string') searchForm.borrowType = route.query.borrowType
+  if (typeof route.query.submitTimeStart === 'string') searchForm.submitTimeStart = route.query.submitTimeStart
+  if (typeof route.query.submitTimeDate === 'string') { exactSubmitDate.value = route.query.submitTimeDate; searchForm.submitTimeStart = route.query.submitTimeDate }
+  if (typeof route.query.expectedReturnDate === 'string') searchForm.expectedReturnDate = route.query.expectedReturnDate
+  if (typeof route.query.returnStatus === 'string') returnStatusFilter.value = route.query.returnStatus
+  if (typeof route.query.approvalBucket === 'string') approvalBucketFilter.value = route.query.approvalBucket
+  if (route.query.overdue === '1') { onlyOverdue.value = true; if (!searchForm.status) searchForm.status = 'overdue' }
   searchApplications()
 })
 </script>
 
 <style scoped>
 .borrow-history-container {
-  padding: 20px;
-  overflow: auto;
+  padding: var(--space-lg);
 }
 
-.borrow-history-card {
-  margin-bottom: 20px;
-}
-
-.card-header {
+.page-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  margin: 4px 0 0;
+}
+
+.help-icon {
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.help-icon:hover { color: var(--color-primary); }
+
+.history-card {
+  margin-bottom: var(--space-lg);
 }
 
 .search-section {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-lg);
 }
 
 .search-form {
-  margin-bottom: 20px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
-.search-form .el-select {
-  min-width: 180px;
+.search-form .el-form-item {
+  margin-bottom: 12px;
 }
 
-.search-form :deep(.el-date-editor.el-input__wrapper),
-.search-form :deep(.el-date-editor.el-range-editor) {
-  min-width: 220px;
-}
-
+/* Status Stats */
 .status-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-bottom: var(--space-lg);
 }
 
 .status-stat-item {
   text-align: center;
-  padding: 15px;
-  background: #f5f7fa;
-  border-radius: 8px;
-  border: 1px solid #e4e7ed;
+  padding: 16px 12px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-fast);
+}
+
+.status-stat-item:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-lighter);
 }
 
 .status-count {
   display: block;
-  font-size: 24px;
-  font-weight: bold;
-  color: #303133;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
 }
+
+.status-count--warning { color: var(--color-warning); }
+.status-count--primary { color: var(--color-primary); }
+.status-count--success { color: var(--color-success); }
+.status-count--danger { color: var(--color-danger); }
+.status-count--info { color: var(--color-info); }
+.status-count--default { color: var(--color-text-primary); }
 
 .status-label {
   display: block;
-  font-size: 14px;
-  color: #606266;
-  margin-top: 5px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: 4px;
 }
 
-.status-container {
+/* Table */
+.data-table {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.status-cell {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
-.status-icon {
+.status-info-icon {
   cursor: pointer;
-  color: #909399;
+  color: var(--color-text-tertiary);
+  font-size: 14px;
 }
 
-.overdue {
-  color: #f56c6c;
-  font-weight: bold;
+.status-info-icon:hover { color: var(--color-primary); }
+
+.text-danger {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-semibold);
 }
 
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Detail Dialog */
 .application-detail {
-  padding: 10px;
+  padding: 4px;
 }
 
 .detail-section {
-  margin-bottom: 30px;
+  margin-bottom: var(--space-lg);
 }
 
-.detail-section h3 {
-  margin-bottom: 15px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #303133;
+.detail-section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .detail-item {
   display: flex;
-  margin-bottom: 12px;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
 }
 
-.detail-item .label {
-  width: 120px;
-  font-weight: 500;
-  color: #606266;
+.detail-item--full {
+  grid-column: 1 / -1;
 }
 
-.detail-item .value {
-  flex: 1;
-  color: #303133;
+.detail-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-medium);
+}
+
+.detail-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
   word-break: break-word;
 }
 
 .timeline-card {
-  margin-bottom: 10px;
-  border-radius: 8px;
+  padding: 2px 0;
 }
 
-.timeline-content {
-  padding: 15px;
+.timeline-title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
 }
 
-.status-title {
-  font-weight: 500;
-  color: #303133;
-  margin-bottom: 5px;
+.timeline-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
 }
 
-.status-desc {
-  font-size: 14px;
-  color: #606266;
-  margin-bottom: 8px;
-}
-
-.status-comment {
-  font-size: 13px;
-  color: #909399;
+.timeline-comment {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
   font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .status-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .borrow-history-container {
-    padding: 10px;
+    padding: var(--space-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
   }
 
   .search-form {
@@ -927,33 +785,20 @@ onMounted(() => {
 
   .search-form .el-form-item {
     margin-right: 0;
-    margin-bottom: 15px;
   }
 
   .status-stats {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
   }
 
-  .detail-item {
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .detail-item .label {
-    width: auto;
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
   .status-stats {
     grid-template-columns: 1fr;
-  }
-
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
 }
 </style>

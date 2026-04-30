@@ -203,6 +203,7 @@ const handleLogin = async () => {
     linear-gradient(to bottom, rgba(77, 133, 180, 0.12) 1px, transparent 1px);
   background-size: 44px 44px;
   mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.82), transparent 86%);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.82), transparent 86%);
 }
 
 .login-layout {
@@ -492,6 +493,10 @@ const handleLogin = async () => {
   transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
+.login-form :deep(.el-input__wrapper:hover) {
+  box-shadow: inset 0 0 0 1px rgba(22, 109, 163, 0.36);
+}
+
 .login-form :deep(.el-input__wrapper.is-focus) {
   background: #fff;
   box-shadow:
@@ -522,13 +527,22 @@ const handleLogin = async () => {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.03em;
+  transition: all 0.2s ease;
 }
 
 .login-button:hover {
   filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgba(27, 99, 153, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
 }
 
 .login-footer {
+  position: relative;
+  z-index: 1;
   margin-top: 22px;
   display: flex;
   align-items: center;

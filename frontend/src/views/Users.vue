@@ -1,13 +1,20 @@
 <template>
   <div class="users-container">
-    <el-card class="users-card">
-      <template #header>
-        <div class="card-header">
-          <span>&#29992;&#25143;&#31649;&#29702;</span>
-          <el-button type="primary" @click="openCreateDialog">&#26032;&#22686;&#29992;&#25143;</el-button>
-        </div>
-      </template>
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">用户管理</h1>
+        <p class="page-subtitle">管理系统用户，分配角色权限</p>
+      </div>
+      <el-button type="primary" @click="openCreateDialog">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;margin-right:6px;">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        新增用户
+      </el-button>
+    </div>
 
+    <el-card class="users-card" :body-style="{ padding: '24px' }">
+      <!-- Search -->
       <el-form :model="searchForm" :inline="true" class="search-form">
         <el-form-item :label="t.username">
           <el-input v-model="searchForm.username" :placeholder="t.enterUsername" clearable />
@@ -21,94 +28,84 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="loadUsers">&#21047;&#26032;</el-button>
+          <el-button type="primary" @click="loadUsers">刷新</el-button>
         </el-form-item>
       </el-form>
 
-      <el-table :data="filteredUsers" style="width: 100%" border>
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column :label="t.employeeNumber" prop="employeeNumber" width="120" />
-        <el-table-column :label="t.username" prop="username" width="140" />
-        <el-table-column :label="t.name" prop="name" width="120" />
-        <el-table-column :label="t.department" prop="department" min-width="140" />
-        <el-table-column :label="t.position" prop="position" min-width="140" />
-        <el-table-column :label="t.role" prop="role" width="120" />
-        <el-table-column :label="t.status" width="100">
+      <!-- Table -->
+      <el-table :data="filteredUsers" style="width: 100%" border class="data-table">
+        <el-table-column prop="id" label="ID" width="70" />
+        <el-table-column :label="t.employeeNumber" prop="employeeNumber" width="110" />
+        <el-table-column :label="t.username" prop="username" width="130" />
+        <el-table-column :label="t.name" prop="name" width="110" />
+        <el-table-column :label="t.department" prop="department" min-width="130" />
+        <el-table-column :label="t.position" prop="position" min-width="130" />
+        <el-table-column :label="t.role" prop="role" width="110">
           <template #default="{ row }">
-            <el-tag :type="row.status === 0 ? 'danger' : 'success'">
+            <el-tag :type="row.role === 'admin' ? 'danger' : row.role === '主任' ? 'warning' : 'info'" effect="plain" size="small">{{ row.role }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :label="t.status" width="90">
+          <template #default="{ row }">
+            <el-tag :type="row.status === 0 ? 'danger' : 'success'" effect="dark" size="small">
               {{ row.status === 0 ? t.disabled : t.enabled }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column :label="t.actions" width="250" fixed="right">
+        <el-table-column :label="t.actions" width="240" fixed="right">
           <template #default="{ row }">
-            <el-button type="primary" size="small" @click="editUser(row)">{{ t.edit }}</el-button>
-            <el-button
-              :type="row.status === 0 ? 'success' : 'warning'"
-              size="small"
-              @click="toggleUserStatus(row)"
-            >
-              {{ row.status === 0 ? t.enable : t.disable }}
-            </el-button>
-            <el-button type="danger" size="small" @click="deleteUser(row)">{{ t.delete }}</el-button>
+            <div class="action-buttons">
+              <el-button type="primary" size="small" @click="editUser(row)">{{ t.edit }}</el-button>
+              <el-button :type="row.status === 0 ? 'success' : 'warning'" size="small" @click="toggleUserStatus(row)">
+                {{ row.status === 0 ? t.enable : t.disable }}
+              </el-button>
+              <el-button type="danger" size="small" @click="deleteUser(row)">{{ t.delete }}</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
-
-      <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
-        <el-form :model="userForm" label-width="100px">
-          <el-form-item :label="t.employeeNumber">
-            <el-input v-model="userForm.employeeNumber" :placeholder="t.enterEmployeeNumber" />
-          </el-form-item>
-          <el-form-item :label="t.username">
-            <el-input v-model="userForm.username" :placeholder="t.enterUsername" />
-          </el-form-item>
-          <el-form-item :label="isEditing ? t.password : t.initialPassword">
-            <el-input
-              v-model="userForm.password"
-              type="password"
-              show-password
-              :placeholder="isEditing ? t.keepPassword : t.enterPassword"
-            />
-          </el-form-item>
-          <el-form-item :label="t.name">
-            <el-input v-model="userForm.name" :placeholder="t.enterName" />
-          </el-form-item>
-          <el-form-item :label="t.department">
-            <el-select v-model="userForm.department" :placeholder="t.enterDepartment" filterable clearable style="width: 100%">
-              <el-option v-for="dept in departmentOptions" :key="dept" :label="dept" :value="dept" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="t.position">
-            <el-input v-model="userForm.position" :placeholder="t.enterPosition" />
-          </el-form-item>
-          <el-form-item :label="t.role">
-            <el-select
-              v-model="userForm.role"
-              :placeholder="t.selectRole"
-              allow-create
-              filterable
-              default-first-option
-            >
-              <el-option v-for="role in roleOptions" :key="role" :label="role" :value="role" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="t.status">
-            <el-radio-group v-model="userForm.status">
-              <el-radio :value="1">{{ t.enabled }}</el-radio>
-              <el-radio :value="0">{{ t.disabled }}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
-
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">{{ t.cancel }}</el-button>
-            <el-button type="primary" @click="saveUser">{{ t.save }}</el-button>
-          </span>
-        </template>
-      </el-dialog>
     </el-card>
+
+    <!-- Dialog -->
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
+      <el-form :model="userForm" label-width="100px" class="user-form">
+        <el-form-item :label="t.employeeNumber">
+          <el-input v-model="userForm.employeeNumber" :placeholder="t.enterEmployeeNumber" />
+        </el-form-item>
+        <el-form-item :label="t.username">
+          <el-input v-model="userForm.username" :placeholder="t.enterUsername" />
+        </el-form-item>
+        <el-form-item :label="isEditing ? t.password : t.initialPassword">
+          <el-input v-model="userForm.password" type="password" show-password :placeholder="isEditing ? t.keepPassword : t.enterPassword" />
+        </el-form-item>
+        <el-form-item :label="t.name">
+          <el-input v-model="userForm.name" :placeholder="t.enterName" />
+        </el-form-item>
+        <el-form-item :label="t.department">
+          <el-select v-model="userForm.department" :placeholder="t.enterDepartment" filterable clearable style="width: 100%">
+            <el-option v-for="dept in departmentOptions" :key="dept" :label="dept" :value="dept" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t.position">
+          <el-input v-model="userForm.position" :placeholder="t.enterPosition" />
+        </el-form-item>
+        <el-form-item :label="t.role">
+          <el-select v-model="userForm.role" :placeholder="t.selectRole" allow-create filterable default-first-option style="width: 100%">
+            <el-option v-for="role in roleOptions" :key="role" :label="role" :value="role" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t.status">
+          <el-radio-group v-model="userForm.status">
+            <el-radio :value="1">{{ t.enabled }}</el-radio>
+            <el-radio :value="0">{{ t.disabled }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="dialogVisible = false">{{ t.cancel }}</el-button>
+        <el-button type="primary" @click="saveUser">{{ t.save }}</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -135,84 +132,43 @@ interface RoleItem {
 }
 
 const createEmptyUserForm = (): User => ({
-  employeeNumber: '',
-  username: '',
-  password: '',
-  name: '',
-  department: '',
-  position: '',
-  role: '',
-  status: 1
+  employeeNumber: '', username: '', password: '', name: '', department: '', position: '', role: '', status: 1
 })
 
-const searchForm = reactive({
-  username: '',
-  name: '',
-  department: ''
-})
-
+const searchForm = reactive({ username: '', name: '', department: '' })
 const users = ref<User[]>([])
 const dialogVisible = ref(false)
 const userForm = reactive<User>(createEmptyUserForm())
 const roleOptions = ref<string[]>(['admin', 'doctor', 'nurse', 'dept_director'])
 const departmentOptions = ['内科', '外科', '妇产科', '儿科', '骨科', '神经内科', '心血管内科', '消化内科', '呼吸内科', '泌尿外科', '眼科', '耳鼻喉科', '皮肤科', '感染科', '肿瘤科', '康复科', '中医科', '内分泌科', '肾内科', '口腔科', '急诊科', '风湿免疫科', '临床科', '护理部', '病案科']
+
 const t = {
-  username: '\u7528\u6237\u540d',
-  name: '\u59d3\u540d',
-  department: '\u79d1\u5ba4',
-  position: '\u804c\u4f4d',
-  role: '\u89d2\u8272',
-  status: '\u72b6\u6001',
-  actions: '\u64cd\u4f5c',
-  employeeNumber: '\u5de5\u53f7',
-  enterUsername: '\u8bf7\u8f93\u5165\u7528\u6237\u540d',
-  enterName: '\u8bf7\u8f93\u5165\u59d3\u540d',
-  enterDepartment: '\u8bf7\u8f93\u5165\u79d1\u5ba4',
-  enterPosition: '\u8bf7\u8f93\u5165\u804c\u4f4d',
-  enterEmployeeNumber: '\u8bf7\u8f93\u5165\u5de5\u53f7',
-  enterPassword: '\u8bf7\u8f93\u5165\u5bc6\u7801',
-  keepPassword: '\u4e0d\u4fee\u6539\u53ef\u7559\u7a7a',
-  selectRole: '\u8bf7\u9009\u62e9\u89d2\u8272',
-  enabled: '\u542f\u7528',
-  disabled: '\u7981\u7528',
-  enable: '\u542f\u7528',
-  disable: '\u7981\u7528',
-  edit: '\u7f16\u8f91',
-  delete: '\u5220\u9664',
-  cancel: '\u53d6\u6d88',
-  save: '\u4fdd\u5b58',
-  password: '\u5bc6\u7801',
-  initialPassword: '\u521d\u59cb\u5bc6\u7801',
-  editUser: '\u7f16\u8f91\u7528\u6237',
-  addUser: '\u65b0\u589e\u7528\u6237'
+  username: '用户名', name: '姓名', department: '科室', position: '职位', role: '角色',
+  status: '状态', actions: '操作', employeeNumber: '工号',
+  enterUsername: '请输入用户名', enterName: '请输入姓名', enterDepartment: '请输入科室',
+  enterPosition: '请输入职位', enterEmployeeNumber: '请输入工号', enterPassword: '请输入密码',
+  keepPassword: '不修改可留空', selectRole: '请选择角色',
+  enabled: '启用', disabled: '禁用', enable: '启用', disable: '禁用',
+  edit: '编辑', delete: '删除', cancel: '取消', save: '保存',
+  password: '密码', initialPassword: '初始密码', editUser: '编辑用户', addUser: '新增用户'
 }
 
 const isEditing = computed(() => Boolean(userForm.id))
 const dialogTitle = computed(() => (isEditing.value ? t.editUser : t.addUser))
 
 const filteredUsers = computed(() =>
-  users.value.filter((user) => {
-    const usernameMatched = !searchForm.username || user.username?.includes(searchForm.username)
-    const nameMatched = !searchForm.name || user.name?.includes(searchForm.name)
-    const departmentMatched =
-      !searchForm.department || user.department?.includes(searchForm.department)
-
-    return usernameMatched && nameMatched && departmentMatched
+  users.value.filter(user => {
+    const u = !searchForm.username || user.username?.includes(searchForm.username)
+    const n = !searchForm.name || user.name?.includes(searchForm.name)
+    const d = !searchForm.department || user.department?.includes(searchForm.department)
+    return u && n && d
   })
 )
 
-const getErrorMessage = (error: any, fallback: string) =>
-  error?.response?.data?.message || error?.message || fallback
+const getErrorMessage = (error: any, fallback: string) => error?.response?.data?.message || error?.message || fallback
 
-const resetUserForm = () => {
-  Object.assign(userForm, createEmptyUserForm())
-  delete (userForm as any).createdAt
-}
-
-const openCreateDialog = () => {
-  resetUserForm()
-  dialogVisible.value = true
-}
+const resetUserForm = () => { Object.assign(userForm, createEmptyUserForm()); delete (userForm as any).createdAt }
+const openCreateDialog = () => { resetUserForm(); dialogVisible.value = true }
 
 const loadUsers = async () => {
   try {
@@ -220,7 +176,7 @@ const loadUsers = async () => {
     users.value = Array.isArray(response) ? response : []
   } catch (error) {
     console.error('Failed to load users:', error)
-    ElMessage.error(getErrorMessage(error, '\u52a0\u8f7d\u7528\u6237\u5217\u8868\u5931\u8d25'))
+    ElMessage.error(getErrorMessage(error, '加载用户列表失败'))
   }
 }
 
@@ -228,147 +184,143 @@ const loadRoles = async () => {
   try {
     const response = await service.get('/roles/list')
     if (Array.isArray(response)) {
-      const roles = response
-        .map((item: RoleItem) => item.roleName)
-        .filter((roleName: string) => Boolean(roleName))
-      if (roles.length > 0) {
-        roleOptions.value = Array.from(new Set(roles))
-      }
+      const roles = response.map((item: RoleItem) => item.roleName).filter((r: string) => Boolean(r))
+      if (roles.length > 0) roleOptions.value = Array.from(new Set(roles))
     }
   } catch (error) {
     console.error('Failed to load roles:', error)
   }
 }
 
-const editUser = (user: User) => {
-  resetUserForm()
-  Object.assign(userForm, {
-    ...user,
-    password: ''
-  })
-  dialogVisible.value = true
-}
+const editUser = (user: User) => { resetUserForm(); Object.assign(userForm, { ...user, password: '' }); dialogVisible.value = true }
 
 const saveUser = async () => {
-  if (!userForm.username || !userForm.name) {
-    ElMessage.warning('\u8bf7\u5148\u5b8c\u5584\u7528\u6237\u540d\u548c\u59d3\u540d')
-    return
-  }
-
-  if (!isEditing.value && !userForm.password) {
-    ElMessage.warning('\u65b0\u589e\u7528\u6237\u65f6\u5fc5\u987b\u586b\u5199\u5bc6\u7801')
-    return
-  }
-
+  if (!userForm.username || !userForm.name) { ElMessage.warning('请先完善用户名和姓名'); return }
+  if (!isEditing.value && !userForm.password) { ElMessage.warning('新增用户时必须填写密码'); return }
   try {
     const payload: Record<string, any> = { ...userForm }
-    if (!isEditing.value) {
-      delete payload.createdAt
-      delete payload.id
-    }
-    if (isEditing.value && !payload.password) {
-      delete payload.password
-    }
-
-    const response = isEditing.value
-      ? await service.put('/users/update', payload)
-      : await service.post('/users/register', payload)
-
+    if (!isEditing.value) { delete payload.createdAt; delete payload.id }
+    if (isEditing.value && !payload.password) delete payload.password
+    const response = isEditing.value ? await service.put('/users/update', payload) : await service.post('/users/register', payload)
     if (response.success) {
-      ElMessage.success(
-        isEditing.value ? '\u7528\u6237\u66f4\u65b0\u6210\u529f' : '\u7528\u6237\u65b0\u589e\u6210\u529f'
-      )
+      ElMessage.success(isEditing.value ? '用户更新成功' : '用户新增成功')
       dialogVisible.value = false
       await loadUsers()
       return
     }
-
-    ElMessage.error(response.message || '\u4fdd\u5b58\u7528\u6237\u5931\u8d25')
+    ElMessage.error(response.message || '保存用户失败')
   } catch (error) {
     console.error('Failed to save user:', error)
-    ElMessage.error(getErrorMessage(error, '\u4fdd\u5b58\u7528\u6237\u5931\u8d25'))
+    ElMessage.error(getErrorMessage(error, '保存用户失败'))
   }
 }
 
 const deleteUser = async (user: User) => {
   try {
-    await ElMessageBox.confirm(`\u786e\u5b9a\u8981\u5220\u9664\u7528\u6237 ${user.username} \u5417\uff1f`, '\u63d0\u793a', {
-      type: 'warning',
-      confirmButtonText: '\u786e\u5b9a',
-      cancelButtonText: '\u53d6\u6d88'
-    })
-
+    await ElMessageBox.confirm(`确定要删除用户 ${user.username} 吗？`, '提示', { type: 'warning', confirmButtonText: '确定', cancelButtonText: '取消' })
     const response = await service.delete(`/users/${user.id}`)
-    if (response.success) {
-      ElMessage.success(response.message || '\u5220\u9664\u6210\u529f')
-      await loadUsers()
-      return
-    }
-
-    ElMessage.error(response.message || '\u5220\u9664\u5931\u8d25')
+    if (response.success) { ElMessage.success(response.message || '删除成功'); await loadUsers(); return }
+    ElMessage.error(response.message || '删除失败')
   } catch (error: any) {
-    if (error === 'cancel' || error === 'close' || error?.action === 'cancel') {
-      return
-    }
+    if (error === 'cancel' || error === 'close' || error?.action === 'cancel') return
     console.error('Failed to delete user:', error)
-    ElMessage.error(getErrorMessage(error, '\u5220\u9664\u7528\u6237\u5931\u8d25'))
+    ElMessage.error(getErrorMessage(error, '删除用户失败'))
   }
 }
 
 const toggleUserStatus = async (user: User) => {
   const nextStatus = user.status === 0 ? 1 : 0
-  const actionText = nextStatus === 0 ? '\u7981\u7528' : '\u542f\u7528'
-
+  const actionText = nextStatus === 0 ? '禁用' : '启用'
   try {
-    await ElMessageBox.confirm(`\u786e\u5b9a\u8981${actionText}\u7528\u6237 ${user.username} \u5417\uff1f`, '\u63d0\u793a', {
-      type: 'warning',
-      confirmButtonText: actionText,
-      cancelButtonText: '\u53d6\u6d88'
-    })
-
+    await ElMessageBox.confirm(`确定要${actionText}用户 ${user.username} 吗？`, '提示', { type: 'warning', confirmButtonText: actionText, cancelButtonText: '取消' })
     const response = await service.put(`/users/${user.id}/status`, { status: nextStatus })
-    if (response.success) {
-      ElMessage.success(response.message || `${actionText}\u6210\u529f`)
-      await loadUsers()
-      return
-    }
-
-    ElMessage.error(response.message || `${actionText}\u5931\u8d25`)
+    if (response.success) { ElMessage.success(response.message || `${actionText}成功`); await loadUsers(); return }
+    ElMessage.error(response.message || `${actionText}失败`)
   } catch (error: any) {
-    if (error === 'cancel' || error === 'close' || error?.action === 'cancel') {
-      return
-    }
+    if (error === 'cancel' || error === 'close' || error?.action === 'cancel') return
     console.error('Failed to update user status:', error)
-    ElMessage.error(getErrorMessage(error, '\u66f4\u65b0\u7528\u6237\u72b6\u6001\u5931\u8d25'))
+    ElMessage.error(getErrorMessage(error, '更新用户状态失败'))
   }
 }
 
-onMounted(() => {
-  loadUsers()
-  loadRoles()
-})
+onMounted(() => { loadUsers(); loadRoles() })
 </script>
 
 <style scoped>
 .users-container {
-  padding: 20px;
+  padding: var(--space-lg);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  margin: 4px 0 0;
 }
 
 .users-card {
-  margin-bottom: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-bottom: var(--space-lg);
 }
 
 .search-form {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.dialog-footer {
-  text-align: right;
+.search-form .el-form-item {
+  margin-bottom: 12px;
+}
+
+.data-table {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.user-form {
+  padding: 8px 0;
+}
+
+@media (max-width: 768px) {
+  .users-container {
+    padding: var(--space-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-form .el-form-item {
+    margin-right: 0;
+  }
 }
 </style>

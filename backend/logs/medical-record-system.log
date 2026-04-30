@@ -31093,3 +31093,139 @@ java.sql.SQLException: Field 'id' doesn't have a default value
 2026-04-30 11:36:52 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-04-30 11:36:52 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
 2026-04-30 11:36:52 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-04-30 11:37:27 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 22.0.1 with PID 18752 (D:\cusproject\syst\medical-record-system\backend\target\classes started by A in D:\cusproject\syst\medical-record-system\backend)
+2026-04-30 11:37:27 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-04-30 11:37:27 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-30 11:37:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-30 11:37:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-04-30 11:37:28 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-30 11:37:28 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-30 11:37:28 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-04-30 11:37:28 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-04-30 11:37:28 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1182 ms
+2026-04-30 11:37:28 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-30 11:37:28 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-04-30 11:37:28 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-30 11:37:29 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-30 11:37:29 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-04-30 11:37:29 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-30 11:37:29 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-30 11:37:29 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-30 11:37:30 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-30 11:37:30 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ebe1a04f-6309-4b42-a52f-e36c6cdc971e
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-30 11:37:30 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-30 11:37:30 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@13ae87a6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@774189d0, org.springframework.security.web.context.SecurityContextHolderFilter@7ec8db0c, org.springframework.security.web.header.HeaderWriterFilter@486bcaa, org.springframework.web.filter.CorsFilter@22c4354d, org.springframework.security.web.authentication.logout.LogoutFilter@73eae5f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@22ee1ad7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5dd2ea0a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2681185e, org.springframework.security.web.access.ExceptionTranslationFilter@78b44fcb, org.springframework.security.web.access.intercept.AuthorizationFilter@7304ca87]
+2026-04-30 11:37:30 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-30 11:37:30 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-04-30 11:37:30 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-30 11:37:30 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.539 seconds (process running for 3.834)
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.AuditLogTableInitializer - 审计日志表 audit_logs 已存在或创建失败（可忽略）: StatementCallback; bad SQL grammar [CREATE TABLE audit_logs (  id BIGINT AUTO_INCREMENT PRIMARY KEY,  username VARCHAR(50),  operation VARCHAR(100),  module VARCHAR(50),  ip VARCHAR(50),  user_agent VARCHAR(500),  details VARCHAR(500),  status INT DEFAULT 1,  created_time DATETIME DEFAULT NOW(),  deleted INT DEFAULT 0)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 借阅申请表 borrowapplications 已存在，尝试添加缺失列: StatementCallback; bad SQL grammar [CREATE TABLE borrowapplications (  id INT AUTO_INCREMENT PRIMARY KEY,  recordIds VARCHAR(255),  reason VARCHAR(500),  borrowType VARCHAR(20),  expectedReturnDate VARCHAR(20),  status VARCHAR(20) DEFAULT 'pending',  submitTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  userId INT,  userName VARCHAR(100),  approver VARCHAR(100),  approveTime DATETIME,  rejectionReason VARCHAR(500),  returnTime DATETIME,  createdTime DATETIME,  updatedTime DATETIME,  deleted INT DEFAULT 0,  deptApprover VARCHAR(50),  deptApproveTime DATETIME,  deptRejectionReason VARCHAR(500),  userDepartment VARCHAR(50))]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - id 列已设置为 AUTO_INCREMENT
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApprover 已存在或添加失败（可忽略）: StatementCallback; bad SQL grammar [ALTER TABLE borrowapplications ADD deptApprover VARCHAR(50)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptApproveTime 已存在或添加失败（可忽略）: StatementCallback; bad SQL grammar [ALTER TABLE borrowapplications ADD deptApproveTime DATETIME]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 deptRejectionReason 已存在或添加失败（可忽略）: StatementCallback; bad SQL grammar [ALTER TABLE borrowapplications ADD deptRejectionReason VARCHAR(500)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.c.BorrowApplicationTableInitializer - 列 userDepartment 已存在或添加失败（可忽略）: StatementCallback; bad SQL grammar [ALTER TABLE borrowapplications ADD userDepartment VARCHAR(50)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色表 sys_role 已存在: StatementCallback; bad SQL grammar [CREATE TABLE sys_role (  id BIGINT AUTO_INCREMENT PRIMARY KEY,  role_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT NOW(),  updated_time DATETIME,  deleted INT DEFAULT 0)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 权限表 sys_permission 已存在: StatementCallback; bad SQL grammar [CREATE TABLE sys_permission (  id BIGINT AUTO_INCREMENT PRIMARY KEY,  perm_code VARCHAR(50) NOT NULL,  perm_name VARCHAR(50) NOT NULL,  description VARCHAR(200),  status INT DEFAULT 1,  created_time DATETIME DEFAULT NOW(),  updated_time DATETIME,  deleted INT DEFAULT 0)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色权限关联表 sys_role_permission 已存在: StatementCallback; bad SQL grammar [CREATE TABLE sys_role_permission (  role_id BIGINT NOT NULL,  permission_id BIGINT NOT NULL)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 菜单表 sys_menu 已存在: StatementCallback; bad SQL grammar [CREATE TABLE sys_menu (  id BIGINT AUTO_INCREMENT PRIMARY KEY,  parent_id BIGINT,  name VARCHAR(50) NOT NULL,  path VARCHAR(200),  component VARCHAR(200),  icon VARCHAR(50),  sort INT,  status INT DEFAULT 1,  created_time DATETIME DEFAULT NOW(),  updated_time DATETIME,  deleted INT DEFAULT 0)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 角色菜单关联表 sys_role_menu 已存在: StatementCallback; bad SQL grammar [CREATE TABLE sys_role_menu (  role_id BIGINT NOT NULL,  menu_id BIGINT NOT NULL)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 admin 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 主任 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 dept_director 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 doctor 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 nurse 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.SysTablesInitializer - 默认角色 user 创建失败（可能已存在）: PreparedStatementCallback; uncategorized SQLException for SQL [INSERT INTO sys_role (role_name, description) VALUES (?, ?)]; SQL state [HY000]; error code [1364]; Field 'id' doesn't have a default value
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.UserTableInitializer - 用户表 Users 已存在，检查约束: StatementCallback; bad SQL grammar [CREATE TABLE Users (  id BIGINT AUTO_INCREMENT PRIMARY KEY,  employeeNumber VARCHAR(50),  username VARCHAR(50) NOT NULL UNIQUE,  password VARCHAR(100) NOT NULL,  name VARCHAR(50) NOT NULL,  role VARCHAR(50) NOT NULL,  department VARCHAR(50),  phone VARCHAR(20),  email VARCHAR(100),  address VARCHAR(200),  position VARCHAR(50),  status INT DEFAULT 1,  createdAt DATETIME DEFAULT NOW(),  deleted INT DEFAULT 0)]
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.UserTableInitializer - Users 表角色列无 CHECK 约束，无需处理
+2026-04-30 11:37:30 [main] INFO  c.m.r.s.config.UserTableInitializer - deleted 列已存在或添加失败（可忽略）: StatementCallback; bad SQL grammar [ALTER TABLE Users ADD deleted INT DEFAULT 0]
+2026-04-30 11:38:04 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-30 11:38:04 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-30 11:38:04 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-30 11:38:17 [http-nio-8080-exec-10] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGOUT, username=admin, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 11:38:24 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP0271, userFound=true
+2026-04-30 11:38:24 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-30 11:38:24 [http-nio-8080-exec-1] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGIN, username=EMP0271, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 11:38:52 [http-nio-8080-exec-5] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Borrow, operation=BORROW_APPLY, username=EMP0271, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 11:38:58 [http-nio-8080-exec-10] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGOUT, username=EMP0271, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 14:36:46 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-30 14:36:46 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-30 14:36:46 [http-nio-8080-exec-1] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGIN, username=admin, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 14:55:51 [http-nio-8080-exec-2] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGOUT, username=admin, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 14:56:12 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=EMP0271, userFound=true
+2026-04-30 14:56:12 [http-nio-8080-exec-1] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-30 14:56:12 [http-nio-8080-exec-1] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGIN, username=EMP0271, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 14:56:21 [http-nio-8080-exec-8] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGOUT, username=EMP0271, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value
+2026-04-30 14:56:34 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录查询: username=admin, userFound=true
+2026-04-30 14:56:34 [http-nio-8080-exec-10] DEBUG c.m.r.s.service.impl.UserServiceImpl - 登录校验: status=1, passwordMatch=true
+2026-04-30 14:56:34 [http-nio-8080-exec-10] ERROR c.m.r.s.config.OperationLogAspect - 审计日志记录失败: module=Auth, operation=LOGIN, username=admin, error=
+### Error updating database.  Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+### The error may exist in com/medical/record/system/mapper/AuditLogMapper.java (best guess)
+### The error may involve com.medical.record.system.mapper.AuditLogMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO audit_logs  ( username, operation, module, ip, user_agent, details, status, created_time, deleted )  VALUES (  ?, ?, ?, ?, ?, ?, ?, ?, ?  )
+### Cause: java.sql.SQLException: Field 'id' doesn't have a default value
+; Field 'id' doesn't have a default value

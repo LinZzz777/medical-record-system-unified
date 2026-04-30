@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-// App.vue 根组件
+// App.vue root component
 </script>
 
 <style>
@@ -16,13 +16,15 @@
 }
 
 html, body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #f5f7fa;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
   height: 100%;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
@@ -31,27 +33,26 @@ html, body {
   overflow: hidden;
 }
 
-/* 全局滚动条样式 */
+/* Global Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
 
-/* 响应式字体大小 */
+/* Responsive Font Sizes */
 @media (max-width: 768px) {
   html {
     font-size: 13px;
@@ -64,10 +65,10 @@ html, body {
   }
 }
 
-/* 全局动画 */
+/* Global Animations */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-normal);
 }
 
 .fade-enter-from,
@@ -75,54 +76,107 @@ html, body {
   opacity: 0;
 }
 
-/* 全局按钮样式优化 */
+/* Element Plus Global Overrides */
 .el-button {
-  border-radius: 4px;
-  font-weight: 500;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
 }
 
-/* 全局卡片样式优化 */
+.el-button--primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+}
+
 .el-card {
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
-/* 全局表格样式优化 */
+.el-card__header {
+  border-bottom: 1px solid var(--color-divider);
+  padding: var(--space-md) var(--space-lg);
+}
+
 .el-table {
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .el-table th {
-  background-color: #fafafa;
-  font-weight: 500;
+  background-color: var(--color-bg-secondary) !important;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
 }
 
-/* 全局表单样式优化 */
+.el-table td {
+  color: var(--color-text-primary);
+}
+
+.el-dialog {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.el-dialog__header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-divider);
+  margin-right: 0;
+}
+
+.el-dialog__body {
+  padding: var(--space-lg);
+}
+
+.el-dialog__footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-divider);
+}
+
 .el-form-item__label {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
 }
 
-.el-input__inner {
-  border-radius: 4px;
+.el-input__wrapper {
+  border-radius: var(--radius-md);
 }
 
-/* 响应式布局辅助类 */
+.el-tag {
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+}
+
+.el-tag--dark {
+  border: none;
+}
+
+/* Responsive Layout Helper */
 .container {
   width: 100%;
-  padding: 0 20px;
+  padding: 0 var(--space-lg);
   margin: 0 auto;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 15px;
+    padding: 0 var(--space-md);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 10px;
+    padding: 0 var(--space-sm);
   }
 }
 </style>

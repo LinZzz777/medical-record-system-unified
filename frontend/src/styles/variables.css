@@ -1,0 +1,103 @@
+:root {
+  /* Primary Colors */
+  --color-primary: #1a73e8;
+  --color-primary-light: #4a90e2;
+  --color-primary-lighter: #e8f0fe;
+  --color-primary-dark: #1557b0;
+  --color-primary-gradient: linear-gradient(135deg, #1a73e8 0%, #4a90e2 100%);
+
+  /* Semantic Colors */
+  --color-success: #34a853;
+  --color-success-light: #e6f4ea;
+  --color-warning: #fbbc04;
+  --color-warning-light: #fef7e0;
+  --color-danger: #ea4335;
+  --color-danger-light: #fce8e6;
+  --color-info: #5f6368;
+  --color-info-light: #f1f3f4;
+
+  /* Neutral Colors */
+  --color-text-primary: #202124;
+  --color-text-secondary: #5f6368;
+  --color-text-tertiary: #9aa0a6;
+  --color-text-inverse: #ffffff;
+
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-bg-tertiary: #f1f3f4;
+  --color-bg-page: #f0f2f5;
+
+  --color-border: #e0e0e0;
+  --color-border-light: #f0f0f0;
+  --color-divider: #e8eaed;
+
+  /* Sidebar */
+  --sidebar-bg: #1a1d23;
+  --sidebar-bg-light: #2d3139;
+  --sidebar-text: #9aa0a6;
+  --sidebar-text-active: #ffffff;
+  --sidebar-accent: #1a73e8;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 72px;
+
+  /* Header */
+  --header-height: 64px;
+  --header-bg: #ffffff;
+  --header-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}

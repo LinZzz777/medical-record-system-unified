@@ -1,133 +1,223 @@
 <template>
   <div class="dashboard-container">
-    <el-card class="dashboard-card">
-      <template #header>
-        <div class="card-header">
-          <span>&#25968;&#25454;&#21487;&#35270;&#21270;&#30475;&#26495;</span>
-          <el-tag type="success">&#23454;&#26102;&#26356;&#26032;</el-tag>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">数据可视化看板</h1>
+        <p class="page-subtitle">实时监控病案借阅数据，掌握业务动态</p>
+      </div>
+      <el-tag type="success" effect="dark" class="refresh-tag">实时更新</el-tag>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card stat-card--total" @click="handleStatCardClick('totalRecords')">
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-      </template>
-
-      <div class="stats-grid">
-        <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('totalRecords')">
-          <div class="stat-content">
-            <div class="stat-icon total-icon">&#128211;</div>
-            <div class="stat-title">&#24635;&#30149;&#26696;&#25968;</div>
-            <div class="stat-value">{{ stats.totalRecords || 0 }}</div>
-          </div>
-        </el-card>
-
-        <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('borrowedCount')">
-          <div class="stat-content">
-            <div class="stat-icon borrowed-icon">&#128214;</div>
-            <div class="stat-title">&#24050;&#20511;&#20986;</div>
-            <div class="stat-value">{{ stats.borrowedCount || 0 }}</div>
-          </div>
-        </el-card>
-
-        <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('pendingCount')">
-          <div class="stat-content">
-            <div class="stat-icon pending-icon">&#9203;</div>
-            <div class="stat-title">&#24453;&#23457;&#25209;</div>
-            <div class="stat-value">{{ stats.pendingCount || 0 }}</div>
-          </div>
-        </el-card>
-
-        <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('overdueCount')">
-          <div class="stat-content">
-            <div class="stat-icon overdue-icon">&#9888;</div>
-            <div class="stat-title">&#24050;&#36807;&#26399;</div>
-            <div class="stat-value">{{ stats.overdueCount || 0 }}</div>
-          </div>
-        </el-card>
+        <div class="stat-card-content">
+          <span class="stat-card-label">总病案数</span>
+          <span class="stat-card-value">{{ stats.totalRecords || 0 }}</span>
+        </div>
+        <div class="stat-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
       </div>
 
-      <div class="charts-grid">
-        <el-card class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#36817;30&#26085;&#20511;&#38405;&#36235;&#21183;</span>
-              <el-tooltip content="&#28857;&#20987;&#26576;&#20010;&#26085;&#26399;&#21518;&#65292;&#36339;&#36716;&#21040;&#24403;&#22825;&#30340;&#20511;&#38405;&#30003;&#35831;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="borrowTrendChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#20511;&#38405;&#31867;&#22411;&#20998;&#24067;</span>
-              <el-tooltip content="&#28857;&#20987;&#38498;&#20869;&#20511;&#38405;&#25110;&#38498;&#22806;&#20511;&#38405;&#21518;&#65292;&#36339;&#36716;&#21040;&#23545;&#24212;&#30340;&#20511;&#38405;&#21382;&#21490;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="borrowTypeChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card v-if="isAdmin" class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#31185;&#23460;&#20511;&#38405;&#27963;&#36291;&#24230;</span>
-              <el-tooltip content="&#28857;&#20987;&#26576;&#20010;&#31185;&#23460;&#21518;&#65292;&#36339;&#36716;&#21040;&#35813;&#31185;&#23460;&#30340;&#34987;&#20511;&#20986;&#30149;&#26696;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="departmentChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#29366;&#24577;&#20998;&#24067;</span>
-              <el-tooltip content="&#28857;&#20987;&#26576;&#20010;&#29366;&#24577;&#25159;&#21306;&#21518;&#65292;&#36339;&#36716;&#21040;&#23545;&#24212;&#30340;&#30149;&#26696;&#25968;&#25454;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="statusChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card v-if="isAdmin" class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#36817;30&#26085;&#36807;&#26399;&#36235;&#21183;</span>
-              <el-tooltip content="&#28857;&#20987;&#26576;&#20010;&#26085;&#26399;&#21518;&#65292;&#26597;&#30475;&#35813;&#26085;&#24212;&#24402;&#36824;&#19988;&#24050;&#36807;&#26399;&#30340;&#30003;&#35831;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="overdueTrendChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card v-if="isAdmin" class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#23457;&#25209;&#25928;&#29575;&#20998;&#24067;</span>
-              <el-tooltip content="&#26174;&#31034;&#20174;&#30003;&#35831;&#25552;&#20132;&#21040;&#22788;&#29702;&#23436;&#25104;&#30340;&#32791;&#26102;&#20998;&#24067;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="approvalEfficiencyChart" class="chart-container"></div>
-        </el-card>
-
-        <el-card v-if="isAdmin" class="chart-card">
-          <template #header>
-            <div class="chart-header">
-              <span>&#24402;&#36824;&#21450;&#26102;&#29575;</span>
-              <el-tooltip content="&#26174;&#31034;&#25353;&#26102;&#24402;&#36824;&#12289;&#36807;&#26399;&#24402;&#36824;&#21644;&#26410;&#24402;&#36824;&#30340;&#20998;&#24067;" placement="top">
-                <el-icon><QuestionFilled /></el-icon>
-              </el-tooltip>
-            </div>
-          </template>
-          <div ref="returnTimelinessChart" class="chart-container"></div>
-        </el-card>
+      <div class="stat-card stat-card--borrowed" @click="handleStatCardClick('borrowedCount')">
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8V12L15 15M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-card-label">已借出</span>
+          <span class="stat-card-value">{{ stats.borrowedCount || 0 }}</span>
+        </div>
+        <div class="stat-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
       </div>
-    </el-card>
+
+      <div class="stat-card stat-card--pending" @click="handleStatCardClick('pendingCount')">
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-card-label">待审批</span>
+          <span class="stat-card-value">{{ stats.pendingCount || 0 }}</span>
+        </div>
+        <div class="stat-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card--overdue" @click="handleStatCardClick('overdueCount')">
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-card-content">
+          <span class="stat-card-label">已过期</span>
+          <span class="stat-card-value">{{ stats.overdueCount || 0 }}</span>
+        </div>
+        <div class="stat-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <el-card class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--blue">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3V21H21M7 16L12 11L16 15L21 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>近30日借阅趋势</span>
+            </div>
+            <el-tooltip content="点击某个日期后，跳转到当天的借阅申请" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="borrowTrendChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--green">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M12 2C14.5 2 16.5 6.47715 16.5 12C16.5 17.5228 14.5 22 12 22C9.5 22 7.5 17.5228 7.5 12C7.5 6.47715 9.5 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M2 12H22" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <span>借阅类型分布</span>
+            </div>
+            <el-tooltip content="点击院内借阅或院外借阅后，跳转到对应的借阅历史" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="borrowTypeChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card v-if="isAdmin" class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--purple">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3V21H21M7 14L11 10L15 14L19 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>科室借阅活跃度</span>
+            </div>
+            <el-tooltip content="点击某个科室后，跳转到该科室的被借出病案" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="departmentChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--orange">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>状态分布</span>
+            </div>
+            <el-tooltip content="点击某个状态扇区后，跳转到对应的病案数据" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="statusChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card v-if="isAdmin" class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--red">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>近30日逾期趋势</span>
+            </div>
+            <el-tooltip content="点击某个日期后，查看该日应归还且已逾期的申请" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="overdueTrendChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card v-if="isAdmin" class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--teal">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>审批效率分布</span>
+            </div>
+            <el-tooltip content="显示从申请提交到处理完成的耗时分布" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="approvalEfficiencyChart" class="chart-container"></div>
+      </el-card>
+
+      <el-card v-if="isAdmin" class="chart-card" :body-style="{ padding: '20px' }">
+        <template #header>
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <div class="chart-header-icon chart-header-icon--cyan">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span>归还及时率</span>
+            </div>
+            <el-tooltip content="显示按时间归还、逾期归还和未归还的分布" placement="top">
+              <el-icon><QuestionFilled /></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
+        <div ref="returnTimelinessChart" class="chart-container"></div>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -211,16 +301,11 @@ const formatDateString = (date: Date) => {
 const parseTrendLabelToDate = (label: string) => {
   const matched = label.match(/(\d{1,2})\D+(\d{1,2})/)
   if (!matched) return ''
-
   const currentYear = new Date().getFullYear()
   const month = Number(matched[1])
   const day = Number(matched[2])
   const parsedDate = new Date(currentYear, month - 1, day)
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return ''
-  }
-
+  if (Number.isNaN(parsedDate.getTime())) return ''
   return formatDateString(parsedDate)
 }
 
@@ -237,32 +322,17 @@ const handleStatCardClick = (type: string) => {
     router.push('/borrow')
     return
   }
-
   if (type === 'borrowedCount') {
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ status: 'approved' })
-    })
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ status: 'approved' }) })
     return
   }
-
   if (type === 'pendingCount') {
-    if (isDeptDirector.value) {
-      router.push('/review')
-      return
-    }
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ status: 'pending' })
-    })
+    if (isDeptDirector.value) { router.push('/review'); return }
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ status: 'pending' }) })
     return
   }
-
   if (type === 'overdueCount') {
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ status: 'overdue', overdue: '1' })
-    })
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ status: 'overdue', overdue: '1' }) })
   }
 }
 
@@ -270,17 +340,30 @@ const loadStats = async () => {
   try {
     const user = store.state.user
     if (!user?.id || !user.role) return
-
     const [userStats, chartStats] = await Promise.all([
       service.get<DashboardStats>(`/statistics/user-stats?userId=${user.id}&role=${user.role}`),
       service.get<ChartStats>(`/statistics/chart-stats?userId=${user.id}&role=${user.role}`)
     ])
-
     stats.value = userStats
     initCharts(chartStats)
   } catch (error) {
     console.error('Failed to load dashboard stats:', error)
   }
+}
+
+const chartColors = {
+  primary: '#667eea',
+  primaryLight: 'rgba(102, 126, 234, 0.15)',
+  success: '#34a853',
+  successLight: 'rgba(52, 168, 83, 0.15)',
+  danger: '#ea4335',
+  dangerLight: 'rgba(234, 67, 53, 0.15)',
+  warning: '#fbbc04',
+  warningLight: 'rgba(251, 188, 4, 0.15)',
+  purple: '#9c27b0',
+  teal: '#009688',
+  cyan: '#00bcd4',
+  orange: '#ff9800'
 }
 
 const initCharts = (chartStats: ChartStats) => {
@@ -297,298 +380,187 @@ const initCharts = (chartStats: ChartStats) => {
 const initBorrowTrendChart = (data?: SeriesTrendData) => {
   const container = initChartContainer(borrowTrendChart.value)
   if (!container) return
-
   borrowTrendInstance?.dispose()
   borrowTrendInstance = echarts.init(container)
-
   borrowTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [] },
-    yAxis: { type: 'value', name: '\u501f\u9605\u6b21\u6570' },
-    series: [
-      {
-        name: '\u501f\u9605\u91cf',
-        type: 'line',
-        smooth: true,
-        data: data?.borrowData || [],
-        lineStyle: { color: '#409eff', width: 3 },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(64, 158, 255, 0.5)' },
-            { offset: 1, color: 'rgba(64, 158, 255, 0.1)' }
-          ])
-        },
-        itemStyle: { color: '#409eff' }
-      }
-    ]
+    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
+    yAxis: { type: 'value', name: '借阅次数', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    series: [{
+      name: '借阅量',
+      type: 'line',
+      smooth: true,
+      data: data?.borrowData || [],
+      lineStyle: { color: chartColors.primary, width: 3 },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(102, 126, 234, 0.3)' }, { offset: 1, color: 'rgba(102, 126, 234, 0.02)' }]) },
+      itemStyle: { color: chartColors.primary },
+      symbol: 'circle',
+      symbolSize: 6
+    }]
   })
-
   borrowTrendInstance.on('click', (params) => {
     const submitTimeDate = parseTrendLabelToDate(`${params?.name || ''}`)
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ submitTimeDate })
-    })
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ submitTimeDate }) })
   })
 }
 
 const initBorrowTypeChart = (data?: Record<string, number>) => {
   const container = initChartContainer(borrowTypeChart.value)
   if (!container) return
-
   borrowTypeInstance?.dispose()
   borrowTypeInstance = echarts.init(container)
-
   borrowTypeInstance.setOption({
     tooltip: { trigger: 'item', formatter: '{a}<br/>{b}: {c} ({d}%)' },
-    legend: { orient: 'vertical', left: 'left' },
-    series: [
-      {
-        name: '\u501f\u9605\u7c7b\u578b',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 10,
-          borderColor: '#fff',
-          borderWidth: 2
-        },
-        label: { show: false, position: 'center' },
-        emphasis: {
-          label: { show: true, fontSize: 18, fontWeight: 'bold' }
-        },
-        labelLine: { show: false },
-        data: Object.entries(data || {}).map(([name, value]) => ({ name, value }))
-      }
-    ]
+    legend: { orient: 'vertical', left: 'left', textStyle: { color: '#5f6368' } },
+    color: [chartColors.primary, chartColors.success, chartColors.warning, chartColors.purple],
+    series: [{
+      name: '借阅类型',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 3 },
+      label: { show: false, position: 'center' },
+      emphasis: { label: { show: true, fontSize: 18, fontWeight: 'bold' } },
+      labelLine: { show: false },
+      data: Object.entries(data || {}).map(([name, value]) => ({ name, value }))
+    }]
   })
-
   borrowTypeInstance.on('click', (params) => {
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ borrowType: `${params?.name || ''}` })
-    })
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ borrowType: `${params?.name || ''}` }) })
   })
 }
 
 const initDepartmentChart = (data?: Record<string, number>) => {
   const container = initChartContainer(departmentChart.value)
   if (!container) return
-
   departmentInstance?.dispose()
   departmentInstance = echarts.init(container)
-
   departmentInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'value', name: '\u501f\u9605\u6b21\u6570' },
-    yAxis: { type: 'category', data: Object.keys(data || {}) },
-    series: [
-      {
-        name: '\u501f\u9605\u6b21\u6570',
-        type: 'bar',
-        data: Object.values(data || {}),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-            { offset: 0, color: '#83bff6' },
-            { offset: 0.5, color: '#188df0' },
-            { offset: 1, color: '#188df0' }
-          ])
-        },
-        label: { show: true, position: 'right', formatter: '{c}' }
-      }
-    ]
+    xAxis: { type: 'value', name: '借阅次数', axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
+    yAxis: { type: 'category', data: Object.keys(data || {}), axisLabel: { color: '#5f6368' } },
+    series: [{
+      name: '借阅次数',
+      type: 'bar',
+      data: Object.values(data || {}),
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#667eea' }, { offset: 1, color: '#764ba2' }]), borderRadius: [0, 4, 4, 0] },
+      label: { show: true, position: 'right', formatter: '{c}', color: '#5f6368' }
+    }]
   })
-
   departmentInstance.on('click', (params) => {
-    router.push({
-      path: '/borrow',
-      query: {
-        department: `${params?.name || ''}`,
-        status: '\u5df2\u501f\u51fa'
-      }
-    })
+    router.push({ path: '/borrow', query: { department: `${params?.name || ''}`, status: '已借出' } })
   })
 }
 
 const initStatusChart = (data?: Record<string, number>) => {
   const container = initChartContainer(statusChart.value)
   if (!container) return
-
   statusInstance?.dispose()
   statusInstance = echarts.init(container)
-
   statusInstance.setOption({
     tooltip: { trigger: 'item', formatter: '{a}<br/>{b}: {c}' },
-    legend: { orient: 'horizontal', bottom: 'bottom' },
-    series: [
-      {
-        name: '\u72b6\u6001\u5206\u5e03',
-        type: 'pie',
-        radius: '60%',
-        center: ['50%', '45%'],
-        data: Object.entries(data || {}).map(([name, value]) => ({ name, value })),
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+    legend: { orient: 'horizontal', bottom: 'bottom', textStyle: { color: '#5f6368' } },
+    color: [chartColors.success, chartColors.primary, chartColors.warning, chartColors.danger, chartColors.purple, chartColors.orange],
+    series: [{
+      name: '状态分布',
+      type: 'pie',
+      radius: '60%',
+      center: ['50%', '45%'],
+      data: Object.entries(data || {}).map(([name, value]) => ({ name, value })),
+      emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.2)' } },
+      itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 }
+    }]
   })
-
   statusInstance.on('click', (params) => {
-    router.push({
-      path: '/borrow',
-      query: { status: `${params?.name || ''}` }
-    })
+    router.push({ path: '/borrow', query: { status: `${params?.name || ''}` } })
   })
 }
 
 const initOverdueTrendChart = (data?: SeriesTrendData) => {
   const container = initChartContainer(overdueTrendChart.value)
   if (!container) return
-
   overdueTrendInstance?.dispose()
   overdueTrendInstance = echarts.init(container)
-
   overdueTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [] },
-    yAxis: { type: 'value', name: '\u903e\u671f\u6570\u91cf' },
-    series: [
-      {
-        name: '\u903e\u671f\u6570\u91cf',
-        type: 'line',
-        smooth: true,
-        data: data?.overdueData || [],
-        lineStyle: { color: '#f56c6c', width: 3 },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(245, 108, 108, 0.4)' },
-            { offset: 1, color: 'rgba(245, 108, 108, 0.08)' }
-          ])
-        },
-        itemStyle: { color: '#f56c6c' }
-      }
-    ]
+    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [], axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
+    yAxis: { type: 'value', name: '逾期数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    series: [{
+      name: '逾期数量',
+      type: 'line',
+      smooth: true,
+      data: data?.overdueData || [],
+      lineStyle: { color: chartColors.danger, width: 3 },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(234, 67, 53, 0.25)' }, { offset: 1, color: 'rgba(234, 67, 53, 0.02)' }]) },
+      itemStyle: { color: chartColors.danger },
+      symbol: 'circle',
+      symbolSize: 6
+    }]
   })
-
   overdueTrendInstance.on('click', (params) => {
     const expectedReturnDate = parseTrendLabelToDate(`${params?.name || ''}`)
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({
-        status: 'overdue',
-        overdue: '1',
-        expectedReturnDate
-      })
-    })
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ status: 'overdue', overdue: '1', expectedReturnDate }) })
   })
 }
 
 const initApprovalEfficiencyChart = (data?: Record<string, number>) => {
   const container = initChartContainer(approvalEfficiencyChart.value)
   if (!container) return
-
   approvalEfficiencyInstance?.dispose()
   approvalEfficiencyInstance = echarts.init(container)
-
   approvalEfficiencyInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', data: Object.keys(data || {}) },
-    yAxis: { type: 'value', name: '\u7533\u8bf7\u6570\u91cf' },
-    series: [
-      {
-        name: '\u5904\u7406\u6570\u91cf',
-        type: 'bar',
-        data: Object.values(data || {}),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#67c23a' },
-            { offset: 1, color: '#95d475' }
-          ])
-        },
-        label: { show: true, position: 'top', formatter: '{c}' }
-      }
-    ]
+    xAxis: { type: 'category', data: Object.keys(data || {}), axisLine: { lineStyle: { color: '#e0e0e0' } }, axisLabel: { color: '#5f6368' } },
+    yAxis: { type: 'value', name: '申请数量', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: '#5f6368' } },
+    series: [{
+      name: '处理数量',
+      type: 'bar',
+      data: Object.values(data || {}),
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: chartColors.success }, { offset: 1, color: '#81c784' }]), borderRadius: [4, 4, 0, 0] },
+      label: { show: true, position: 'top', formatter: '{c}', color: '#5f6368' }
+    }]
   })
-
   approvalEfficiencyInstance.on('click', (params) => {
     const label = `${params?.name || ''}`
     let approvalBucket = ''
-
-    if (label.includes('4') && label.includes('\u5c0f\u65f6') && !label.includes('24')) {
-      approvalBucket = 'lt4h'
-    } else if (label.includes('24')) {
-      approvalBucket = '4to24h'
-    } else if (label.includes('1-3')) {
-      approvalBucket = '1to3d'
-    } else if (label.includes('3') && label.includes('\u4ee5\u4e0a')) {
-      approvalBucket = 'gt3d'
-    }
-
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ approvalBucket })
-    })
+    if (label.includes('4') && label.includes('小时') && !label.includes('24')) approvalBucket = 'lt4h'
+    else if (label.includes('24')) approvalBucket = '4to24h'
+    else if (label.includes('1-3')) approvalBucket = '1to3d'
+    else if (label.includes('3') && label.includes('以上')) approvalBucket = 'gt3d'
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ approvalBucket }) })
   })
 }
 
 const initReturnTimelinessChart = (data?: Record<string, number>) => {
   const container = initChartContainer(returnTimelinessChart.value)
   if (!container) return
-
   returnTimelinessInstance?.dispose()
   returnTimelinessInstance = echarts.init(container)
-
   returnTimelinessInstance.setOption({
     tooltip: { trigger: 'item', formatter: '{a}<br/>{b}: {c} ({d}%)' },
-    legend: { orient: 'horizontal', bottom: 'bottom' },
-    series: [
-      {
-        name: '\u5f52\u8fd8\u53ca\u65f6\u7387',
-        type: 'pie',
-        radius: ['35%', '65%'],
-        center: ['50%', '45%'],
-        data: Object.entries(data || {}).map(([name, value]) => ({ name, value })),
-        itemStyle: {
-          borderRadius: 8,
-          borderColor: '#fff',
-          borderWidth: 2
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.18)'
-          }
-        }
-      }
-    ]
+    legend: { orient: 'horizontal', bottom: 'bottom', textStyle: { color: '#5f6368' } },
+    color: [chartColors.success, chartColors.warning, chartColors.danger],
+    series: [{
+      name: '归还及时率',
+      type: 'pie',
+      radius: ['35%', '65%'],
+      center: ['50%', '45%'],
+      data: Object.entries(data || {}).map(([name, value]) => ({ name, value })),
+      itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 3 },
+      emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.18)' } }
+    }]
   })
-
   returnTimelinessInstance.on('click', (params) => {
     const label = `${params?.name || ''}`
     let returnStatus = ''
-
-    if (label.includes('\u6309\u65f6')) {
-      returnStatus = 'onTime'
-    } else if (label.includes('\u903e\u671f')) {
-      returnStatus = 'overdueReturn'
-    } else if (label.includes('\u672a\u5f52')) {
-      returnStatus = 'unreturned'
-    }
-
-    router.push({
-      path: '/borrow-history',
-      query: buildBorrowHistoryQuery({ returnStatus })
-    })
+    if (label.includes('按时')) returnStatus = 'onTime'
+    else if (label.includes('逾期')) returnStatus = 'overdueReturn'
+    else if (label.includes('未归')) returnStatus = 'unreturned'
+    router.push({ path: '/borrow-history', query: buildBorrowHistoryQuery({ returnStatus }) })
   })
 }
 
@@ -621,88 +593,139 @@ onUnmounted(() => {
 
 <style scoped>
 .dashboard-container {
-  padding: 20px;
+  padding: var(--space-lg);
 }
 
-.dashboard-card {
-  margin-bottom: 20px;
-}
-
-.card-header {
+.page-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
 }
 
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  margin: 4px 0 0;
+}
+
+.refresh-tag {
+  border-radius: var(--radius-full);
+}
+
+/* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin: 20px 0 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .stat-card {
-  transition: all 0.3s ease;
-  border-radius: 8px;
-}
-
-.stat-card-clickable {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-xs);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-.stat-content {
+.stat-card-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: var(--radius-md);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
 }
 
-.stat-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
+.stat-card-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
-.stat-title {
-  font-size: 14px;
-  color: #606266;
-  margin-bottom: 10px;
+.stat-card--total .stat-card-icon {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary);
 }
 
-.stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: #303133;
+.stat-card--borrowed .stat-card-icon {
+  background: var(--color-success-light);
+  color: var(--color-success);
 }
 
-.total-icon {
-  color: #409eff;
+.stat-card--pending .stat-card-icon {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
 }
 
-.borrowed-icon {
-  color: #67c23a;
+.stat-card--overdue .stat-card-icon {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
 }
 
-.pending-icon {
-  color: #e6a23c;
+.stat-card-content {
+  flex: 1;
+  min-width: 0;
 }
 
-.overdue-icon {
-  color: #f56c6c;
+.stat-card-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
 }
 
+.stat-card-value {
+  display: block;
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.1;
+}
+
+.stat-card-arrow {
+  color: var(--color-text-tertiary);
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.stat-card-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.stat-card:hover .stat-card-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Charts Grid */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
 }
 
 .chart-card {
-  min-height: 380px;
+  min-height: 400px;
 }
 
 .chart-header {
@@ -710,20 +733,70 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
+
+.chart-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chart-header-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-header-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chart-header-icon--blue { background: var(--color-primary-lighter); color: var(--color-primary); }
+.chart-header-icon--green { background: var(--color-success-light); color: var(--color-success); }
+.chart-header-icon--purple { background: #f3e5f5; color: #9c27b0; }
+.chart-header-icon--orange { background: #fff3e0; color: #ff9800; }
+.chart-header-icon--red { background: var(--color-danger-light); color: var(--color-danger); }
+.chart-header-icon--teal { background: #e0f2f1; color: #009688; }
+.chart-header-icon--cyan { background: #e0f7fa; color: #00bcd4; }
 
 .chart-container {
   width: 100%;
   height: 320px;
 }
 
+/* Responsive */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 10px;
+    padding: var(--space-md);
   }
 
-  .stats-grid,
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
   .charts-grid {
     grid-template-columns: 1fr;
   }
