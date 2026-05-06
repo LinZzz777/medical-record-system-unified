@@ -7,9 +7,11 @@
       :class="{ 'aside-collapsed': isCollapse }"
     >
       <div class="aside-header">
-        <div class="logo" :class="{ 'logo-collapsed': isCollapse }">
-          <span v-if="!isCollapse" class="logo-text">病案管理系统</span>
-          <span v-else class="logo-icon">📋</span>
+        <div class="logo-container" :class="{ 'logo-container-collapsed': isCollapse }">
+          <transition name="logo-fade" mode="out-in">
+            <span v-if="!isCollapse" key="logo-text" class="logo-text">病案管理系统</span>
+            <span v-else key="logo-icon" class="logo-icon">📋</span>
+          </transition>
         </div>
         <el-button 
           type="text" 
@@ -315,29 +317,65 @@ onUnmounted(() => {
 
 .aside-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   height: 64px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
 }
 
-.logo {
+.aside-collapsed .aside-header {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logo-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  min-width: 0;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-container-collapsed {
+  flex: 0 0 auto;
+}
+
+.aside-collapsed .logo-container {
+  flex: 0 0 auto;
+}
+
+.logo-text {
   color: #007AFF;
   font-size: 16px;
   font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.logo-collapsed {
-  font-size: 24px;
+  white-space: nowrap;
 }
 
 .logo-icon {
   font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-fade-enter-active,
+.logo-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.logo-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .collapse-btn {
@@ -351,10 +389,16 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease-out;
+  flex-shrink: 0;
 }
 
 .collapse-btn:hover {
   background: rgba(0, 122, 255, 0.2);
+}
+
+.aside-collapsed .collapse-btn {
+  position: absolute;
+  right: 8px;
 }
 
 .layout-menu {
@@ -363,17 +407,60 @@ onUnmounted(() => {
   background: transparent !important;
 }
 
-.layout-menu .el-menu-item {
+/* Expanded state: align icons and text properly */
+:deep(.layout-menu .el-menu-item) {
   border-radius: 12px !important;
   margin: 4px 8px;
+  padding: 0 20px !important;
+  height: 48px;
+  line-height: 48px;
+  display: flex !important;
+  align-items: center !important;
   transition: all 0.2s ease-out;
 }
 
-.layout-menu .el-menu-item:hover {
+:deep(.layout-menu .el-menu-item .el-icon) {
+  margin-right: 12px;
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+:deep(.layout-menu .el-menu-item span) {
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Collapsed state: center icons */
+:deep(.aside-collapsed .layout-menu .el-menu-item) {
+  margin: 4px 8px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 48px !important;
+}
+
+:deep(.aside-collapsed .layout-menu .el-menu-item .el-icon) {
+  margin-right: 0 !important;
+  font-size: 20px;
+  width: auto !important;
+  height: auto !important;
+}
+
+:deep(.aside-collapsed .layout-menu .el-menu-item span:not(.el-icon)) {
+  display: none !important;
+}
+
+:deep(.layout-menu .el-menu-item:hover) {
   background: rgba(0, 122, 255, 0.08) !important;
 }
 
-.layout-menu .el-menu-item.is-active {
+:deep(.layout-menu .el-menu-item.is-active) {
   background: rgba(0, 122, 255, 0.15) !important;
   color: #007AFF !important;
 }

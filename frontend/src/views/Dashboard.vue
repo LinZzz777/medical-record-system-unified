@@ -11,32 +11,32 @@
       <div class="stats-grid">
         <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('totalRecords')">
           <div class="stat-content">
-            <div class="stat-icon total-icon">&#128211;</div>
-            <div class="stat-title">&#24635;&#30149;&#26696;&#25968;</div>
+            <el-icon class="stat-icon total-icon" :size="36"><Document /></el-icon>
+            <div class="stat-title">总病案数</div>
             <div class="stat-value">{{ stats.totalRecords || 0 }}</div>
           </div>
         </el-card>
 
         <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('borrowedCount')">
           <div class="stat-content">
-            <div class="stat-icon borrowed-icon">&#128214;</div>
-            <div class="stat-title">&#24050;&#20511;&#20986;</div>
+            <el-icon class="stat-icon borrowed-icon" :size="36"><Upload /></el-icon>
+            <div class="stat-title">已借出</div>
             <div class="stat-value">{{ stats.borrowedCount || 0 }}</div>
           </div>
         </el-card>
 
         <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('pendingCount')">
           <div class="stat-content">
-            <div class="stat-icon pending-icon">&#9203;</div>
-            <div class="stat-title">&#24453;&#23457;&#25209;</div>
+            <el-icon class="stat-icon pending-icon" :size="36"><Clock /></el-icon>
+            <div class="stat-title">待审批</div>
             <div class="stat-value">{{ stats.pendingCount || 0 }}</div>
           </div>
         </el-card>
 
         <el-card shadow="hover" class="stat-card stat-card-clickable" @click="handleStatCardClick('overdueCount')">
           <div class="stat-content">
-            <div class="stat-icon overdue-icon">&#9888;</div>
-            <div class="stat-title">&#24050;&#36807;&#26399;</div>
+            <el-icon class="stat-icon overdue-icon" :size="36"><Warning /></el-icon>
+            <div class="stat-title">已过期</div>
             <div class="stat-value">{{ stats.overdueCount || 0 }}</div>
           </div>
         </el-card>
@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { QuestionFilled } from '@element-plus/icons-vue'
+import { QuestionFilled, Document, Upload, Clock, Warning } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import * as echarts from 'echarts/core'
 import { BarChart, LineChart, PieChart } from 'echarts/charts'
@@ -716,7 +716,6 @@ onUnmounted(() => {
 }
 
 .stat-icon {
-  font-size: 36px;
   margin-bottom: 12px;
   display: inline-flex;
   align-items: center;
@@ -826,7 +825,6 @@ onUnmounted(() => {
   .stat-icon {
     width: 56px;
     height: 56px;
-    font-size: 32px;
   }
 }
 
