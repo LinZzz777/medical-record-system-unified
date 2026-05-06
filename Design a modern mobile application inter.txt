@@ -1,0 +1,232 @@
+Design a modern mobile application interface with the following specifications:
+
+═══════════════════════════════════════════════════════
+🎯 DESIGN STYLE OVERVIEW
+═══════════════════════════════════════════════════════
+
+Create a sleek, contemporary mobile UI featuring a "Glassmorphism meets Sky-inspired" aesthetic. 
+The design should embody a clean, airy, and sophisticated visual language reminiscent of modern 
+iOS design principles, with emphasis on transparency, soft gradients, and natural sky-themed 
+background elements. Overall mood: Fresh, professional, calming, and premium.
+
+═══════════════════════════════════════════════════════
+🎨 COLOR SCHEME
+═══════════════════════════════════════════════════════
+
+PRIMARY COLORS:
+- Main Action Blue: #007AFF or similar vibrant sky blue for primary buttons and CTAs
+- Sky Gradient Base: #4A9FE5 → #87CEEB → #E8F4FD (top to bottom gradient)
+- Deep Sky Accent: #1E90FF for highlights and active states
+
+SECONDARY COLORS:
+- Purple Gradient Accent: #9B59B6 → #3498DB (used in charts, progress indicators)
+- Green Success: #27AE60 for positive metrics and confirmations
+- Multi-color Gradient Strip: #00FF87 → #FFD93D → #FF6B6B → #9B59B6 (for data visualization)
+
+NEUTRAL COLORS:
+- Background: #F5F5F7 or #FAFAFA (light gray, almost white)
+- Card Background: rgba(255, 255, 255, 0.75) with backdrop-filter blur effect
+- Card Border: rgba(255, 255, 255, 0.5) subtle glass border
+- Primary Text: #1D1D1F (near black)
+- Secondary Text: #86868B (medium gray)
+- Tertiary Text: #AEAEB2 (light gray)
+- Shadow: rgba(0, 0, 0, 0.08) soft diffused shadow
+
+═══════════════════════════════════════════════════════
+📐 LAYOUT STRUCTURE
+═══════════════════════════════════════════════════════
+
+CONTAINER:
+- Screen frame: Rounded rectangle corners (28-32px border-radius)
+- Safe area padding: 20px horizontal, 16px vertical minimum
+- Content area: Max width 375-414px (iPhone standard)
+
+CARD COMPONENTS:
+- Card border-radius: 20-24px for main cards, 16px for nested elements
+- Card padding: 16-20px internal spacing
+- Card elevation: Soft shadow (0 8px 32px rgba(0,0,0,0.08))
+- Glass effect: backdrop-filter: blur(20px), background: rgba(255,255,255,0.7)
+
+INFORMATION HIERARCHY:
+1. Primary data (hero metric): 48-72px font, bold weight, dark text
+2. Section titles: 16-18px font, semibold weight
+3. Body text: 14-15px font, regular weight, gray color
+4. Captions/labels: 12-13px font, medium weight, light gray
+5. Micro text: 11px font, for timestamps and metadata
+
+SPACING SYSTEM:
+- Consistent 8px grid system (8, 16, 24, 32, 48, 64px)
+- Generous white space between sections (24-32px)
+- Tight grouping within cards (8-12px between related elements)
+- Bottom navigation area: 80-90px height including safe area
+
+═══════════════════════════════════════════════════════
+🔤 TYPOGRAPHY
+═══════════════════════════════════════════════════════
+
+FONT FAMILY:
+- Primary: SF Pro Display / SF Pro Text (Apple system font)
+- Fallback: Inter, -apple-system, BlinkMacSystemFont, sans-serif
+
+TYPE SCALE:
+- Display/Hero: 48-72px, weight 700 (Bold), line-height 1.0
+- Heading: 24-28px, weight 600 (Semibold), line-height 1.2
+- Title: 18-20px, weight 600 (Semibold), line-height 1.3
+- Body: 15-16px, weight 400 (Regular), line-height 1.5
+- Caption: 13-14px, weight 400 (Regular), line-height 1.4
+- Overline/Label: 11-12px, weight 500 (Medium), line-height 1.3, uppercase optional
+
+TEXT STYLING:
+- Numbers/metrics: Tabular nums, tight letter-spacing (-0.5px)
+- Headings: Clean, no letter-spacing modification
+- Links/CTAs: Color #007AFF, weight 500 (Medium)
+
+═══════════════════════════════════════════════════════
+🎭 GRAPHIC ELEMENTS
+═══════════════════════════════════════════════════════
+
+ICON STYLE:
+- Style: Outlined (stroke) icons with 1.5-2px stroke weight
+- Active state: Filled/solid icons for selected tabs
+- Size: 24x24px for navigation, 20x20px for inline
+- Color: #86868B inactive, #1D1D1F active, #007AFF accent
+- Corner radius: 6-8px for icon containers
+- Style reference: SF Symbols, Lucide, or Feather icons aesthetic
+
+ILLUSTRATION STYLE:
+- Background elements: Soft cloud shapes, sun/moon orbs with glow effects
+- Gradient orbs: Circular elements with radial gradients and blur
+- Decorative lines: Dashed/dotted curves (1px stroke, rgba(255,255,255,0.4))
+- Data visualizations: Smooth gradients, rounded bar/line charts
+- Avatars: Circular (40-48px diameter), subtle border/shadow
+
+DECORATIVE ELEMENTS:
+- Glass reflection: Subtle white gradient overlay on cards (top 30%)
+- Drop shadow cards: Layered cards with increasing shadow depth
+- Gradient backgrounds: Sky-themed with soft cloud silhouettes
+- Accent pills: Small rounded rectangles (12px radius) for tags/badges
+- Divider lines: 1px height, rgba(0,0,0,0.06), or none (use spacing)
+
+═══════════════════════════════════════════════════════
+️ INTERACTIVE ELEMENTS
+═══════════════════════════════════════════════════════
+
+BUTTONS:
+- Primary CTA: Full-width or large, height 48-52px, border-radius 26px
+  * Background: #007AFF solid or gradient
+  * Text: White, 16px, weight 600
+  * Shadow: 0 4px 12px rgba(0,122,255,0.3)
+  
+- Secondary Button: Height 44-48px, border-radius 22px
+  * Background: rgba(255,255,255,0.8)
+  * Border: 1px solid rgba(0,0,0,0.1)
+  * Text: #1D1D1F, weight 500
+
+- Icon Button: 36-44px circular, backdrop-blur background
+  * Background: rgba(255,255,255,0.5) with blur
+  * Hover: Scale 1.05, brightness increase
+
+- FAB (Floating Action Button): 56-64px circular, centered in nav bar
+  * Background: #007AFF or gradient
+  * Icon: White, 24px
+  * Shadow: 0 8px 24px rgba(0,122,255,0.4)
+
+INPUT FIELDS:
+- Border-radius: 12-16px
+- Background: rgba(255,255,255,0.6) with blur
+- Border: 1px solid rgba(0,0,0,0.08), focus: #007AFF
+- Height: 44-48px
+- Padding: 12-16px horizontal
+
+PROGRESS/CHART ELEMENTS:
+- Progress bar: Height 4-6px, border-radius 3px, track: rgba(0,0,0,0.06)
+- Circular progress: Stroke width 8-10px, rounded caps
+- Mini bar charts: Rounded rectangles, gradient fills
+
+TRANSITION ANIMATIONS:
+- Card hover: TranslateY -2px, shadow increase, duration 200ms ease-out
+- Button press: Scale 0.97, duration 100ms
+- Page transitions: Slide with fade, duration 300ms cubic-bezier(0.4, 0, 0.2, 1)
+- Skeleton loading: Shimmer gradient animation
+- Number counters: Animate from 0 to value on scroll-into-view
+
+FEEDBACK STATES:
+- Active tab: Icon fill + color change + subtle scale (1.1)
+- Selected card: Border highlight (#007AFF, 2px) + shadow increase
+- Error state: Red accent (#FF3B30), shake animation optional
+- Success state: Green checkmark, brief scale animation
+
+═══════════════════════════════════════════════════════
+ RESPONSIVE ADAPTATION
+═══════════════════════════════════════════════════════
+
+SCREEN SIZE VARIATIONS:
+- Small (4.7" / 375x812): Compact spacing, 14px base font
+- Standard (5.4" / 390x844): Default specifications
+- Large (6.1" / 414x896): Increased padding, 16px base font
+- Max (6.7" / 428x926): Maximum spacing, consider 2-column layouts for data
+
+ADAPTATION RULES:
+- Maintain aspect ratios for all card components
+- Scale padding proportionally (min 16px, max 24px horizontal)
+- Font sizes: Use clamp() or responsive type scale
+- Grid columns: Single column up to 500px, optional 2-column for cards above
+- Bottom nav: Always fixed, height adjusts to safe area
+- Hero metrics: Responsive sizing, minimum 36px, maximum 72px
+
+═══════════════════════════════════════════════════════
+🌟 OVERALL AESTHETIC GUIDELINES
+═══════════════════════════════════════════════════════
+
+DESIGN PHILOSOPHY:
+- Minimalist yet informative: Show only essential data, hide complexity
+- Airy and spacious: Never crowded, breathe room between elements
+- Premium feel: Subtle details matter (blur, shadows, gradients)
+- Consistent: Unified corner radius, spacing, and color application
+
+VISUAL EFFECTS:
+- Glassmorphism: Frosted glass cards over gradient backgrounds
+- Soft shadows: Never harsh, always diffused and ambient
+- Gradient overlays: Subtle, never overwhelming
+- Micro-interactions: Delightful but not distracting
+- Depth: Layered UI with clear z-index hierarchy
+
+THEME CONSISTENCY:
+- Sky/nature inspired backgrounds when appropriate
+- Blue as the trust and action color
+- Rounded everything: No sharp corners in UI
+- Light mode primary (consider dark mode variant)
+- Professional but approachable
+
+═══════════════════════════════════════════════════════
+ COMPONENT LIBRARY REFERENCE
+═══════════════════════════════════════════════════════
+
+STANDARD COMPONENTS TO INCLUDE:
+1. Status bar area (time, battery, signal)
+2. Navigation header (title, back button, action buttons)
+3. Hero metric card (large number, label, trend indicator)
+4. Data visualization cards (charts, progress rings)
+5. List items (avatar, title, subtitle, action)
+6. Bottom navigation bar (4-5 items, center FAB optional)
+7. Action buttons (primary, secondary, tertiary)
+8. Input fields and form elements
+9. Modal/overlay cards
+10. Empty states and loading skeletons
+
+═══════════════════════════════════════════════════════
+✅ OUTPUT REQUIREMENTS
+═══════════════════════════════════════════════════════
+
+Generate a complete mobile screen design that:
+- Follows all specifications above precisely
+- Maintains visual harmony and balance
+- Uses consistent spacing and alignment
+- Includes proper hierarchy through size, weight, and color
+- Feels modern, premium, and user-friendly
+- Is ready for handoff to development (clear structure)
+- Works across 4.7" to 6.7" screen sizes
+- Includes realistic placeholder content
+
+Reference inspiration: Apple Human Interface Guidelines, iOS 16/17 design patterns, 
+glassmorphism trends, weather/finance app aesthetics.
