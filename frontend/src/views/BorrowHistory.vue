@@ -1058,27 +1058,36 @@ onMounted(() => {
 <style scoped>
 .borrow-history-container {
   padding: 20px;
+  min-height: calc(100vh - 64px);
   overflow: auto;
 }
 
 .borrow-history-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .search-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .search-form {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .search-form .el-select {
@@ -1093,61 +1102,76 @@ onMounted(() => {
 .status-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .status-stat-item {
   text-align: center;
-  padding: 15px;
-  background: #f5f7fa;
-  border-radius: 8px;
-  border: 1px solid #e4e7ed;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-out;
+}
+
+.status-stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .status-count {
   display: block;
-  font-size: 24px;
-  font-weight: bold;
-  color: #303133;
+  font-size: 28px;
+  font-weight: 700;
+  color: #007AFF;
+  font-variant-numeric: tabular-nums;
 }
 
 .status-label {
   display: block;
-  font-size: 14px;
-  color: #606266;
-  margin-top: 5px;
+  font-size: 13px;
+  color: #86868B;
+  margin-top: 6px;
+  font-weight: 500;
 }
 
 .status-container {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .status-icon {
   cursor: pointer;
-  color: #909399;
+  color: #86868B;
+  transition: color 0.2s ease-out;
+}
+
+.status-icon:hover {
+  color: #007AFF;
 }
 
 .overdue {
-  color: #f56c6c;
-  font-weight: bold;
+  color: #FF3B30;
+  font-weight: 600;
 }
 
 .application-detail {
-  padding: 10px;
+  padding: 12px;
 }
 
 .detail-section {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 .detail-section h3 {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   font-size: 16px;
-  font-weight: 500;
-  color: #303133;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .detail-item {
@@ -1159,39 +1183,44 @@ onMounted(() => {
 .detail-item .label {
   width: 120px;
   font-weight: 500;
-  color: #606266;
+  color: #86868B;
+  font-size: 14px;
 }
 
 .detail-item .value {
   flex: 1;
-  color: #303133;
+  color: #1D1D1F;
   word-break: break-word;
+  font-size: 15px;
 }
 
 .timeline-card {
-  margin-bottom: 10px;
-  border-radius: 8px;
+  margin-bottom: 12px;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .timeline-content {
-  padding: 15px;
+  padding: 16px;
 }
 
 .status-title {
-  font-weight: 500;
-  color: #303133;
-  margin-bottom: 5px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin-bottom: 6px;
+  font-size: 15px;
 }
 
 .status-desc {
   font-size: 14px;
-  color: #606266;
+  color: #86868B;
   margin-bottom: 8px;
 }
 
 .status-comment {
   font-size: 13px;
-  color: #909399;
+  color: #AEAEB2;
   font-style: italic;
 }
 
@@ -1212,12 +1241,12 @@ onMounted(() => {
 
   .status-stats {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
 
   .detail-item {
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
   }
 
   .detail-item .label {
@@ -1233,7 +1262,11 @@ onMounted(() => {
   .card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
+  }
+  
+  .status-count {
+    font-size: 24px;
   }
 }
 </style>

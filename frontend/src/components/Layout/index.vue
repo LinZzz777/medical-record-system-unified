@@ -24,9 +24,9 @@
         :default-active="activeMenu"
         class="layout-menu"
         :collapse="isCollapse"
-        background-color="#001529"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        background-color="transparent"
+        text-color="#1D1D1F"
+        active-text-color="#007AFF"
         router
       >
         <el-menu-item index="/dashboard">
@@ -276,15 +276,41 @@ onUnmounted(() => {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
-/* 侧边栏样式 */
+.layout-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #4A9FE5 0%, #87CEEB 40%, #B0E0E6 70%, #E8F4FD 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.layout-container::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
 .layout-aside {
-  background-color: #001529;
-  transition: width 0.3s ease;
-  overflow: hidden;
   position: relative;
-  z-index: 1000;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .aside-header {
@@ -293,16 +319,16 @@ onUnmounted(() => {
   align-items: center;
   padding: 0 16px;
   height: 64px;
-  border-bottom: 1px solid #000f1f;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #fff;
+  color: #007AFF;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
 }
 
@@ -315,21 +341,50 @@ onUnmounted(() => {
 }
 
 .collapse-btn {
-  color: #fff;
+  color: #007AFF;
   font-size: 16px;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-out;
+}
+
+.collapse-btn:hover {
+  background: rgba(0, 122, 255, 0.2);
 }
 
 .layout-menu {
-  border-right: none;
+  border-right: none !important;
   height: calc(100vh - 64px);
+  background: transparent !important;
 }
 
-/* 主内容区样式 */
+.layout-menu .el-menu-item {
+  border-radius: 12px !important;
+  margin: 4px 8px;
+  transition: all 0.2s ease-out;
+}
+
+.layout-menu .el-menu-item:hover {
+  background: rgba(0, 122, 255, 0.08) !important;
+}
+
+.layout-menu .el-menu-item.is-active {
+  background: rgba(0, 122, 255, 0.15) !important;
+  color: #007AFF !important;
+}
+
 .layout-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .layout-header {
@@ -338,9 +393,11 @@ onUnmounted(() => {
   align-items: center;
   padding: 0 20px;
   height: 64px;
-  background-color: #fff;
-  border-bottom: 1px solid #e4e7ed;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .header-left {
@@ -351,7 +408,11 @@ onUnmounted(() => {
 .mobile-menu-btn {
   display: none;
   font-size: 20px;
-  color: #606266;
+  color: #1D1D1F;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
 }
 
 .header-right {
@@ -365,21 +426,24 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease-out;
 }
 
 .user-info:hover {
-  background-color: #f5f7fa;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .user-name {
   font-size: 14px;
-  color: #303133;
+  color: #1D1D1F;
+  font-weight: 500;
 }
 
-/* 个人信息对话框样式 */
 .user-info-detail {
   display: flex;
   flex-direction: column;
@@ -398,7 +462,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .info-item:last-child {
@@ -408,29 +472,26 @@ onUnmounted(() => {
 .info-label {
   width: 80px;
   font-weight: 500;
-  color: #606266;
+  color: #86868B;
   font-size: 14px;
 }
 
 .info-value {
   flex: 1;
-  color: #303133;
+  color: #1D1D1F;
   font-size: 14px;
 }
 
-/* 内容区域样式 */
 .layout-content {
   flex: 1;
-  padding: 0;
-  margin: 0;
+  padding: 20px;
   overflow-y: auto;
-  background-color: #f5f7fa;
+  background: transparent;
 }
 
-/* 过渡动画 */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-enter-from,
@@ -438,18 +499,17 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* 移动端菜单遮罩 */
 .mobile-menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
   z-index: 999;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .layout-container {
     flex-direction: column;
@@ -462,7 +522,7 @@ onUnmounted(() => {
     bottom: 0;
     width: 200px !important;
     z-index: 1001;
-    transition: left 0.3s ease;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .layout-aside.mobile-menu-open {
@@ -470,7 +530,9 @@ onUnmounted(() => {
   }
   
   .mobile-menu-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .layout-header {

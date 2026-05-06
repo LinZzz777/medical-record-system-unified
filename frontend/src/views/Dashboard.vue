@@ -343,22 +343,22 @@ const initBorrowTrendChart = (data?: SeriesTrendData) => {
   borrowTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [] },
-    yAxis: { type: 'value', name: '\u501f\u9605\u6b21\u6570' },
+    xAxis: { type: 'category', boundaryGap: false, data: data?.months || [], axisLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } }, axisLabel: { color: '#86868B' } },
+    yAxis: { type: 'value', name: '借阅次数', splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }, axisLabel: { color: '#86868B' } },
     series: [
       {
-        name: '\u501f\u9605\u91cf',
+        name: '借阅量',
         type: 'line',
         smooth: true,
         data: data?.borrowData || [],
-        lineStyle: { color: '#409eff', width: 3 },
+        lineStyle: { color: '#007AFF', width: 3 },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(64, 158, 255, 0.5)' },
-            { offset: 1, color: 'rgba(64, 158, 255, 0.1)' }
+            { offset: 0, color: 'rgba(0,122,255,0.3)' },
+            { offset: 1, color: 'rgba(0,122,255,0.05)' }
           ])
         },
-        itemStyle: { color: '#409eff' }
+        itemStyle: { color: '#007AFF' }
       }
     ]
   })
@@ -421,18 +421,18 @@ const initDepartmentChart = (data?: Record<string, number>) => {
   departmentInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'value', name: '\u501f\u9605\u6b21\u6570' },
-    yAxis: { type: 'category', data: Object.keys(data || {}) },
+    xAxis: { type: 'value', name: '借阅次数', splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }, axisLabel: { color: '#86868B' } },
+    yAxis: { type: 'category', data: Object.keys(data || {}), axisLabel: { color: '#86868B' } },
     series: [
       {
-        name: '\u501f\u9605\u6b21\u6570',
+        name: '借阅次数',
         type: 'bar',
         data: Object.values(data || {}),
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-            { offset: 0, color: '#83bff6' },
-            { offset: 0.5, color: '#188df0' },
-            { offset: 1, color: '#188df0' }
+            { offset: 0, color: '#007AFF' },
+            { offset: 0.5, color: '#1E90FF' },
+            { offset: 1, color: '#87CEEB' }
           ])
         },
         label: { show: true, position: 'right', formatter: '{c}' }
@@ -497,22 +497,22 @@ const initOverdueTrendChart = (data?: SeriesTrendData) => {
   overdueTrendInstance.setOption({
     tooltip: { trigger: 'axis' },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [] },
-    yAxis: { type: 'value', name: '\u903e\u671f\u6570\u91cf' },
+    xAxis: { type: 'category', boundaryGap: false, data: data?.dates || [], axisLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } }, axisLabel: { color: '#86868B' } },
+    yAxis: { type: 'value', name: '逾期数量', splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }, axisLabel: { color: '#86868B' } },
     series: [
       {
-        name: '\u903e\u671f\u6570\u91cf',
+        name: '逾期数量',
         type: 'line',
         smooth: true,
         data: data?.overdueData || [],
-        lineStyle: { color: '#f56c6c', width: 3 },
+        lineStyle: { color: '#FF3B30', width: 3 },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(245, 108, 108, 0.4)' },
-            { offset: 1, color: 'rgba(245, 108, 108, 0.08)' }
+            { offset: 0, color: 'rgba(255,59,48,0.3)' },
+            { offset: 1, color: 'rgba(255,59,48,0.05)' }
           ])
         },
-        itemStyle: { color: '#f56c6c' }
+        itemStyle: { color: '#FF3B30' }
       }
     ]
   })
@@ -540,17 +540,17 @@ const initApprovalEfficiencyChart = (data?: Record<string, number>) => {
   approvalEfficiencyInstance.setOption({
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: { type: 'category', data: Object.keys(data || {}) },
-    yAxis: { type: 'value', name: '\u7533\u8bf7\u6570\u91cf' },
+    xAxis: { type: 'category', data: Object.keys(data || {}), axisLabel: { color: '#86868B' } },
+    yAxis: { type: 'value', name: '申请数量', splitLine: { lineStyle: { color: 'rgba(0,0,0,0.06)' } }, axisLabel: { color: '#86868B' } },
     series: [
       {
-        name: '\u5904\u7406\u6570\u91cf',
+        name: '处理数量',
         type: 'bar',
         data: Object.values(data || {}),
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#67c23a' },
-            { offset: 1, color: '#95d475' }
+            { offset: 0, color: '#27AE60' },
+            { offset: 1, color: '#87CEEB' }
           ])
         },
         label: { show: true, position: 'top', formatter: '{c}' }
@@ -661,87 +661,129 @@ onUnmounted(() => {
 <style scoped>
 .dashboard-container {
   padding: 20px;
+  min-height: calc(100vh - 64px);
 }
 
 .dashboard-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  margin: 20px 0 24px;
+  margin: 24px 0 32px;
 }
 
 .stat-card {
-  transition: all 0.3s ease;
-  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 20px !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1) !important;
 }
 
 .stat-card-clickable {
   cursor: pointer;
 }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
 .stat-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .stat-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
+  font-size: 36px;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+}
+
+.total-icon {
+  background: linear-gradient(135deg, #007AFF 0%, #1E90FF 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+}
+
+.borrowed-icon {
+  background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+}
+
+.pending-icon {
+  background: linear-gradient(135deg, #FF9500 0%, #FFD60A 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.25);
+}
+
+.overdue-icon {
+  background: linear-gradient(135deg, #FF3B30 0%, #FF6B6B 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.25);
 }
 
 .stat-title {
   font-size: 14px;
-  color: #606266;
-  margin-bottom: 10px;
+  color: #86868B;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 700;
-  color: #303133;
-}
-
-.total-icon {
-  color: #409eff;
-}
-
-.borrowed-icon {
-  color: #67c23a;
-}
-
-.pending-icon {
-  color: #e6a23c;
-}
-
-.overdue-icon {
-  color: #f56c6c;
+  color: #1D1D1F;
+  letter-spacing: -0.5px;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
 }
 
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 
 .chart-card {
   min-height: 380px;
+  border-radius: 20px !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.65) 100%) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.2s ease-out !important;
+}
+
+.chart-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1) !important;
 }
 
 .chart-header {
@@ -750,6 +792,8 @@ onUnmounted(() => {
   justify-content: space-between;
   gap: 12px;
   font-weight: 600;
+  font-size: 16px;
+  color: #1D1D1F;
 }
 
 .chart-container {
@@ -773,6 +817,34 @@ onUnmounted(() => {
 
   .chart-container {
     height: 280px;
+  }
+  
+  .stat-value {
+    font-size: 36px;
+  }
+  
+  .stat-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: 32px;
+  }
+  
+  .stats-grid {
+    gap: 12px;
+  }
+  
+  .stat-content {
+    padding: 20px;
+  }
+  
+  .card-header {
+    font-size: 16px;
   }
 }
 </style>

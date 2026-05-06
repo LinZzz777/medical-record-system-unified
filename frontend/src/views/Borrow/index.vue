@@ -480,30 +480,52 @@ watch(
 <style scoped>
 .borrow-container {
   padding: 20px;
+  min-height: calc(100vh - 64px);
 }
 
 .borrow-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
-/* 步骤条样式 */
 :deep(.el-steps) {
-  margin: 20px 0;
+  margin: 24px 0;
 }
 
 :deep(.el-step__title) {
-  font-weight: 500;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
-/* 步骤内容样式 */
+:deep(.el-step__description) {
+  color: #86868B;
+  font-size: 13px;
+}
+
+:deep(.el-step__head.is-finish) {
+  color: #007AFF;
+  border-color: #007AFF;
+}
+
+:deep(.el-step__title.is-finish) {
+  color: #007AFF;
+}
+
 .step-content {
-  margin: 30px 0;
+  margin: 32px 0;
   overflow: auto;
 }
 
@@ -512,23 +534,27 @@ watch(
   overflow: auto;
 }
 
-/* 帮助提示样式 */
 .help-tip {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-/* 搜索表单样式 */
+:deep(.el-alert) {
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 122, 255, 0.15) !important;
+  background: rgba(0, 122, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+}
+
 .search-form {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .search-form .el-form-item {
   margin-bottom: 15px;
 }
 
-/* 修复select组件宽度问题 */
 :deep(.el-select) {
   min-width: 180px;
 }
@@ -537,7 +563,6 @@ watch(
   min-width: 180px;
 }
 
-/* 修复响应式布局中的select宽度 */
 @media (max-width: 768px) {
   :deep(.el-select) {
     width: 100%;
@@ -548,23 +573,27 @@ watch(
   }
 }
 
-/* 表格样式 */
 :deep(.el-table) {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  border-radius: 16px !important;
+  overflow: hidden;
 }
 
-/* 详情卡片样式 */
 .detail-card {
-  margin: 20px 0;
+  margin: 24px 0;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(15px) !important;
 }
 
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-/* 空状态样式 */
 .empty-state {
   display: flex;
   justify-content: center;
@@ -572,71 +601,74 @@ watch(
   height: 200px;
 }
 
-/* 申请表单样式 */
 :deep(.el-form) {
   max-width: 800px;
 }
 
 :deep(.el-form-item) {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-/* 汇总卡片样式 */
 .summary-card {
-  margin: 20px 0;
+  margin: 24px 0;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(15px) !important;
 }
 
 .summary-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .summary-content {
-  padding: 20px;
+  padding: 24px;
 }
 
 .summary-item {
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   align-items: flex-start;
 }
 
 .summary-item .label {
-  font-weight: bold;
+  font-weight: 600;
   width: 120px;
-  color: #606266;
+  color: #86868B;
+  font-size: 14px;
 }
 
 .summary-item .value {
   flex: 1;
-  color: #303133;
+  color: #1D1D1F;
   word-break: break-word;
+  font-size: 15px;
 }
 
-/* 步骤导航样式 */
 .step-navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #e4e7ed;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .right-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .borrow-container {
     padding: 10px;
   }
   
   :deep(.el-steps) {
-    margin: 10px 0;
+    margin: 16px 0;
   }
   
   :deep(.el-step__title) {
@@ -671,7 +703,7 @@ watch(
   
   .summary-item {
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
   }
   
   .summary-item .label {
@@ -680,7 +712,7 @@ watch(
   
   .step-navigation {
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
     align-items: stretch;
   }
   

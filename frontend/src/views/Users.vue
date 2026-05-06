@@ -342,20 +342,29 @@ onMounted(() => {
 <style scoped>
 .users-container {
   padding: 20px;
+  min-height: calc(100vh - 64px);
 }
 
 .users-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .search-form {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .dialog-footer {
