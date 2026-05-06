@@ -1,0 +1,25 @@
+package com.medical.record.system.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.medical.record.system.entity.Menu;
+
+import java.util.List;
+
+public interface MenuMapper extends BaseMapper<Menu> {
+
+    /**
+     * 查询所有菜单，包括子菜单
+     */
+    List<Menu> selectAllMenus();
+
+    /**
+     * 根据角色ID查询菜单列表
+     */
+    List<Menu> selectMenusByRoleId(Long roleId);
+
+    /**
+     * 根据用户ID查询菜单列表
+     */
+    List<Menu> selectMenusByUserId(Long userId);
+
+}

@@ -1,0 +1,521 @@
+2026-05-04 19:15:41 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 11840 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 19:15:41 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 19:15:41 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 19:15:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 19:15:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-05-04 19:15:42 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 19:15:42 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 19:15:42 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 19:15:42 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 19:15:42 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1442 ms
+2026-05-04 19:15:43 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 19:15:43 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 19:15:43 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 19:15:43 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 19:15:43 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 19:15:43 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 19:15:43 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 19:15:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 19:15:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 19:15:44 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 19:15:44 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ff98a1cd-4296-428b-938b-9b9fa037e2f2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 19:15:45 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 19:15:45 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1c3a64b6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@761b9314, org.springframework.security.web.context.SecurityContextHolderFilter@66d69cd2, org.springframework.security.web.header.HeaderWriterFilter@7a85dc58, org.springframework.web.filter.CorsFilter@20e9c165, org.springframework.security.web.authentication.logout.LogoutFilter@5667dd90, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11a7840f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d3e5a05, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@eabecf5, org.springframework.security.web.access.ExceptionTranslationFilter@5aa334c, org.springframework.security.web.access.intercept.AuthorizationFilter@43e2b8da]
+2026-05-04 19:15:45 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 19:15:45 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 19:15:45 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 19:15:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-04 19:15:45 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 4.38 seconds (process running for 4.981)
+2026-05-04 19:16:03 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-04 19:16:03 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-04 19:16:03 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-05-04 19:17:24 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 19:17:24 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-04 19:17:24 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-04 19:51:15 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 26604 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 19:51:15 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 19:51:15 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 19:51:15 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 19:51:15 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2026-05-04 19:51:16 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 19:51:16 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 19:51:16 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 19:51:16 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 19:51:16 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1295 ms
+2026-05-04 19:51:16 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 19:51:16 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 19:51:16 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 19:51:16 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 19:51:16 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 19:51:16 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 19:51:16 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 19:51:17 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 19:51:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 19:51:17 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 19:51:17 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 392b48ee-9907-4bc7-9af4-5d142d058cfa
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 19:51:18 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 19:51:18 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1ac2829e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a7f2247, org.springframework.security.web.context.SecurityContextHolderFilter@703e5614, org.springframework.security.web.header.HeaderWriterFilter@b63365c, org.springframework.web.filter.CorsFilter@4946dfde, org.springframework.security.web.authentication.logout.LogoutFilter@729c8def, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@44e3f3e5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6be1f37f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@77972964, org.springframework.security.web.access.ExceptionTranslationFilter@1c0fe6c5, org.springframework.security.web.access.intercept.AuthorizationFilter@4bcf08ae]
+2026-05-04 19:51:18 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 19:51:18 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 19:51:18 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 19:51:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-04 19:51:18 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.817 seconds (process running for 4.162)
+2026-05-04 19:51:23 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-04 19:51:23 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-04 19:51:23 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-05-04 20:05:05 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:05:05 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-04 20:05:05 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-04 20:05:11 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 12036 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 20:05:11 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 20:05:11 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 20:05:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 20:05:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-05-04 20:05:13 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 20:05:13 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 20:05:13 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 20:05:13 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 20:05:13 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1173 ms
+2026-05-04 20:05:13 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 20:05:13 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 20:05:13 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 20:05:13 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 20:05:13 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 20:05:13 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 20:05:13 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 20:05:13 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 20:05:13 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:05:14 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 20:05:14 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 7ef3c498-8e8b-428d-ae54-7efa34b7df67
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 20:05:14 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 20:05:14 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@20e9c165, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@eabecf5, org.springframework.security.web.context.SecurityContextHolderFilter@11a7840f, org.springframework.security.web.header.HeaderWriterFilter@7f9e6167, org.springframework.web.filter.CorsFilter@417b3642, org.springframework.security.web.authentication.logout.LogoutFilter@76673ed, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4f5c757c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@52fec840, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6bd28e4a, org.springframework.security.web.access.ExceptionTranslationFilter@698e1bf5, org.springframework.security.web.access.intercept.AuthorizationFilter@1c3a64b6]
+2026-05-04 20:05:14 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 20:05:14 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 20:05:15 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 20:05:15 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-04 20:05:15 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.633 seconds (process running for 3.926)
+2026-05-04 20:05:21 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-04 20:05:21 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-04 20:05:21 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-05-04 20:08:53 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 6244 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 20:08:53 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 20:08:53 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 20:08:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 20:08:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2026-05-04 20:08:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 20:08:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 20:08:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 20:08:54 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 20:08:54 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1336 ms
+2026-05-04 20:08:54 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 20:08:55 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 20:08:55 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 20:08:55 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 20:08:55 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 20:08:55 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 20:08:55 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 20:08:55 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 20:08:55 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:08:56 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 20:08:56 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: e16cf3fa-31a0-46d3-be27-727f9850c17f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 20:08:56 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 20:08:57 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@75b3ef1a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@43e2b8da, org.springframework.security.web.context.SecurityContextHolderFilter@7a85dc58, org.springframework.security.web.header.HeaderWriterFilter@5aa334c, org.springframework.web.filter.CorsFilter@1ac68548, org.springframework.security.web.authentication.logout.LogoutFilter@7320750c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f9e6167, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@66d69cd2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1c3a64b6, org.springframework.security.web.access.ExceptionTranslationFilter@720c0996, org.springframework.security.web.access.intercept.AuthorizationFilter@1e38e8b6]
+2026-05-04 20:08:57 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 20:08:57 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 20:08:57 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 20:08:57 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-05-04 20:08:57 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:08:57 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-04 20:08:57 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-04 20:08:57 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-04 20:08:57 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-05-04 20:09:50 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 29308 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 20:09:50 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 20:09:50 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 20:09:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 20:09:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-05-04 20:09:51 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 20:09:51 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 20:09:51 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 20:09:51 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 20:09:51 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1256 ms
+2026-05-04 20:09:52 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 20:09:52 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 20:09:52 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 20:09:52 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 20:09:52 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 20:09:52 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 20:09:52 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 20:09:52 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 20:09:52 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:09:53 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 20:09:53 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 0cec249c-2319-4ba1-a5d0-cec43bc55c21
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 20:09:53 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 20:09:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4bcf08ae, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@626b9092, org.springframework.security.web.context.SecurityContextHolderFilter@6839d03b, org.springframework.security.web.header.HeaderWriterFilter@61607ff0, org.springframework.web.filter.CorsFilter@1ac2829e, org.springframework.security.web.authentication.logout.LogoutFilter@1ff23bd1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@703e5614, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@627d5f99, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7a7f2247, org.springframework.security.web.access.ExceptionTranslationFilter@7b6854b5, org.springframework.security.web.access.intercept.AuthorizationFilter@152dbf8e]
+2026-05-04 20:09:53 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 20:09:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 20:09:54 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 20:09:54 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-05-04 20:09:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:09:54 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-04 20:09:54 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-04 20:09:54 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-04 20:09:54 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-05-04 20:10:18 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 7436 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-04 20:10:18 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-04 20:10:18 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-04 20:10:19 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-04 20:10:19 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JPA repository interfaces.
+2026-05-04 20:10:19 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-04 20:10:19 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-04 20:10:19 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-04 20:10:19 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-04 20:10:19 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1268 ms
+2026-05-04 20:10:20 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-04 20:10:20 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-04 20:10:20 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-04 20:10:20 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-04 20:10:20 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-04 20:10:20 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-04 20:10:20 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-04 20:10:20 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-04 20:10:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-04 20:10:21 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-04 20:10:21 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 9cd98eda-e92a-486a-8cec-5bb825e5da7d
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-04 20:10:21 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-04 20:10:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4bcf08ae, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@626b9092, org.springframework.security.web.context.SecurityContextHolderFilter@6839d03b, org.springframework.security.web.header.HeaderWriterFilter@61607ff0, org.springframework.web.filter.CorsFilter@1ac2829e, org.springframework.security.web.authentication.logout.LogoutFilter@1ff23bd1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@703e5614, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@627d5f99, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7a7f2247, org.springframework.security.web.access.ExceptionTranslationFilter@7b6854b5, org.springframework.security.web.access.intercept.AuthorizationFilter@152dbf8e]
+2026-05-04 20:10:21 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-04 20:10:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-04 20:10:22 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-04 20:10:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-04 20:10:22 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.954 seconds (process running for 4.262)
+2026-05-04 20:12:39 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-04 20:12:39 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-04 20:12:39 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-05-05 13:07:17 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 12196 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 13:07:18 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 13:07:18 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 13:07:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 13:07:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JPA repository interfaces.
+2026-05-05 13:07:19 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 13:07:19 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 13:07:19 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 13:07:19 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 13:07:19 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1175 ms
+2026-05-05 13:07:19 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 13:07:19 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 13:07:19 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 13:07:19 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 13:07:19 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 13:07:19 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 13:07:19 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 13:07:20 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 13:07:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 13:07:20 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 13:07:20 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: c9cc192b-1b88-45f0-9d7e-35abcaa14abe
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 13:07:21 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 13:07:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@56820446, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2259d54f, org.springframework.security.web.context.SecurityContextHolderFilter@7320750c, org.springframework.security.web.header.HeaderWriterFilter@46c2189e, org.springframework.web.filter.CorsFilter@1b82f62a, org.springframework.security.web.authentication.logout.LogoutFilter@4714f447, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@67d8613, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5667dd90, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@67e21ea2, org.springframework.security.web.access.ExceptionTranslationFilter@1e4d93f7, org.springframework.security.web.access.intercept.AuthorizationFilter@71891d6b]
+2026-05-05 13:07:21 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 13:07:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 13:07:21 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 13:07:21 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-05-05 13:07:21 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 13:07:21 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-05 13:07:21 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-05 13:07:21 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-05 13:07:21 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-05-05 13:08:33 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 13492 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 13:08:33 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 13:08:33 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 13:08:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 13:08:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2026-05-05 13:08:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 13:08:34 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 13:08:34 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 13:08:34 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 13:08:34 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1124 ms
+2026-05-05 13:08:34 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 13:08:34 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 13:08:34 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 13:08:34 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 13:08:34 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 13:08:35 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 13:08:35 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 13:08:35 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 13:08:35 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 13:08:36 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 13:08:36 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 45470b0c-3e02-458f-ada3-0352e84abc9d
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 13:08:36 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 13:08:36 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@794f937a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7aa1fb0e, org.springframework.security.web.context.SecurityContextHolderFilter@69ed96e1, org.springframework.security.web.header.HeaderWriterFilter@627d5f99, org.springframework.web.filter.CorsFilter@5e663ab, org.springframework.security.web.authentication.logout.LogoutFilter@232b3b4c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3ac326c0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e5d40ec, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4b74a67a, org.springframework.security.web.access.ExceptionTranslationFilter@6839d03b, org.springframework.security.web.access.intercept.AuthorizationFilter@4946dfde]
+2026-05-05 13:08:36 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 13:08:36 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 13:08:36 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 13:08:36 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-05 13:08:36 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 3.499 seconds (process running for 3.783)
+2026-05-05 13:08:42 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-05 13:08:42 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-05 13:08:42 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-05-05 13:19:27 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 26620 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 13:19:27 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 13:19:27 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 13:19:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 13:19:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2026-05-05 13:19:29 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 13:19:29 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 13:19:29 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 13:19:29 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 13:19:29 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1621 ms
+2026-05-05 13:19:29 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 13:19:29 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 13:19:29 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 13:19:29 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 13:19:29 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 13:19:29 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 13:19:29 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 13:19:30 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 13:19:30 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 13:19:31 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 13:19:31 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 92a27695-e631-45e0-81a5-da8bc6524aaf
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 13:19:31 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 13:19:31 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@152dbf8e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@34ea86ff, org.springframework.security.web.context.SecurityContextHolderFilter@357cdb00, org.springframework.security.web.header.HeaderWriterFilter@1896299b, org.springframework.web.filter.CorsFilter@4bcf08ae, org.springframework.security.web.authentication.logout.LogoutFilter@89465d9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@61607ff0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@58945295, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@626b9092, org.springframework.security.web.access.ExceptionTranslationFilter@7fd4b9ec, org.springframework.security.web.access.intercept.AuthorizationFilter@acea29e]
+2026-05-05 13:19:31 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 13:19:31 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 13:19:31 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 13:19:31 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-05 13:19:31 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 6.138 seconds (process running for 6.534)
+2026-05-05 13:20:26 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-05 13:20:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-05 13:20:26 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-05-05 15:25:05 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 27892 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 15:25:05 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 15:25:05 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 15:25:06 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 15:25:06 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+2026-05-05 15:25:06 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 15:25:06 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 15:25:06 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 15:25:07 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 15:25:07 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1685 ms
+2026-05-05 15:25:07 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 15:25:07 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 15:25:07 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 15:25:07 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 15:25:07 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 15:25:08 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 15:25:08 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 15:25:08 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 15:25:08 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:25:09 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 15:25:09 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 586a2719-8c37-436c-a5fc-2677a84fc354
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 15:25:09 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 15:25:09 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@554e9509, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@acea29e, org.springframework.security.web.context.SecurityContextHolderFilter@1c0fe6c5, org.springframework.security.web.header.HeaderWriterFilter@42d7e8bc, org.springframework.web.filter.CorsFilter@772bc4c9, org.springframework.security.web.authentication.logout.LogoutFilter@6fdd3382, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58945295, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b63365c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@152dbf8e, org.springframework.security.web.access.ExceptionTranslationFilter@10553a61, org.springframework.security.web.access.intercept.AuthorizationFilter@42a7e7e1]
+2026-05-05 15:25:09 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 15:25:09 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 15:25:09 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 15:25:10 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-05-05 15:25:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:25:10 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-05 15:25:10 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-05 15:25:10 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-05 15:25:10 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-05-05 15:26:17 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 2924 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 15:26:17 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 15:26:17 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 15:26:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 15:26:18 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+2026-05-05 15:26:19 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 15:26:19 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 15:26:19 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 15:26:19 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 15:26:19 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1330 ms
+2026-05-05 15:26:19 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 15:26:19 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 15:26:19 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 15:26:19 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 15:26:19 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 15:26:19 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 15:26:19 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 15:26:20 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 15:26:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:26:20 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 15:26:20 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ea1e2fa5-e8b1-42ec-8cd6-c811f327a08d
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 15:26:21 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 15:26:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@325e03b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3911fec8, org.springframework.security.web.context.SecurityContextHolderFilter@7676b2b9, org.springframework.security.web.header.HeaderWriterFilter@18a38bba, org.springframework.web.filter.CorsFilter@1e38e8b6, org.springframework.security.web.authentication.logout.LogoutFilter@5b028f58, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7910e307, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@460aa24e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59bbf82e, org.springframework.security.web.access.ExceptionTranslationFilter@3b3f62d7, org.springframework.security.web.access.intercept.AuthorizationFilter@23b087c3]
+2026-05-05 15:26:21 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 15:26:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 15:26:21 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 15:26:21 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-05-05 15:26:21 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:26:21 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-05 15:26:21 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-05-05 15:26:21 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-05 15:26:21 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-05-05 15:26:44 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Starting MedicalRecordSystemApplication using Java 17.0.18 with PID 30036 (D:\Intellij Idea\medical-record-system-unified\backend\target\classes started by Jackson in D:\Intellij Idea\medical-record-system-unified\backend)
+2026-05-05 15:26:44 [main] DEBUG c.m.r.s.MedicalRecordSystemApplication - Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-05-05 15:26:44 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-05 15:26:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-05 15:26:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+2026-05-05 15:26:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-05-05 15:26:45 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-05 15:26:45 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-05-05 15:26:46 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-05-05 15:26:46 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1347 ms
+2026-05-05 15:26:46 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-05 15:26:46 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.3.1.Final
+2026-05-05 15:26:46 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-05 15:26:46 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-05 15:26:46 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-05-05 15:26:46 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-05 15:26:46 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-05-05 15:26:46 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-05 15:26:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:26:47 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-05 15:26:47 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: bdffb663-6283-44f4-b64e-b54f88a53fa5
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-05-05 15:26:48 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-05-05 15:26:48 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@794f937a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7aa1fb0e, org.springframework.security.web.context.SecurityContextHolderFilter@69ed96e1, org.springframework.security.web.header.HeaderWriterFilter@627d5f99, org.springframework.web.filter.CorsFilter@5e663ab, org.springframework.security.web.authentication.logout.LogoutFilter@232b3b4c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3ac326c0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e5d40ec, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4b74a67a, org.springframework.security.web.access.ExceptionTranslationFilter@6839d03b, org.springframework.security.web.access.intercept.AuthorizationFilter@4946dfde]
+2026-05-05 15:26:48 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore any request. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-05-05 15:26:48 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure any request
+2026-05-05 15:26:48 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-05-05 15:26:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2026-05-05 15:26:48 [main] INFO  c.m.r.s.MedicalRecordSystemApplication - Started MedicalRecordSystemApplication in 4.264 seconds (process running for 4.593)
+2026-05-05 15:27:03 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-05 15:27:03 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-05 15:27:03 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-05-05 15:41:00 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-05 15:41:00 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-05-05 15:41:00 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
