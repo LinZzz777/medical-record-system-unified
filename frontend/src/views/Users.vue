@@ -150,7 +150,7 @@ const searchForm = reactive({
 const users = ref<User[]>([])
 const dialogVisible = ref(false)
 const userForm = reactive<User>(createEmptyUserForm())
-const roleOptions = ref<string[]>(['admin', 'doctor', 'nurse'])
+const roleOptions = ref<string[]>(['admin', 'dept_approver', 'user'])
 const t = {
   username: '\u7528\u6237\u540d',
   name: '\u59d3\u540d',

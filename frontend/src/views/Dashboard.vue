@@ -713,6 +713,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   padding: 24px;
+  min-height: 0;
 }
 
 .stat-icon {
@@ -723,6 +724,7 @@ onUnmounted(() => {
   width: 64px;
   height: 64px;
   border-radius: 20px;
+  flex-shrink: 0;
 }
 
 .total-icon {
@@ -754,6 +756,9 @@ onUnmounted(() => {
   color: #86868B;
   margin-bottom: 8px;
   font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .stat-value {
@@ -763,6 +768,9 @@ onUnmounted(() => {
   letter-spacing: -0.5px;
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
+  word-break: break-all;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .charts-grid {
@@ -805,9 +813,35 @@ onUnmounted(() => {
     padding: 10px;
   }
 
-  .stats-grid,
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0 20px;
+  }
+
+  .stat-content {
+    padding: 16px 12px;
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+  }
+
+  .stat-title {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
   .charts-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .chart-card {
@@ -817,32 +851,79 @@ onUnmounted(() => {
   .chart-container {
     height: 280px;
   }
-  
-  .stat-value {
-    font-size: 36px;
-  }
-  
-  .stat-icon {
-    width: 56px;
-    height: 56px;
-  }
 }
 
 @media (max-width: 480px) {
-  .stat-value {
-    font-size: 32px;
+  .dashboard-container {
+    padding: 8px;
   }
-  
+
   .stats-grid {
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 12px 0 16px;
   }
-  
+
+  .stat-card {
+    border-radius: 14px !important;
+  }
+
   .stat-content {
-    padding: 20px;
+    padding: 14px 10px;
   }
-  
+
+  .stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    margin-bottom: 6px;
+  }
+
+  .stat-title {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
   .card-header {
     font-size: 16px;
+  }
+
+  .charts-grid {
+    gap: 12px;
+  }
+
+  .chart-container {
+    height: 260px;
+  }
+}
+
+@media (max-width: 360px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-content {
+    padding: 12px 8px;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+  }
+
+  .stat-title {
+    font-size: 10px;
+  }
+
+  .stat-value {
+    font-size: 22px;
   }
 }
 </style>

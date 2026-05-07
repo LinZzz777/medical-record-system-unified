@@ -1,6 +1,7 @@
 package com.medical.record.system.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class AuditLog {
     private Integer status;
 
     @TableField("created_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdTime;
 
     @TableField("deleted")

@@ -95,43 +95,218 @@
         </div>
       </div>
 
-      <el-table :data="filteredApplications" style="width: 100%; height: 500px" border>
-        <el-table-column prop="id" :label="t.applicationId" width="100" />
-        <el-table-column prop="recordNumbers" :label="t.recordNumbers" show-overflow-tooltip />
-        <el-table-column prop="borrowType" :label="t.borrowType" width="120">
+      <!-- 切换视图按钮（移动端） -->
+      <div v-if="isMobile" class="view-toggle">
+        <el-button size="small" @click="useTableView = !useTableView">
+          {{ useTableView ? t.cardView : t.tableView }}
+        </el-button>
+      </div>
+
+      <!-- 桌面端表格 / 移动端表格视图（可选） -->
+      <el-table
+        v-if="!isMobile || (isMobile && useTableView)"
+        :data="filteredApplications"
+        style="width: 100%"
+        border
+        height="500"
+        scrollbar-always-on
+        :class="{ 'show-on-mobile': isMobile && useTableView }"
+      >
+        <el-table-column prop="id" :label="t.applicationId" width="80" />
+        <el-table-column prop="recordNumbers" :label="t.recordNumbers" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="borrowType" :label="t.borrowType" width="100">
           <template #default="{ row }">
-            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'">
+            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" size="small">
               {{ row.borrowType }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="reason" :label="t.reason" show-overflow-tooltip />
-        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="150">
+        <el-table-column prop="reason" :label="t.reason" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="110">
           <template #default="{ row }">
             <span :class="{ overdue: isOverdue(row.expectedReturnDate) }">
-              {{ row.expectedReturnDate || '-' }}
+              {{ formatShortDate(row.expectedReturnDate) || '-' }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column :label="t.status" width="180">
+        <el-table-column :label="t.status" width="130">
           <template #default="{ row }">
             <div class="status-container">
-              <el-tag :type="getStatusType(row)" effect="dark">
+              <el-tag :type="getStatusType(row)" effect="dark" size="small">
                 {{ getStatusText(row) }}
               </el-tag>
-              <el-tooltip :content="getStatusDescription(row)" placement="top">
-                <el-icon class="status-icon"><InfoFilled /></el-icon>
-              </el-tooltip>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="submitTime" :label="t.submitTime" width="180" />
-        <el-table-column prop="updatedTime" :label="t.updateTime" width="180" />
-        <el-table-column :label="t.actions" width="400" fixed="right">
+        <el-table-column prop="submitTime" :label="t.submitTime" width="160">
           <template #default="{ row }">
+            {{ formatShortDate(row.submitTime) || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="updatedTime" :label="t.updateTime" width="160">
+          <template #default="{ row }">
+            {{ formatShortDate(row.updatedTime) || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column :label="t.actions" width="340" fixed="right">
+          <template #default="{ row }">
+            <div class="action-buttons">
+              <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
+
+              <template v-if="store.state.user?.role === 'dept_approver'">
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="success"
+                  size="small"
+                  @click="deptApproveApplication(row.id)"
+                >
+                  {{ t.deptApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="danger"
+                  size="small"
+                  @click="deptRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else-if="store.state.user?.role === 'archive_approver'">
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="success"
+                  size="small"
+                  @click="archiveApproveApplication(row.id)"
+                >
+                  {{ t.archiveApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="archiveRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else-if="isAdmin">
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="success"
+                  size="small"
+                  @click="deptApproveApplication(row.id)"
+                >
+                  {{ t.deptApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="danger"
+                  size="small"
+                  @click="deptRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="success"
+                  size="small"
+                  @click="archiveApproveApplication(row.id)"
+                >
+                  {{ t.archiveApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="archiveRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else>
+                <el-button
+                  v-if="row.status === 'pending_dept' || row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="cancelApplication(row.id)"
+                >
+                  {{ t.cancel }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'approved'"
+                  type="primary"
+                  size="small"
+                  @click="pickupApplication(row.id)"
+                >
+                  {{ t.pickup }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'picked'"
+                  type="success"
+                  size="small"
+                  @click="completeApplication(row.id)"
+                >
+                  {{ t.complete }}
+                </el-button>
+              </template>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 移动端卡片布局 -->
+      <div v-else class="mobile-card-list">
+        <div v-for="row in filteredApplications" :key="row.id" class="mobile-card">
+          <div class="mobile-card-header">
+            <span class="app-id">{{ t.applicationId }}: {{ row.id }}</span>
+            <div class="mobile-card-header-right">
+              <span class="mobile-header-time">{{ formatShortDate(row.submitTime) }}</span>
+              <el-tag :type="getStatusType(row)" effect="dark" size="small">
+                {{ getStatusText(row) }}
+              </el-tag>
+            </div>
+          </div>
+          <div class="mobile-card-body">
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.recordNumbers }}:</span>
+              <span class="mobile-value mobile-value-break" :title="row.recordNumbers">{{ row.recordNumbers || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.borrowType }}:</span>
+              <span class="mobile-value">
+                <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" size="small">
+                  {{ row.borrowType || '-' }}
+                </el-tag>
+              </span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.reason }}:</span>
+              <span class="mobile-value mobile-value-break" :title="row.reason">{{ row.reason || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.expectedReturnDate }}:</span>
+              <span class="mobile-value" :class="{ overdue: isOverdue(row.expectedReturnDate) }">
+                {{ formatShortDate(row.expectedReturnDate) || '-' }}
+              </span>
+            </div>
+            <div class="mobile-card-item mobile-card-item-collapsible" :class="{ collapsed: !showExtra[row.id] }">
+              <span class="mobile-label">{{ t.submitTime }}:</span>
+              <span class="mobile-value">{{ formatShortDate(row.submitTime) || '-' }}</span>
+            </div>
+            <div class="mobile-card-item mobile-card-item-collapsible" :class="{ collapsed: !showExtra[row.id] }">
+              <span class="mobile-label">{{ t.updateTime }}:</span>
+              <span class="mobile-value">{{ formatShortDate(row.updatedTime) || '-' }}</span>
+            </div>
+            <div v-if="!showExtra[row.id]" class="mobile-show-more" @click="showExtra[row.id] = true">
+              {{ t.showMore }}
+            </div>
+          </div>
+          <div class="mobile-card-footer">
             <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
 
-            <!-- 科室审批员：只能审批待科室审批的申请 -->
             <template v-if="store.state.user?.role === 'dept_approver'">
               <el-button
                 v-if="row.status === 'pending_dept'"
@@ -151,7 +326,6 @@
               </el-button>
             </template>
 
-            <!-- 病案室审批员：只能审批待病案室审批的申请 -->
             <template v-else-if="store.state.user?.role === 'archive_approver'">
               <el-button
                 v-if="row.status === 'pending_archive'"
@@ -171,7 +345,6 @@
               </el-button>
             </template>
 
-            <!-- 系统管理员：可以执行所有审批操作 -->
             <template v-else-if="isAdmin">
               <el-button
                 v-if="row.status === 'pending_dept'"
@@ -207,7 +380,6 @@
               </el-button>
             </template>
 
-            <!-- 普通用户：只能对自己的申请进行操作 -->
             <template v-else>
               <el-button
                 v-if="row.status === 'pending_dept' || row.status === 'pending_archive'"
@@ -234,11 +406,11 @@
                 {{ t.complete }}
               </el-button>
             </template>
-          </template>
-        </el-table-column>
-      </el-table>
+          </div>
+        </div>
+      </div>
 
-      <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" width="800px">
+      <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" :width="isMobile ? '95%' : '800px'" class="detail-dialog">
         <div v-if="selectedApplication" class="application-detail">
           <div class="detail-section">
             <h3>{{ t.basicInfo }}</h3>
@@ -300,10 +472,21 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { InfoFilled, QuestionFilled } from '@element-plus/icons-vue'
+import { QuestionFilled } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router'
 import service from '../api/request'
 import store from '../store'
+import dayjs from 'dayjs'
+
+const isMobile = ref(false)
+const useTableView = ref(false)
+const showExtra = reactive<Record<number, boolean>>({})
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) {
+    useTableView.value = false
+  }
+}
 
 interface BorrowApplication {
   id: number
@@ -318,15 +501,12 @@ interface BorrowApplication {
   updatedTime?: string
   userName?: string
   department?: string
-  // 科室审批相关字段
   deptApprover?: string
   deptApproveTime?: string
   deptRejectionReason?: string
-  // 病案室审批相关字段
   archiveApprover?: string
   archiveApproveTime?: string
   archiveRejectionReason?: string
-  // 兼容旧字段
   approver?: string
   rejectionReason?: string
   statusHistory?: StatusEvent[]
@@ -385,7 +565,10 @@ const t = {
   comment: '\u5907\u6ce8',
   deptApproval: '\u79d1\u5ba4\u5ba1\u6279',
   archiveApproval: '\u75c5\u6848\u5ba4\u5ba1\u6279',
-  approvalInfo: '\u5ba1\u6279\u4fe1\u606f'
+  approvalInfo: '\u5ba1\u6279\u4fe1\u606f',
+  showMore: '\u5c55\u5f00\u66f4\u591a',
+  cardView: '\u5361\u7247\u89c6\u56fe',
+  tableView: '\u8868\u683c\u89c6\u56fe'
 }
 
 const searchForm = reactive({
@@ -416,6 +599,13 @@ const isOverdue = (expectedReturnDate?: string) => {
   const returnDate = new Date(expectedReturnDate)
   if (Number.isNaN(returnDate.getTime())) return false
   return returnDate < today
+}
+
+const formatShortDate = (date?: string) => {
+  if (!date) return null
+  const d = dayjs(date)
+  if (!d.isValid()) return date
+  return d.format('MM-DD HH:mm')
 }
 
 const isApplicationOverdue = (application: BorrowApplication | null | undefined) => {
@@ -1020,6 +1210,8 @@ const viewDetail = (application: BorrowApplication) => {
 }
 
 onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
   if (route.query.mine === '1') {
     forceMine.value = true
   }
@@ -1224,6 +1416,144 @@ onMounted(() => {
   font-style: italic;
 }
 
+.mobile-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px;
+}
+
+.mobile-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+}
+
+.mobile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+  color: white;
+}
+
+.app-id {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.mobile-card-body {
+  padding: 16px;
+}
+
+.mobile-card-item {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.mobile-label {
+  font-weight: 500;
+  color: #86868B;
+  font-size: 13px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.mobile-value {
+  flex: 1;
+  color: #1D1D1F;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mobile-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card-footer .el-button {
+  flex: 1;
+  min-width: auto;
+}
+
+.mobile-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-header-time {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.mobile-value-break {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.mobile-card-item-collapsible {
+  transition: all 0.2s ease-out;
+}
+
+.mobile-card-item-collapsible.collapsed {
+  display: none;
+}
+
+.mobile-show-more {
+  text-align: center;
+  padding: 8px 0;
+  color: #007AFF;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mobile-show-more:active {
+  opacity: 0.7;
+}
+
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.detail-dialog :deep(.el-dialog__body) {
+  padding: 16px;
+}
+
 @media (max-width: 768px) {
   .borrow-history-container {
     padding: 10px;
@@ -1252,6 +1582,27 @@ onMounted(() => {
   .detail-item .label {
     width: auto;
   }
+  
+  .el-table {
+    display: none;
+  }
+  
+  .el-table.show-on-mobile {
+    display: table;
+  }
+  
+  .mobile-label {
+    min-width: 85px;
+    font-size: 12px;
+  }
+  
+  .mobile-value {
+    font-size: 13px;
+  }
+
+  .mobile-card-body {
+    padding: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1267,6 +1618,39 @@ onMounted(() => {
   
   .status-count {
     font-size: 24px;
+  }
+  
+  .mobile-card-header {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .mobile-card-body {
+    padding: 10px;
+  }
+  
+  .mobile-card-footer {
+    padding: 10px 12px;
+  }
+  
+  .mobile-label {
+    min-width: 70px;
+    font-size: 11px;
+  }
+  
+  .mobile-value {
+    font-size: 12px;
+  }
+
+  .mobile-card-item {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .mobile-card-header-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 }
 </style>

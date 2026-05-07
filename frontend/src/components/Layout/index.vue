@@ -4,7 +4,7 @@
     <el-aside 
       :width="isCollapse ? '64px' : '200px'" 
       class="layout-aside"
-      :class="{ 'aside-collapsed': isCollapse }"
+      :class="{ 'aside-collapsed': isCollapse, 'mobile-menu-open': showMobileMenu }"
     >
       <div class="aside-header">
         <div class="logo-container" :class="{ 'logo-container-collapsed': isCollapse }">
@@ -30,6 +30,7 @@
         text-color="#1D1D1F"
         active-text-color="#007AFF"
         router
+        @select="onMenuSelect"
       >
         <el-menu-item index="/dashboard">
           <el-icon><DataLine /></el-icon>
@@ -248,6 +249,13 @@ const toggleCollapse = () => {
 // 切换移动端菜单
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value
+}
+
+// 移动端菜单项选中时关闭菜单
+const onMenuSelect = () => {
+  if (window.innerWidth < 768) {
+    showMobileMenu.value = false
+  }
 }
 
 // 退出登录
@@ -592,9 +600,10 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
-  z-index: 999;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -604,12 +613,16 @@ onUnmounted(() => {
   
   .layout-aside {
     position: fixed;
-    left: -200px;
+    left: -260px;
     top: 64px;
     bottom: 0;
-    width: 200px !important;
+    width: 260px !important;
     z-index: 1001;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
   }
   
   .layout-aside.mobile-menu-open {
@@ -629,6 +642,59 @@ onUnmounted(() => {
   .layout-content {
     padding: 10px;
   }
+  
+  .aside-header {
+    padding: 0 16px;
+    height: 56px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .layout-menu {
+    height: calc(100vh - 56px);
+    padding: 8px 0;
+  }
+  
+  .layout-menu .el-menu-item {
+    margin: 4px 12px !important;
+    padding: 0 16px !important;
+    height: 50px !important;
+    line-height: 50px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+  }
+  
+  .layout-menu .el-menu-item .el-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 14px !important;
+  }
+  
+  .layout-menu .el-sub-menu__title {
+    height: 50px !important;
+    line-height: 50px !important;
+    font-size: 15px !important;
+    margin: 4px 12px !important;
+    border-radius: 10px !important;
+  }
+  
+  .layout-menu .el-sub-menu__title .el-icon {
+    font-size: 20px !important;
+    margin-right: 14px !important;
+  }
+  
+  .layout-menu .el-sub-menu .el-menu-item {
+    margin: 2px 12px 2px 24px !important;
+    padding: 0 16px !important;
+    height: 48px !important;
+    line-height: 48px !important;
+    font-size: 14px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -647,6 +713,15 @@ onUnmounted(() => {
   
   .user-name {
     display: none;
+  }
+  
+  .layout-aside {
+    width: 240px !important;
+    left: -240px;
+  }
+  
+  .mobile-menu-overlay {
+    z-index: 1000;
   }
 }
 </style>
