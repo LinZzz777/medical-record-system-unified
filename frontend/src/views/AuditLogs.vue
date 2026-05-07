@@ -57,12 +57,12 @@
         </div>
       </div>
 
-      <div v-if="!isMobile || (isMobile && useTableView)" class="table-wrapper">
+      <div v-if="!isMobile || (isMobile && useTableView)" class="table-wrapper" v-loading="loading">
         <el-table
-          :data="auditLogs"
+          :data="filteredLogs"
           style="width: 100%"
           border
-          height="100%"
+          height="500"
           scrollbar-always-on
           :class="{ 'show-on-mobile': isMobile && useTableView }"
         >
@@ -96,8 +96,8 @@
       </div>
 
       <!-- 移动端卡片布局 -->
-      <div v-else class="mobile-card-list">
-        <div v-for="row in auditLogs" :key="row.id" class="mobile-card">
+      <div v-else class="mobile-card-list" v-loading="loading">
+        <div v-for="row in filteredLogs" :key="row.id" class="mobile-card">
           <div class="mobile-card-header">
             <span class="mobile-card-id">#{{ row.id }}</span>
             <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
@@ -137,11 +137,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import service from '../api/request'
 import dayjs from 'dayjs'
 
 const auditLogs = ref<any[]>([])
+const loading = ref(false)
 const searchForm = ref({
   username: '',
   operationType: '',
@@ -151,6 +153,8 @@ const searchForm = ref({
 const dateRange = ref<[string, string] | null>(null)
 const isMobile = ref(false)
 const useTableView = ref(false)
+
+const filteredLogs = computed(() => auditLogs.value)
 
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768
@@ -212,6 +216,7 @@ const getModuleName = (module: string) => {
 }
 
 const loadAuditLogs = async () => {
+  loading.value = true
   try {
     const params: any = {
       page: 1,
@@ -230,9 +235,25 @@ const loadAuditLogs = async () => {
       params.endTime = searchForm.value.endTime
     }
     const response: any = await service.get('/audit-logs', { params })
-    auditLogs.value = response?.records || []
+    // Handle multiple possible response structures
+    if (Array.isArray(response)) {
+      auditLogs.value = response
+    } else if (response?.records) {
+      auditLogs.value = response.records
+    } else if (response?.data?.records) {
+      auditLogs.value = response.data.records
+    } else if (response?.data && Array.isArray(response.data)) {
+      auditLogs.value = response.data
+    } else {
+      console.warn('Unexpected audit logs response structure:', response)
+      auditLogs.value = []
+    }
   } catch (error) {
     console.error('获取审计日志失败:', error)
+    ElMessage.error('获取审计日志失败，请稍后重试')
+    auditLogs.value = []
+  } finally {
+    loading.value = false
   }
 }
 
@@ -268,29 +289,17 @@ onMounted(() => {
 <style scoped>
 .audit-logs-container {
   padding: 20px;
-  height: calc(100vh - 64px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  min-height: calc(100vh - 64px);
+  overflow: auto;
 }
 
 .audit-logs-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 24px;
   background: rgba(255, 255, 255, 0.75) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   border: 1px solid rgba(255, 255, 255, 0.5) !important;
   border-radius: 24px !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
-}
-
-.audit-logs-card :deep(.el-card__body) {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
 }
 
 .card-header {
@@ -332,19 +341,7 @@ onMounted(() => {
 }
 
 .table-wrapper {
-  flex: 1;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.table-wrapper :deep(.el-table) {
-  flex: 1;
-  height: 100%;
-}
-
-.table-wrapper :deep(.el-table__body-wrapper) {
-  overflow-y: auto !important;
 }
 
 .view-toggle {
@@ -356,10 +353,8 @@ onMounted(() => {
 .mobile-card-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 4px 0;
-  overflow-y: auto;
-  flex: 1;
+  gap: 16px;
+  padding: 8px;
 }
 
 .mobile-card {
@@ -372,33 +367,34 @@ onMounted(() => {
   transition: all 0.2s ease-out;
 }
 
-.mobile-card:active {
-  transform: scale(0.99);
+.mobile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .mobile-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 14px;
+  padding: 16px;
   background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
   color: white;
 }
 
 .mobile-card-id {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .mobile-card-body {
-  padding: 14px;
+  padding: 16px;
 }
 
 .mobile-card-item {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   align-items: flex-start;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -412,7 +408,7 @@ onMounted(() => {
   font-weight: 500;
   color: #86868B;
   font-size: 13px;
-  min-width: 80px;
+  min-width: 100px;
   flex-shrink: 0;
 }
 
