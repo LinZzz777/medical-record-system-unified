@@ -29,6 +29,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private static final String RECORD_STATUS_ARCHIVED = "\u5df2\u5f52\u6863";
 
     private static final String APP_STATUS_PENDING = "pending";
+    private static final String APP_STATUS_PENDING_DEPT = "pending_dept";
+    private static final String APP_STATUS_PENDING_ARCHIVE = "pending_archive";
     private static final String APP_STATUS_APPROVED = "approved";
     private static final String APP_STATUS_REJECTED = "rejected";
     private static final String APP_STATUS_PICKED = "picked";
@@ -68,43 +70,67 @@ public class StatisticsServiceImpl implements StatisticsService {
                 + medicalRecordService.countByStatus(RECORD_STATUS_BORROWED)
                 + medicalRecordService.countByStatus(RECORD_STATUS_ARCHIVED);
 
+        // 根据不同角色计算待审批数量
+        int pendingCount = calculatePendingCount(userId, role);
+
         if ("admin".equals(role)) {
             stats.put("totalRecords", totalRecords);
             stats.put("borrowedCount", medicalRecordService.countByStatus(RECORD_STATUS_BORROWED));
-            stats.put("pendingCount", borrowApplicationService.selectPendingApplications().size());
-            stats.put("overdueCount", borrowApplicationService.selectOverdueApplications().size());
-        } else if ("dept_director".equals(role)) {
-            User director = userService.getById(userId);
-            String dept = director != null ? director.getDepartment() : null;
-            List<BorrowApplication> allApps = borrowApplicationService.selectAllApplications();
-            List<BorrowApplication> overdueApps = borrowApplicationService.selectOverdueApplications();
-
-            long borrowedCount = allApps.stream()
-                .filter(app -> dept != null && dept.equals(app.getUserDepartment())
-                    && (APP_STATUS_APPROVED.equals(app.getStatus()) || APP_STATUS_PICKED.equals(app.getStatus())))
-                .count();
-            long pendingCount = allApps.stream()
-                .filter(app -> APP_STATUS_PENDING.equals(app.getStatus())
-                    && dept != null && dept.equals(app.getUserDepartment()))
-                .count();
-            long overdueCount = overdueApps.stream()
-                .filter(app -> dept != null && dept.equals(app.getUserDepartment()))
-                .count();
-
-            stats.put("totalRecords", totalRecords);
-            stats.put("borrowedCount", borrowedCount);
             stats.put("pendingCount", pendingCount);
-            stats.put("overdueCount", overdueCount);
+            stats.put("overdueCount", borrowApplicationService.selectOverdueApplications().size());
         } else {
             List<BorrowApplication> userApplications = borrowApplicationService.selectByUserId(userId);
             List<BorrowApplication> overdueApplications = borrowApplicationService.selectOverdueApplications();
             stats.put("totalRecords", totalRecords);
             stats.put("borrowedCount", userApplications.stream().filter(app -> APP_STATUS_APPROVED.equals(app.getStatus())).count());
-            stats.put("pendingCount", userApplications.stream().filter(app -> APP_STATUS_PENDING.equals(app.getStatus())).count());
+            stats.put("pendingCount", pendingCount);
             stats.put("overdueCount", overdueApplications.stream().filter(app -> Objects.equals(app.getUserId(), userId)).count());
         }
 
         return stats;
+    }
+
+    /**
+     * 根据角色计算待审批数量
+     * - admin: 所有待科室审批 + 待病案室审批的申请
+     * - dept_approver: 该科室待科室审批的申请
+     * - archive_approver: 所有待病案室审批的申请
+     * - user: 该用户自己提交的仍在审批中的申请
+     */
+    private int calculatePendingCount(Long userId, String role) {
+        if ("admin".equals(role)) {
+            // 管理员：所有待审批（pending_dept + pending_archive）
+            int pendingDept = borrowApplicationService.selectByStatus(APP_STATUS_PENDING_DEPT).size();
+            int pendingArchive = borrowApplicationService.selectByStatus(APP_STATUS_PENDING_ARCHIVE).size();
+            return pendingDept + pendingArchive;
+        }
+
+        if ("dept_approver".equals(role)) {
+            // 科室审批员：该科室待科室审批的申请
+            User user = userService.getById(userId);
+            if (user != null && user.getDepartment() != null) {
+                return borrowApplicationService.selectPendingDeptByDepartment(user.getDepartment()).size();
+            }
+            return 0;
+        }
+
+        if ("archive_approver".equals(role)) {
+            // 病案室审批员：所有待病案室审批的申请
+            return borrowApplicationService.selectByStatus(APP_STATUS_PENDING_ARCHIVE).size();
+        }
+
+        // 普通用户：自己提交的仍在审批中的申请（pending_dept + pending_archive）
+        if (userId != null) {
+            List<BorrowApplication> userApplications = borrowApplicationService.selectByUserId(userId);
+            if (userApplications != null) {
+                return (int) userApplications.stream()
+                        .filter(app -> APP_STATUS_PENDING_DEPT.equals(app.getStatus()) 
+                                || APP_STATUS_PENDING_ARCHIVE.equals(app.getStatus()))
+                        .count();
+            }
+        }
+
+        return 0;
     }
 
     @Override

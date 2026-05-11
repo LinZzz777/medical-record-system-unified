@@ -4,17 +4,7 @@
 
     <!-- 根据用户查询审计日志 -->
     <select id="selectByUsername" resultType="com.medical.record.system.entity.AuditLog">
-        SELECT
-            id,
-            username,
-            operation,
-            module,
-            ip,
-            user_agent AS userAgent,
-            details,
-            status,
-            created_time AS createdTime,
-            deleted
+        SELECT *
         FROM audit_logs
         WHERE username = #{username}
           AND deleted = 0
@@ -23,17 +13,7 @@
 
     <!-- 根据模块查询审计日志 -->
     <select id="selectByModule" resultType="com.medical.record.system.entity.AuditLog">
-        SELECT
-            id,
-            username,
-            operation,
-            module,
-            ip,
-            user_agent AS userAgent,
-            details,
-            status,
-            created_time AS createdTime,
-            deleted
+        SELECT *
         FROM audit_logs
         WHERE module = #{module}
           AND deleted = 0
@@ -42,17 +22,7 @@
 
     <!-- 根据时间范围查询审计日志 -->
     <select id="selectByTimeRange" resultType="com.medical.record.system.entity.AuditLog">
-        SELECT
-            id,
-            username,
-            operation,
-            module,
-            ip,
-            user_agent AS userAgent,
-            details,
-            status,
-            created_time AS createdTime,
-            deleted
+        SELECT *
         FROM audit_logs
         WHERE created_time BETWEEN #{startTime} AND #{endTime}
           AND deleted = 0
@@ -61,17 +31,7 @@
 
     <!-- 根据操作类型查询审计日志 -->
     <select id="selectByOperation" resultType="com.medical.record.system.entity.AuditLog">
-        SELECT
-            id,
-            username,
-            operation,
-            module,
-            ip,
-            user_agent AS userAgent,
-            details,
-            status,
-            created_time AS createdTime,
-            deleted
+        SELECT *
         FROM audit_logs
         WHERE operation = #{operation}
           AND deleted = 0
@@ -80,24 +40,14 @@
 
     <!-- 分页查询审计日志 -->
     <select id="selectAuditLogs" resultType="com.medical.record.system.entity.AuditLog">
-        SELECT
-            id,
-            username,
-            operation,
-            module,
-            ip,
-            user_agent AS userAgent,
-            details,
-            status,
-            created_time AS createdTime,
-            deleted
+        SELECT *
         FROM audit_logs
         WHERE deleted = 0
         <if test="username != null and username != ''">
             AND username = #{username}
         </if>
         <if test="operationType != null and operationType != ''">
-            AND operation LIKE CONCAT(#{operationType}, '%')
+            AND operation = #{operationType}
         </if>
         <if test="startTime != null and startTime != ''">
             AND created_time &gt;= #{startTime}

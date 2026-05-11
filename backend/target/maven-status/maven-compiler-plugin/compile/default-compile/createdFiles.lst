@@ -2,8 +2,6 @@ com\medical\record\system\mapper\PermissionMapper.class
 com\medical\record\system\service\AuditLogService.class
 com\medical\record\system\config\OperationLogAspect.class
 com\medical\record\system\service\impl\BorrowApplicationServiceImpl.class
-com\medical\record\system\config\AuditLogTableInitializer.class
-com\medical\record\system\config\JacksonConfig.class
 com\medical\record\system\service\RoleService.class
 com\medical\record\system\service\impl\PermissionServiceImpl.class
 com\medical\record\system\service\PermissionService.class
@@ -35,13 +33,10 @@ com\medical\record\system\entity\Menu.class
 com\medical\record\system\controller\RoleController.class
 com\medical\record\system\config\OperationLog.class
 com\medical\record\system\service\impl\MenuServiceImpl.class
-com\medical\record\system\config\UserTableInitializer.class
-com\medical\record\system\config\SysTablesInitializer.class
 com\medical\record\system\controller\BorrowApplicationController.class
 com\medical\record\system\controller\AuditLogController.class
 com\medical\record\system\entity\Role.class
 com\medical\record\system\controller\SpaForwardController.class
-com\medical\record\system\config\BorrowApplicationTableInitializer.class
 com\medical\record\system\mapper\BorrowApplicationMapper.class
 com\medical\record\system\service\BorrowApplicationService.class
 com\medical\record\system\entity\User.class

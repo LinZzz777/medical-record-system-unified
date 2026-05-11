@@ -52,9 +52,4 @@ public interface UserService extends IService<User> {
      */
     boolean updateUserStatus(Long userId, Integer status);
 
-    /**
-     * 根据科室查找科室主任
-     */
-    User findDirectorByDepartment(String department);
-
 }

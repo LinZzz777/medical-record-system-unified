@@ -7,6 +7,7 @@ import com.medical.record.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class UserController {
     private BorrowApplicationService borrowApplicationService;
 
     @PostMapping("/register")
-    @OperationLog(module = "User", operation = "USER_REGISTER", detail = "'username=' + #p0.username")
+    @OperationLog(module = "User", operation = "register", detail = "'username=' + #p0.username")
     public Map<String, Object> register(@RequestBody User user) {
         boolean success = userService.register(user);
         return Map.of(
@@ -31,27 +32,30 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @OperationLog(module = "Auth", operation = "LOGIN", detail = "'username=' + #p0['username']")
+    @OperationLog(module = "Auth", operation = "login", detail = "'username=' + #p0['username']")
     public Map<String, Object> login(@RequestBody Map<String, String> params) {
         String username = params.get("username");
         String password = params.get("password");
         User user = userService.login(username, password);
         if (user != null) {
+            Map<String, Object> safeUser = new HashMap<>();
+            safeUser.put("id", user.getId());
+            safeUser.put("employeeNumber", user.getEmployeeNumber());
+            safeUser.put("username", user.getUsername());
+            safeUser.put("name", user.getName());
+            safeUser.put("role", user.getRole());
+            safeUser.put("department", user.getDepartment());
+            safeUser.put("phone", user.getPhone());
+            safeUser.put("email", user.getEmail());
+            safeUser.put("address", user.getAddress());
+            safeUser.put("position", user.getPosition());
+            safeUser.put("status", user.getStatus());
             return Map.of(
                     "token", "token_" + System.currentTimeMillis(),
-                    "user", user
+                    "user", safeUser
             );
         }
         return Map.of("error", "\u7528\u6237\u540d\u6216\u5bc6\u7801\u9519\u8bef");
-    }
-
-    @PostMapping("/logout")
-    @OperationLog(module = "Auth", operation = "LOGOUT", detail = "'username=' + #p0['username']")
-    public Map<String, Object> logout(@RequestBody Map<String, String> params) {
-        return Map.of(
-                "success", true,
-                "message", "\u767b\u51fa\u6210\u529f"
-        );
     }
 
     @GetMapping("/current")
@@ -60,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    @OperationLog(module = "User", operation = "USER_UPDATE", detail = "'username=' + #p0.username")
+    @OperationLog(module = "User", operation = "update", detail = "'username=' + #p0.username")
     public Map<String, Object> updateUser(@RequestBody User user) {
         boolean success = userService.updateUserInfo(user);
         return Map.of(
@@ -70,7 +74,7 @@ public class UserController {
     }
 
     @PutMapping("/reset-password")
-    @OperationLog(module = "User", operation = "USER_PASSWORD_RESET", detail = "'userId=' + #p0['userId']")
+    @OperationLog(module = "User", operation = "resetPassword", detail = "'userId=' + #p0['userId']")
     public Map<String, Object> resetPassword(@RequestBody Map<String, Object> params) {
         Long userId = Long.valueOf(params.get("userId").toString());
         String newPassword = params.get("newPassword").toString();
@@ -92,7 +96,7 @@ public class UserController {
     }
 
     @PutMapping("/batch-status")
-    @OperationLog(module = "User", operation = "USER_BATCH_STATUS", detail = "'ids=' + #p0['ids']")
+    @OperationLog(module = "User", operation = "batchStatus", detail = "'ids=' + #p0['ids']")
     public Map<String, Object> batchUpdateStatus(@RequestBody Map<String, Object> params) {
         List<Long> ids = (List<Long>) params.get("ids");
         Integer status = (Integer) params.get("status");
@@ -104,7 +108,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/status")
-    @OperationLog(module = "User", operation = "USER_STATUS", detail = "'id=' + #p0 + ', status=' + #p1['status']")
+    @OperationLog(module = "User", operation = "updateStatus", detail = "'id=' + #p0 + ', status=' + #p1['status']")
     public Map<String, Object> updateUserStatus(@PathVariable Long id, @RequestBody Map<String, Integer> params) {
         Integer status = params.get("status");
         User user = userService.getById(id);
@@ -129,7 +133,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @OperationLog(module = "User", operation = "USER_DELETE", detail = "'id=' + #p0")
+    @OperationLog(module = "User", operation = "delete", detail = "'id=' + #p0")
     public Map<String, Object> deleteUser(@PathVariable Long id) {
         User user = userService.getById(id);
         if (user == null) {

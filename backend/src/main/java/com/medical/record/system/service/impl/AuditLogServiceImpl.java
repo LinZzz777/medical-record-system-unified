@@ -50,9 +50,8 @@ public class AuditLogServiceImpl extends ServiceImpl<AuditLogMapper, AuditLog> i
 
     @Override
     public boolean clearAuditLogs() {
-        // 这里可以实现清空审计日志的逻辑
-        // 注意：实际操作中应该考虑保留一定时间的日志
-        return true;
+        // 清空所有审计日志（谨慎使用）
+        return remove(null);
     }
 
     @Override

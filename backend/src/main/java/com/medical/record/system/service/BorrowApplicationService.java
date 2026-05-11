@@ -43,58 +43,78 @@ public interface BorrowApplicationService extends IService<BorrowApplication> {
     boolean createBorrowApplication(BorrowApplication borrowApplication);
 
     /**
-     * 审批借阅申请
+     * 科室审批通过（pending_dept -> pending_archive）
+     */
+    boolean deptApprove(Long id, String approver);
+
+    /**
+     * 科室审批驳回（pending_dept -> rejected）
+     */
+    boolean deptReject(Long id, String approver, String rejectionReason);
+
+    /**
+     * 病案室审批通过（pending_archive -> approved）
+     */
+    boolean archiveApprove(Long id, String approver);
+
+    /**
+     * 病案室审批驳回（pending_archive -> rejected）
+     */
+    boolean archiveReject(Long id, String approver, String rejectionReason);
+
+    /**
+     * 审批借阅申请（兼容旧版，根据当前状态自动判断）
      */
     boolean approveBorrowApplication(Long id, String approver);
 
     /**
-     * 驳回借阅申请
+     * 驳回借阅申请（兼容旧版，根据当前状态自动判断）
      */
     boolean rejectBorrowApplication(Long id, String approver, String rejectionReason);
 
     /**
-     * 取消借阅申请
+     * 取消借阅申请（仅申请人可在pending_dept或pending_archive状态下取消）
      */
     boolean cancelBorrowApplication(Long id, Long userId);
 
     /**
-     * 完成借阅申请（归还）
+     * 完成借阅申请（归还，picked -> completed）
      */
     boolean completeBorrowApplication(Long id);
-    
+
     /**
-     * 取件操作
+     * 取件操作（approved -> picked）
      */
     boolean pickupBorrowApplication(Long id);
 
     /**
-     * 批量审批借阅申请
+     * 批量科室审批通过
+     */
+    boolean batchDeptApprove(List<Long> ids, String approver);
+
+    /**
+     * 批量病案室审批通过
+     */
+    boolean batchArchiveApprove(List<Long> ids, String approver);
+
+    /**
+     * 批量审批借阅申请（兼容旧版）
      */
     boolean batchApproveBorrowApplications(List<Long> ids, String approver);
 
     /**
-     * 批量驳回借阅申请
+     * 批量驳回借阅申请（兼容旧版）
      */
     boolean batchRejectBorrowApplications(List<Long> ids, String approver, String rejectionReason);
 
     /**
-     * 科室主任审批借阅申请
+     * 根据科室查询待科室审批的申请列表
      */
-    boolean deptApproveBorrowApplication(Long id, String deptApprover);
+    List<BorrowApplication> selectPendingDeptByDepartment(String department);
 
     /**
-     * 科室主任驳回借阅申请
+     * 查询所有待病案室审批的申请列表
      */
-    boolean deptRejectBorrowApplication(Long id, String deptApprover, String rejectionReason);
-
-    /**
-     * 根据申请人科室查询借阅申请列表
-     */
-    List<BorrowApplication> selectByUserDepartment(String department);
-
-    /**
-     * 查询科室已审批待病案科终审的申请列表
-     */
-    List<BorrowApplication> selectDeptApprovedApplications();
+    List<BorrowApplication> selectPendingArchiveAll();
 
 }

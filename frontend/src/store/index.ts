@@ -30,11 +30,6 @@ export default createStore<RootState>({
   getters: {
     isAuthenticated: (state) => !!state.token,
     isAdmin: (state) => state.user?.role === 'admin',
-    isDirector: (state) => state.user?.role === '主任',
-    isAdminOrDirector: (state) => state.user?.role === 'admin' || state.user?.role === '主任',
-    isDeptDirector: (state) => state.user?.role === 'dept_director',
-    isMedRecordsDirector: (state) => state.user?.role === 'dept_director' && state.user?.department === '病案科',
-    userDepartment: (state) => state.user?.department || '',
     currentUser: (state) => state.user
   },
   mutations: {

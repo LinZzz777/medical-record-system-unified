@@ -7,7 +7,6 @@
         SELECT u.*
         FROM Users u
         WHERE u.role = #{roleId}
-          AND (u.deleted = 0 OR u.deleted IS NULL)
         ORDER BY u.createdAt DESC
     </select>
 
@@ -16,13 +15,12 @@
         SELECT *
         FROM Users
         WHERE username = #{username}
-          AND (deleted = 0 OR deleted IS NULL)
     </select>
 
     <!-- 批量更新用户状态 -->
     <update id="updateStatusBatch">
         UPDATE Users
-        SET `status` = #{status}
+        SET [status] = #{status}
         WHERE id IN
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}

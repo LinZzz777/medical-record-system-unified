@@ -19,10 +19,10 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
-@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OperationLogAspect {
 
     private final AuditLogService auditLogService;
@@ -52,8 +52,8 @@ public class OperationLogAspect {
             try {
                 auditLogService.addAuditLog(auditLog);
             } catch (Exception e) {
-                log.error("审计日志记录失败: module={}, operation={}, username={}, error={}",
-                        auditLog.getModule(), auditLog.getOperation(), auditLog.getUsername(), e.getMessage());
+                // 审计日志不应影响业务主流程
+                log.warn("Failed to save audit log: {}", e.getMessage());
             }
         }
     }

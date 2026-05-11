@@ -28,10 +28,11 @@ public class AuditLog {
 
     private Integer status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("created_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdTime;
 
+    @TableField("deleted")
     @TableLogic
     private Integer deleted;
 

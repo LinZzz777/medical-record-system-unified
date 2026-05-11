@@ -1,351 +1,283 @@
 <template>
   <div class="layout-container">
-    <!-- Sidebar -->
-    <aside
+    <!-- 侧边栏 -->
+    <el-aside 
+      :width="isCollapse ? '64px' : '200px'" 
       class="layout-aside"
-      :class="{ 'aside-collapsed': isCollapse, 'mobile-open': showMobileMenu }"
+      :class="{ 'aside-collapsed': isCollapse, 'mobile-menu-open': showMobileMenu }"
     >
       <div class="aside-header">
-        <div class="logo-wrapper">
-          <div class="logo-icon-box">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="logo-text">病案管理系统</span>
+        <div class="logo-container" :class="{ 'logo-container-collapsed': isCollapse }">
+          <transition name="logo-fade" mode="out-in">
+            <span v-if="!isCollapse" key="logo-text" class="logo-text">病案管理系统</span>
+            <span v-else key="logo-icon" class="logo-icon">📋</span>
           </transition>
         </div>
-        <button class="collapse-btn" @click="toggleCollapse">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ 'rotated': isCollapse }">
-            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <el-button 
+          type="text" 
+          class="collapse-btn"
+          @click="toggleCollapse"
+        >
+          <el-icon><ArrowLeft v-if="!isCollapse" /><ArrowRight v-else /></el-icon>
+        </el-button>
       </div>
-
-      <nav class="aside-nav">
-        <router-link
-          to="/dashboard"
-          class="nav-item"
-          :class="{ active: activeMenu === '/dashboard' }"
-        >
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="nav-label">仪表盘</span>
-          </transition>
-        </router-link>
-
-        <router-link
-          to="/borrow"
-          class="nav-item"
-          :class="{ active: activeMenu === '/borrow' }"
-        >
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 12H15M12 9V15M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="nav-label">借阅申请</span>
-          </transition>
-        </router-link>
-
-        <router-link
-          to="/borrow-history"
-          class="nav-item"
-          :class="{ active: activeMenu === '/borrow-history' }"
-        >
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 8V12L15 15M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="nav-label">借阅历史</span>
-          </transition>
-        </router-link>
-
-        <!-- Dept Director standalone review entry -->
-        <router-link
-          v-if="isDeptDirector && !isAdminOrDirector"
-          to="/review"
-          class="nav-item"
-          :class="{ active: activeMenu === '/review' }"
-        >
-          <span class="nav-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 12L11 14L15 10M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <transition name="fade">
-            <span v-if="!isCollapse" class="nav-label">审核管理</span>
-          </transition>
-        </router-link>
-
-        <!-- Admin/Director Management Section -->
-        <template v-if="isAdminOrDirector">
-          <div class="nav-divider" v-if="!isCollapse">
-            <span class="divider-label">管理功能</span>
-          </div>
-          <div v-else class="nav-divider-collapsed"></div>
-
-          <router-link
-            to="/review"
-            class="nav-item"
-            :class="{ active: activeMenu === '/review' }"
-          >
-            <span class="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 12L11 14L15 10M3 5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <transition name="fade">
-              <span v-if="!isCollapse" class="nav-label">审核管理</span>
-            </transition>
-          </router-link>
-
-          <router-link
-            to="/users"
-            class="nav-item"
-            :class="{ active: activeMenu === '/users' }"
-          >
-            <span class="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 20C17 18.3431 15.6569 17 14 17H10C8.34315 17 7 18.3431 7 20M21 12C21 13.6569 19.6569 15 18 15C16.3431 15 15 13.6569 15 12C15 10.3431 16.3431 9 18 9C19.6569 9 21 10.3431 21 12ZM15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7ZM3 12C3 13.6569 1.65685 15 0 15V15C-1.65685 15 -3 13.6569 -3 12C-3 10.3431 -1.65685 9 0 9V9C1.65685 9 3 10.3431 3 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <transition name="fade">
-              <span v-if="!isCollapse" class="nav-label">用户管理</span>
-            </transition>
-          </router-link>
-
-          <router-link
-            to="/audit"
-            class="nav-item"
-            :class="{ active: activeMenu === '/audit' }"
-          >
-            <span class="nav-icon">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <transition name="fade">
-              <span v-if="!isCollapse" class="nav-label">审计日志</span>
-            </transition>
-          </router-link>
-        </template>
-
-      </nav>
-
-      <!-- Sidebar Footer -->
-      <div class="aside-footer">
-        <div class="aside-footer-info" v-if="!isCollapse">
-          <span class="footer-version">v1.0.0</span>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <div class="layout-main">
-      <!-- Header -->
-      <header class="layout-header">
+      
+      <el-menu
+        :default-active="activeMenu"
+        class="layout-menu"
+        :collapse="isCollapse"
+        background-color="transparent"
+        text-color="#1D1D1F"
+        active-text-color="#007AFF"
+        router
+        @select="onMenuSelect"
+      >
+        <el-menu-item index="/dashboard">
+          <el-icon><DataLine /></el-icon>
+          <template #title>仪表盘</template>
+        </el-menu-item>
+        <el-menu-item index="/borrow">
+          <el-icon><Document /></el-icon>
+          <template #title>借阅申请</template>
+        </el-menu-item>
+        <el-menu-item index="/borrow-history">
+          <el-icon><Timer /></el-icon>
+          <template #title>借阅历史</template>
+        </el-menu-item>
+        
+        <!-- 只有管理员才能看到管理功能和调试页面 -->
+        <el-sub-menu v-if="isAdmin" index="admin">
+          <template #title>
+            <el-icon><Tools /></el-icon>
+            <span>管理功能</span>
+          </template>
+          <el-menu-item index="/users">
+            <template #title>用户管理</template>
+          </el-menu-item>
+          <el-menu-item index="/audit">
+            <template #title>审计日志</template>
+          </el-menu-item>
+        </el-sub-menu>
+        
+        <el-menu-item v-if="isAdmin" index="/test">
+          <el-icon><Operation /></el-icon>
+          <template #title>调试页面</template>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
+    
+    <!-- 主内容区 -->
+    <el-container class="layout-main">
+      <!-- 顶部导航栏 -->
+      <el-header class="layout-header">
         <div class="header-left">
-          <button class="mobile-menu-btn" @click="toggleMobileMenu">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div class="breadcrumb-area">
-            <span class="breadcrumb-current">{{ currentPageTitle }}</span>
-          </div>
+          <el-button 
+            type="text" 
+            class="mobile-menu-btn"
+            @click="toggleMobileMenu"
+          >
+            <el-icon><Menu /></el-icon>
+          </el-button>
         </div>
-
+        
         <div class="header-right">
-          <div class="header-action" title="通知">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 17H20L18.5951 15.5951C18.2141 15.2141 18 14.6973 18 14.1585V11C18 8.38757 16.3304 6.16509 14 5.34142V5C14 3.89543 13.1046 3 12 3C10.8954 3 10 3.89543 10 5V5.34142C7.66962 6.16509 6 8.38757 6 11V14.1585C6 14.6973 5.78595 15.2141 5.40493 15.5951L4 17H9M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-
-          <el-dropdown trigger="click" @command="handleCommand">
+          <el-dropdown trigger="click">
             <div class="user-info">
-              <div class="user-avatar">
-                <span class="avatar-initial">{{ currentUser.name ? currentUser.name[0] : 'U' }}</span>
-              </div>
-              <div class="user-details" v-if="currentUser.name">
-                <span class="user-name">{{ currentUser.name }}</span>
-                <span class="user-role">{{ roleLabel }}</span>
-              </div>
-              <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <el-avatar :size="32">
+                <img :src="userAvatar" />
+              </el-avatar>
+              <span class="user-name">{{ currentUser.name }}</span>
+              <el-icon><ArrowDown /></el-icon>
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="profile">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;margin-right:8px;">
-                    <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="1.5"/>
-                  </svg>
-                  个人信息
-                </el-dropdown-item>
-                <el-dropdown-item divided command="logout">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;margin-right:8px;">
-                    <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  退出登录
-                </el-dropdown-item>
+                <el-dropdown-item @click="showUserInfo">个人信息</el-dropdown-item>
+                <el-dropdown-item divided @click="handleLogout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
-      </header>
-
-      <!-- Content Area -->
-      <main class="layout-content">
+      </el-header>
+      
+      <!-- 内容区域 -->
+      <el-main class="layout-content">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>
-      </main>
-    </div>
-
-    <!-- Mobile Menu Overlay -->
-    <transition name="fade">
-      <div
-        v-if="showMobileMenu"
-        class="mobile-menu-overlay"
-        @click="toggleMobileMenu"
-      ></div>
-    </transition>
+      </el-main>
+    </el-container>
+    
+    <!-- 移动端菜单遮罩 -->
+    <div 
+      v-if="showMobileMenu" 
+      class="mobile-menu-overlay"
+      @click="toggleMobileMenu"
+    ></div>
+    
+    <!-- 个人信息对话框 -->
+    <el-dialog 
+      v-model="userInfoDialogVisible" 
+      title="个人信息" 
+      width="500px"
+      :close-on-click-modal="false"
+    >
+      <div class="user-info-detail">
+        <div class="info-avatar">
+          <el-avatar :size="80" :src="userAvatar" />
+        </div>
+        
+        <div class="info-content">
+          <div class="info-item">
+            <span class="info-label">用户名:</span>
+            <span class="info-value">{{ currentUser.username }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">角色:</span>
+            <span class="info-value">
+              <el-tag :type="getRoleType(currentUser.role)" size="small">
+                {{ getRoleName(currentUser.role) }}
+              </el-tag>
+            </span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">部门:</span>
+            <span class="info-value">{{ currentUser.department || '-' }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">姓名:</span>
+            <span class="info-value">{{ currentUser.name }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">电话:</span>
+            <span class="info-value">{{ currentUser.phone || '-' }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">邮箱:</span>
+            <span class="info-value">{{ currentUser.email || '-' }}</span>
+          </div>
+          
+          <div class="info-item" v-if="currentUser.position">
+            <span class="info-label">职位:</span>
+            <span class="info-value">{{ currentUser.position }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <template #footer>
+        <el-button @click="userInfoDialogVisible = false">关闭</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { 
+  ArrowLeft, ArrowRight, DataLine, Document, Timer, 
+  Tools, Operation, Menu, ArrowDown 
+} from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 import store from '../../store'
-import service from '../../api/request'
 
 const router = useRouter()
 const route = useRoute()
 
+// 侧边栏折叠状态
 const isCollapse = ref(false)
+// 移动端菜单显示状态
 const showMobileMenu = ref(false)
-const currentUser = computed(() => store.state.user || { name: '用户', role: '' })
+// 用户信息对话框
+const userInfoDialogVisible = ref(false)
+// 用户信息
+const currentUser = computed(() => store.state.user || { name: '管理员', role: '' })
 const isAdmin = computed(() => currentUser.value.role === 'admin')
-const isDirector = computed(() => currentUser.value.role === '主任')
-const isDeptDirector = computed(() => currentUser.value.role === 'dept_director')
-const isAdminOrDirector = computed(() => currentUser.value.role === 'admin' || currentUser.value.role === '主任')
+const userAvatar = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
 
-const roleLabel = computed(() => {
-  const role = currentUser.value.role
-  if (role === 'admin') return '管理员'
-  if (role === '主任') return '病案科主任'
-  if (role === 'dept_director') return '科室主任'
-  return '普通用户'
-})
-
-const activeMenu = computed(() => route.path || '/dashboard')
-
-const pageTitles: Record<string, string> = {
-  '/dashboard': '仪表盘',
-  '/borrow': '借阅申请',
-  '/borrow-history': '借阅历史',
-  '/review': '审核管理',
-  '/users': '用户管理',
-  '/audit': '审计日志'
+// 获取角色类型（用于tag颜色）
+const getRoleType = (role: string) => {
+  switch (role) {
+    case 'admin':
+      return 'danger'
+    case 'dept_approver':
+      return 'warning'
+    case 'archive_approver':
+      return 'primary'
+    default:
+      return 'info'
+  }
 }
 
-const currentPageTitle = computed(() => pageTitles[route.path] || '仪表盘')
+// 获取角色名称
+const getRoleName = (role: string) => {
+  switch (role) {
+    case 'admin':
+      return '系统管理员 (admin)'
+    case 'dept_approver':
+      return '科室审批员 (dept_approver)'
+    case 'archive_approver':
+      return '病案室审批员 (archive_approver)'
+    case 'user':
+      return '普通用户 (user)'
+    default:
+      return role || '-'
+  }
+}
 
+// 显示个人信息对话框
+const showUserInfo = () => {
+  userInfoDialogVisible.value = true
+}
+
+// 当前激活的菜单
+const activeMenu = computed(() => {
+  const path = route.path
+  return path || '/dashboard'
+})
+
+// 切换侧边栏折叠状态
 const toggleCollapse = () => {
   isCollapse.value = !isCollapse.value
 }
 
+// 切换移动端菜单
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value
 }
 
-const handleCommand = (command: string) => {
-  if (command === 'logout') {
-    handleLogout()
+// 移动端菜单项选中时关闭菜单
+const onMenuSelect = () => {
+  if (window.innerWidth < 768) {
+    showMobileMenu.value = false
   }
 }
 
-const handleLogout = async () => {
-  clearActivityTimer()
-  try {
-    const username = currentUser.value?.username || ''
-    await service.post('/users/logout', { username })
-  } catch (e) {
-    // ignore
-  }
+// 退出登录
+const handleLogout = () => {
   store.dispatch('logout')
   router.push('/login')
 }
 
-let resizeTimer: ReturnType<typeof setTimeout> | null = null
+// 响应式处理
 const handleResize = () => {
-  if (resizeTimer) clearTimeout(resizeTimer)
-  resizeTimer = setTimeout(() => {
-    if (window.innerWidth >= 768) {
-      showMobileMenu.value = false
-    }
-  }, 150)
+  const width = window.innerWidth
+  if (width < 768) {
+    showMobileMenu.value = false
+  }
 }
-
-watch(showMobileMenu, (isOpen) => {
-  document.body.style.overflow = isOpen ? 'hidden' : ''
-})
-
-// Idle timeout
-const IDLE_TIMEOUT_MS = 30 * 60 * 1000
-const WARNING_BEFORE_MS = 60 * 1000
-let idleTimer: ReturnType<typeof setTimeout> | null = null
-let warningTimer: ReturnType<typeof setTimeout> | null = null
-
-const resetActivityTimer = () => {
-  clearActivityTimer()
-  if (!store.state.token) return
-  warningTimer = setTimeout(() => {
-    ElMessage.warning('长时间未操作，即将自动退出登录')
-  }, IDLE_TIMEOUT_MS - WARNING_BEFORE_MS)
-  idleTimer = setTimeout(() => {
-    ElMessage.error('长时间未操作，已自动退出登录')
-    handleLogout()
-  }, IDLE_TIMEOUT_MS)
-}
-
-const clearActivityTimer = () => {
-  if (idleTimer) { clearTimeout(idleTimer); idleTimer = null }
-  if (warningTimer) { clearTimeout(warningTimer); warningTimer = null }
-}
-
-const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'wheel']
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
-  activityEvents.forEach(event => {
-    window.addEventListener(event, resetActivityTimer)
-  })
-  resetActivityTimer()
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
-  activityEvents.forEach(event => {
-    window.removeEventListener(event, resetActivityTimer)
-  })
-  clearActivityTimer()
-  document.body.style.overflow = ''
 })
 </script>
 
@@ -354,439 +286,442 @@ onUnmounted(() => {
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background: var(--color-bg-page);
-}
-
-/* Sidebar */
-.layout-aside {
-  width: var(--sidebar-width);
-  min-width: var(--sidebar-width);
-  background: var(--sidebar-bg);
-  display: flex;
-  flex-direction: column;
-  transition: width var(--transition-normal), min-width var(--transition-normal);
   position: relative;
-  z-index: var(--z-fixed);
+}
+
+.layout-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #4A9FE5 0%, #87CEEB 40%, #B0E0E6 70%, #E8F4FD 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.layout-container::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.layout-aside {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-}
-
-.layout-aside.aside-collapsed {
-  width: var(--sidebar-collapsed-width);
-  min-width: var(--sidebar-collapsed-width);
-}
-
-.layout-aside.aside-collapsed .aside-header {
-  padding: 20px 12px;
-  justify-content: center;
-}
-
-.layout-aside.aside-collapsed .logo-wrapper {
-  display: none;
-}
-
-.layout-aside.aside-collapsed .collapse-btn {
-  width: 40px;
-  height: 40px;
 }
 
 .aside-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px 16px;
-  height: 72px;
-  flex-shrink: 0;
+  padding: 0 16px;
+  height: 64px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
 }
 
-.logo-wrapper {
+.aside-collapsed .aside-header {
+  padding: 0;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  overflow: hidden;
+  position: relative;
 }
 
-.logo-icon-box {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  border-radius: var(--radius-md);
-  background: var(--color-primary);
+.logo-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  min-width: 0;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo-icon-box svg {
-  width: 20px;
-  height: 20px;
+.logo-container-collapsed {
+  flex: 0 0 auto;
+}
+
+.aside-collapsed .logo-container {
+  flex: 0 0 auto;
 }
 
 .logo-text {
-  color: var(--sidebar-text-active);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  color: #007AFF;
+  font-size: 16px;
+  font-weight: 600;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+}
+
+.logo-icon {
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-fade-enter-active,
+.logo-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.logo-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .collapse-btn {
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
-  color: var(--sidebar-text);
-  cursor: pointer;
+  color: #007AFF;
+  font-size: 16px;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease-out;
   flex-shrink: 0;
 }
 
 .collapse-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--sidebar-text-active);
+  background: rgba(0, 122, 255, 0.2);
 }
 
-.collapse-btn svg {
-  width: 16px;
-  height: 16px;
-  transition: transform var(--transition-normal);
+.aside-collapsed .collapse-btn {
+  position: absolute;
+  right: 8px;
 }
 
-.collapse-btn svg.rotated {
-  transform: rotate(180deg);
+.layout-menu {
+  border-right: none !important;
+  height: calc(100vh - 64px);
+  background: transparent !important;
 }
 
-/* Navigation */
-.aside-nav {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 8px 12px;
+/* Expanded state: align icons and text properly */
+:deep(.layout-menu .el-menu-item) {
+  border-radius: 12px !important;
+  margin: 4px 8px;
+  padding: 0 20px !important;
+  height: 48px;
+  line-height: 48px;
+  display: flex !important;
+  align-items: center !important;
+  transition: all 0.2s ease-out;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  margin-bottom: 2px;
-  border-radius: var(--radius-md);
-  color: var(--sidebar-text);
-  text-decoration: none;
-  transition: all var(--transition-fast);
-  cursor: pointer;
-  position: relative;
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--sidebar-text-active);
-}
-
-.nav-item.active {
-  background: var(--color-primary);
-  color: var(--sidebar-text-active);
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
-}
-
-.nav-icon {
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.nav-label {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.nav-divider {
-  padding: 16px 12px 8px;
-  display: flex;
-  align-items: center;
-}
-
-.divider-label {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.nav-divider-collapsed {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 12px 8px;
-}
-
-/* Sidebar Footer */
-.aside-footer {
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+:deep(.layout-menu .el-menu-item .el-icon) {
+  margin-right: 12px;
+  font-size: 18px;
   flex-shrink: 0;
-}
-
-.aside-footer-info {
-  display: flex;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
 }
 
-.footer-version {
-  font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.25);
+:deep(.layout-menu .el-menu-item span) {
+  white-space: nowrap;
+  line-height: 1;
 }
 
-/* Main Layout */
+/* Collapsed state: center icons */
+:deep(.aside-collapsed .layout-menu .el-menu-item) {
+  margin: 4px 8px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 48px !important;
+}
+
+:deep(.aside-collapsed .layout-menu .el-menu-item .el-icon) {
+  margin-right: 0 !important;
+  font-size: 20px;
+  width: auto !important;
+  height: auto !important;
+}
+
+:deep(.aside-collapsed .layout-menu .el-menu-item span:not(.el-icon)) {
+  display: none !important;
+}
+
+:deep(.layout-menu .el-menu-item:hover) {
+  background: rgba(0, 122, 255, 0.08) !important;
+}
+
+:deep(.layout-menu .el-menu-item.is-active) {
+  background: rgba(0, 122, 255, 0.15) !important;
+  color: #007AFF !important;
+}
+
 .layout-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* Header */
 .layout-header {
-  height: var(--header-height);
-  min-height: var(--header-height);
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--color-divider);
-  box-shadow: var(--header-shadow);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-lg);
-  z-index: var(--z-sticky);
+  align-items: center;
+  padding: 0 20px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .mobile-menu-btn {
   display: none;
+  font-size: 20px;
+  color: #1D1D1F;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
   width: 36px;
   height: 36px;
-  border: none;
-  background: none;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  align-items: center;
-  justify-content: center;
-}
-
-.mobile-menu-btn:hover {
-  background: var(--color-bg-tertiary);
-}
-
-.mobile-menu-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.breadcrumb-area {
-  display: flex;
-  align-items: center;
-}
-
-.breadcrumb-current {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.header-action {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  position: relative;
-}
-
-.header-action:hover {
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-}
-
-.header-action svg {
-  width: 20px;
-  height: 20px;
+  gap: 16px;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  border-radius: var(--radius-md);
+  gap: 8px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease-out;
 }
 
 .user-info:hover {
-  background: var(--color-bg-tertiary);
-}
-
-.user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.avatar-initial {
-  color: white;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .user-name {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  line-height: 1.2;
+  font-size: 14px;
+  color: #1D1D1F;
+  font-weight: 500;
 }
 
-.user-role {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-tertiary);
-  line-height: 1.2;
+.user-info-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.dropdown-arrow {
-  width: 16px;
-  height: 16px;
-  color: var(--color-text-tertiary);
+.info-avatar {
+  margin-bottom: 24px;
 }
 
-/* Content Area */
+.info-content {
+  width: 100%;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  width: 80px;
+  font-weight: 500;
+  color: #86868B;
+  font-size: 14px;
+}
+
+.info-value {
+  flex: 1;
+  color: #1D1D1F;
+  font-size: 14px;
+}
+
 .layout-content {
   flex: 1;
+  padding: 20px;
   overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--color-bg-page);
+  background: transparent;
 }
 
-/* Mobile Menu Overlay */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .mobile-menu-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: calc(var(--z-fixed) - 1);
-  backdrop-filter: blur(2px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
+  
   .layout-aside {
     position: fixed;
-    left: 0;
-    top: 0;
+    left: -260px;
+    top: 64px;
     bottom: 0;
-    z-index: var(--z-fixed);
-    transform: translateX(-100%);
-    transition: transform var(--transition-normal);
+    width: 260px !important;
+    z-index: 1001;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
   }
-
-  .layout-aside.mobile-open {
-    transform: translateX(0);
+  
+  .layout-aside.mobile-menu-open {
+    left: 0;
   }
-
+  
   .mobile-menu-btn {
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
+  
   .layout-header {
-    padding: 0 var(--space-md);
+    padding: 0 16px;
   }
-
-  .user-details {
-    display: none;
+  
+  .layout-content {
+    padding: 10px;
+  }
+  
+  .aside-header {
+    padding: 0 16px;
+    height: 56px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .layout-menu {
+    height: calc(100vh - 56px);
+    padding: 8px 0;
+  }
+  
+  .layout-menu .el-menu-item {
+    margin: 4px 12px !important;
+    padding: 0 16px !important;
+    height: 50px !important;
+    line-height: 50px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+  }
+  
+  .layout-menu .el-menu-item .el-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 14px !important;
+  }
+  
+  .layout-menu .el-sub-menu__title {
+    height: 50px !important;
+    line-height: 50px !important;
+    font-size: 15px !important;
+    margin: 4px 12px !important;
+    border-radius: 10px !important;
+  }
+  
+  .layout-menu .el-sub-menu__title .el-icon {
+    font-size: 20px !important;
+    margin-right: 14px !important;
+  }
+  
+  .layout-menu .el-sub-menu .el-menu-item {
+    margin: 2px 12px 2px 24px !important;
+    padding: 0 16px !important;
+    height: 48px !important;
+    line-height: 48px !important;
+    font-size: 14px !important;
   }
 }
 
 @media (max-width: 480px) {
+  .aside-header {
+    padding: 0 12px;
+  }
+  
   .layout-header {
+    padding: 0 12px;
     height: 56px;
-    min-height: 56px;
-    padding: 0 var(--space-sm);
   }
-
-  .breadcrumb-current {
-    font-size: var(--font-size-base);
+  
+  .layout-menu {
+    height: calc(100vh - 56px);
   }
-
-  .mobile-menu-btn {
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+  
+  .user-name {
+    display: none;
   }
-
-  .header-action {
-    width: var(--touch-target-min);
-    height: var(--touch-target-min);
+  
+  .layout-aside {
+    width: 240px !important;
+    left: -240px;
   }
-
-  .user-avatar {
-    width: 32px;
-    height: 32px;
+  
+  .mobile-menu-overlay {
+    z-index: 1000;
   }
-}
-
-/* Scrollbar for sidebar nav */
-.aside-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.aside-nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.aside-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-}
-
-.aside-nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 </style>

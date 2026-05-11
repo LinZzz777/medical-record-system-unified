@@ -1,243 +1,491 @@
 <template>
   <div class="audit-logs-container">
-    <div class="page-header">
-      <div>
-        <h1 class="page-title">审计日志</h1>
-        <p class="page-subtitle">系统操作记录，支持按时间和类型筛选</p>
+    <el-card class="audit-logs-card">
+      <template #header>
+        <div class="card-header">
+          <span>审计日志</span>
+        </div>
+      </template>
+      
+      <div class="toolbar">
+        <el-form :inline="true" :model="searchForm" class="search-form" :class="{ 'search-form-mobile': isMobile }">
+          <el-form-item label="操作人">
+            <el-input v-model="searchForm.username" placeholder="请输入操作人" />
+          </el-form-item>
+          <el-form-item label="操作类型">
+            <el-select v-model="searchForm.operationType" placeholder="请选择操作类型" style="width: 200px">
+              <el-option label="登录" value="login" />
+              <el-option label="登出" value="logout" />
+              <el-option label="注册" value="register" />
+              <el-option label="创建" value="create" />
+              <el-option label="更新" value="update" />
+              <el-option label="删除" value="delete" />
+              <el-option label="审批" value="approve" />
+              <el-option label="驳回" value="reject" />
+              <el-option label="科室审批" value="deptApprove" />
+              <el-option label="科室驳回" value="deptReject" />
+              <el-option label="病案室审批" value="archiveApprove" />
+              <el-option label="病案室驳回" value="archiveReject" />
+              <el-option label="取消" value="cancel" />
+              <el-option label="重置密码" value="resetPassword" />
+              <el-option label="修改状态" value="updateStatus" />
+              <el-option label="批量修改状态" value="batchStatus" />
+              <el-option label="完成" value="complete" />
+              <el-option label="取件" value="pickup" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="操作时间">
+            <el-date-picker
+              v-model="dateRange"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width: 200px"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="search">查询</el-button>
+            <el-button @click="reset">重置</el-button>
+          </el-form-item>
+        </el-form>
+
+        <div v-if="isMobile" class="view-toggle">
+          <el-button size="small" @click="useTableView = !useTableView">
+            {{ useTableView ? '卡片视图' : '表格视图' }}
+          </el-button>
+        </div>
       </div>
-    </div>
 
-    <el-card class="audit-card" :body-style="{ padding: '24px' }">
-      <!-- Search -->
-      <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="操作人">
-          <el-input v-model="searchForm.username" placeholder="请输入操作人" clearable />
-        </el-form-item>
-        <el-form-item label="操作类型">
-          <el-select v-model="searchForm.operationType" placeholder="请选择操作类型" clearable style="width: 140px">
-            <el-option label="登录" value="LOGIN" />
-            <el-option label="登出" value="LOGOUT" />
-            <el-option label="借阅相关" value="BORROW" />
-            <el-option label="用户管理" value="USER" />
-            <el-option label="病案管理" value="RECORD" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="操作时间">
-          <el-date-picker
-            v-model="dateRange"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
-            class="audit-date-picker"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="reset">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <div v-if="!isMobile || (isMobile && useTableView)" class="table-wrapper" v-loading="loading">
+        <el-table
+          :data="filteredLogs"
+          style="width: 100%"
+          border
+          height="500"
+          scrollbar-always-on
+          :class="{ 'show-on-mobile': isMobile && useTableView }"
+        >
+          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="username" label="操作人" width="100" />
+          <el-table-column prop="module" label="模块" width="80">
+            <template #default="scope">
+              {{ getModuleName(scope.row.module) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="operation" label="操作类型" width="120">
+            <template #default="scope">
+              {{ getOperationName(scope.row.operation) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="details" label="操作详情" min-width="120" show-overflow-tooltip />
+          <el-table-column prop="ip" label="IP地址" width="130" />
+          <el-table-column prop="status" label="状态" width="70">
+            <template #default="scope">
+              <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'" size="small">
+                {{ scope.row.status === 1 ? '成功' : '失败' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createdTime" label="操作时间" width="160">
+            <template #default="scope">
+              {{ formatDate(scope.row.createdTime) }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
-      <!-- Table -->
-      <el-table :data="auditLogs" style="width: 100%" border class="data-table">
-        <el-table-column prop="id" label="ID" width="70" />
-        <el-table-column prop="username" label="操作人" width="110" />
-        <el-table-column prop="operation" label="操作类型" width="140">
-          <template #default="scope">
-            <el-tag :type="getOperationTagType(scope.row.operation)" effect="dark" size="small">
-              {{ getOperationLabel(scope.row.operation) }}
+      <!-- 移动端卡片布局 -->
+      <div v-else class="mobile-card-list" v-loading="loading">
+        <div v-for="row in filteredLogs" :key="row.id" class="mobile-card">
+          <div class="mobile-card-header">
+            <span class="mobile-card-id">#{{ row.id }}</span>
+            <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+              {{ row.status === 1 ? '成功' : '失败' }}
             </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="details" label="操作描述" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="ip" label="IP地址" width="140" />
-        <el-table-column prop="userAgent" label="用户代理" width="180" show-overflow-tooltip />
-        <el-table-column prop="createdTime" label="操作时间" width="170">
-          <template #default="scope">
-            {{ formatDate(scope.row.createdTime) }}
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- Pagination -->
-      <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+          </div>
+          <div class="mobile-card-body">
+            <div class="mobile-card-item">
+              <span class="mobile-label">操作人：</span>
+              <span class="mobile-value">{{ row.username || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">模块：</span>
+              <span class="mobile-value">{{ getModuleName(row.module) }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">操作类型：</span>
+              <span class="mobile-value">{{ getOperationName(row.operation) }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">操作详情：</span>
+              <span class="mobile-value mobile-value-break" :title="row.details">{{ row.details || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">IP地址：</span>
+              <span class="mobile-value">{{ row.ip || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">操作时间：</span>
+              <span class="mobile-value">{{ formatDate(row.createdTime) }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import service from '../api/request'
 import dayjs from 'dayjs'
 
 const auditLogs = ref<any[]>([])
-const currentPage = ref(1)
-const pageSize = ref(10)
-const total = ref(0)
-const searchForm = ref({ username: '', operationType: '' })
-const todayStart = dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss')
-const todayEnd = dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')
-const dateRange = ref<[string, string]>([todayStart, todayEnd])
+const loading = ref(false)
+const searchForm = ref({
+  username: '',
+  operationType: '',
+  startTime: '',
+  endTime: ''
+})
+const dateRange = ref<[string, string] | null>(null)
+const isMobile = ref(false)
+const useTableView = ref(false)
 
-const formatDate = (date: any) => {
-  if (!date) return '-'
-  const d = dayjs(date)
-  return d.isValid() ? d.format('YYYY-MM-DD HH:mm:ss') : '-'
-}
+const filteredLogs = computed(() => auditLogs.value)
 
-const operationLabelMap: Record<string, string> = {
-  'LOGIN': '登录', 'LOGOUT': '登出', 'USER_REGISTER': '用户注册', 'USER_UPDATE': '用户更新',
-  'USER_DELETE': '用户删除', 'USER_STATUS': '用户状态变更', 'USER_BATCH_STATUS': '批量状态变更',
-  'USER_PASSWORD_RESET': '密码重置', 'BORROW_APPLY': '借阅申请', 'BORROW_APPROVE': '审批通过',
-  'BORROW_REJECT': '审批驳回', 'BORROW_CANCEL': '取消借阅', 'BORROW_PICKUP': '取件',
-  'BORROW_RETURN': '归还病案', 'BORROW_DEPT_APPROVE': '科室主任审批通过', 'BORROW_DEPT_REJECT': '科室主任审批驳回',
-  'BORROW_BATCH_APPROVE': '批量审批通过', 'BORROW_BATCH_REJECT': '批量审批驳回',
-  'RECORD_CREATE': '病案创建', 'RECORD_UPDATE': '病案更新', 'RECORD_DELETE': '病案删除',
-  'RECORD_BATCH_DELETE': '批量删除病案', 'RECORD_STATUS': '病案状态变更'
-}
-
-const getOperationLabel = (op: string) => operationLabelMap[op] || op
-
-const getOperationTagType = (op: string) => {
-  if (op.startsWith('LOGIN') || op.startsWith('LOGOUT')) return 'info'
-  if (op.startsWith('BORROW_APPROVE') || op.startsWith('BORROW_BATCH_APPROVE')) return 'success'
-  if (op.startsWith('BORROW_REJECT') || op.startsWith('BORROW_BATCH_REJECT')) return 'danger'
-  if (op.startsWith('BORROW_RETURN')) return 'warning'
-  if (op.startsWith('USER')) return 'primary'
-  return ''
-}
-
-const loadAuditLogs = async () => {
-  try {
-    const params = {
-      page: currentPage.value,
-      pageSize: pageSize.value,
-      username: searchForm.value.username,
-      operationType: searchForm.value.operationType,
-      startTime: dateRange.value ? dateRange.value[0] : undefined,
-      endTime: dateRange.value ? dateRange.value[1] : undefined
-    }
-    const response = await service.get('/audit-logs', { params })
-    auditLogs.value = response.records
-    total.value = response.total
-  } catch (error) {
-    console.error('获取审计日志失败:', error)
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) {
+    useTableView.value = false
   }
 }
 
-const search = () => { currentPage.value = 1; loadAuditLogs() }
-const reset = () => {
-  searchForm.value = { username: '', operationType: '' }
-  dateRange.value = [dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss'), dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')]
-  currentPage.value = 1
+const formatDate = (date: string) => {
+  if (!date) return '-'
+  const d = dayjs(date)
+  if (!d.isValid()) return date
+  return d.format('YYYY-MM-DD HH:mm:ss')
+}
+
+const operationMap: Record<string, string> = {
+  login: '登录',
+  logout: '登出',
+  register: '注册',
+  update: '更新',
+  resetPassword: '重置密码',
+  batchStatus: '批量修改状态',
+  updateStatus: '修改状态',
+  delete: '删除',
+  create: '创建',
+  deptApprove: '科室审批',
+  deptReject: '科室驳回',
+  archiveApprove: '病案室审批',
+  archiveReject: '病案室驳回',
+  approve: '审批',
+  reject: '驳回',
+  cancel: '取消',
+  pickup: '取件',
+  complete: '完成',
+  batchDeptApprove: '批量科室审批',
+  batchArchiveApprove: '批量病案室审批',
+  batchApprove: '批量审批',
+  batchReject: '批量驳回',
+  batchDelete: '批量删除',
+  LOGOUT: '登出',
+  LOGIN: '登录'
+}
+
+const moduleMap: Record<string, string> = {
+  Auth: '认证',
+  User: '用户管理',
+  Borrow: '借阅管理',
+  MedicalRecord: '病历管理',
+  Record: '病历管理'
+}
+
+const getOperationName = (operation: string) => {
+  if (!operation) return '-'
+  return operationMap[operation] || operationMap[operation.toLowerCase()] || operationMap[operation.toUpperCase()] || operation
+}
+
+const getModuleName = (module: string) => {
+  return moduleMap[module] || module
+}
+
+const loadAuditLogs = async () => {
+  loading.value = true
+  try {
+    const params: any = {
+      page: 1,
+      pageSize: 99999
+    }
+    if (searchForm.value.username) {
+      params.username = searchForm.value.username
+    }
+    if (searchForm.value.operationType) {
+      params.operationType = searchForm.value.operationType
+    }
+    if (searchForm.value.startTime) {
+      params.startTime = searchForm.value.startTime
+    }
+    if (searchForm.value.endTime) {
+      params.endTime = searchForm.value.endTime
+    }
+    const response: any = await service.get('/audit-logs', { params })
+    // Handle multiple possible response structures
+    if (Array.isArray(response)) {
+      auditLogs.value = response
+    } else if (response?.records) {
+      auditLogs.value = response.records
+    } else if (response?.data?.records) {
+      auditLogs.value = response.data.records
+    } else if (response?.data && Array.isArray(response.data)) {
+      auditLogs.value = response.data
+    } else {
+      console.warn('Unexpected audit logs response structure:', response)
+      auditLogs.value = []
+    }
+  } catch (error) {
+    console.error('获取审计日志失败:', error)
+    ElMessage.error('获取审计日志失败，请稍后重试')
+    auditLogs.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+const search = () => {
+  if (dateRange.value && dateRange.value.length === 2) {
+    searchForm.value.startTime = dateRange.value[0] + ' 00:00:00'
+    searchForm.value.endTime = dateRange.value[1] + ' 23:59:59'
+  } else {
+    searchForm.value.startTime = ''
+    searchForm.value.endTime = ''
+  }
   loadAuditLogs()
 }
-const handleSizeChange = (size: number) => { pageSize.value = size; loadAuditLogs() }
-const handleCurrentChange = (current: number) => { currentPage.value = current; loadAuditLogs() }
 
-onMounted(() => { loadAuditLogs() })
+const reset = () => {
+  searchForm.value = {
+    username: '',
+    operationType: '',
+    startTime: '',
+    endTime: ''
+  }
+  dateRange.value = null
+  loadAuditLogs()
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+  loadAuditLogs()
+})
 </script>
 
 <style scoped>
 .audit-logs-container {
-  padding: var(--space-lg);
+  padding: 20px;
+  min-height: calc(100vh - 64px);
+  overflow: auto;
 }
 
-.page-header {
+.audit-logs-card {
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-lg);
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
-.page-title {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  margin: 0;
-}
-
-.page-subtitle {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-base);
-  margin: 4px 0 0;
-}
-
-.audit-card {
-  margin-bottom: var(--space-lg);
+.toolbar {
+  flex-shrink: 0;
 }
 
 .search-form {
-  margin-bottom: var(--space-lg);
-  flex-wrap: wrap;
-  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.search-form .el-form-item {
+.search-form-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.search-form-mobile .el-form-item {
+  margin-right: 0;
   margin-bottom: 12px;
+  width: 100%;
 }
 
-.audit-date-picker {
-  width: 380px;
-  max-width: 100%;
+.search-form-mobile .el-form-item__content {
+  width: 100%;
 }
 
-.data-table {
-  border-radius: var(--radius-md);
+.search-form-mobile .el-select,
+.search-form-mobile .el-date-editor {
+  width: 100% !important;
+}
+
+.table-wrapper {
   overflow: hidden;
 }
 
-.pagination-container {
-  margin-top: var(--space-lg);
+.view-toggle {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.mobile-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px;
+}
+
+.mobile-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+}
+
+.mobile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+  color: white;
+}
+
+.mobile-card-id {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.mobile-card-body {
+  padding: 16px;
+}
+
+.mobile-card-item {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.mobile-label {
+  font-weight: 500;
+  color: #86868B;
+  font-size: 13px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.mobile-value {
+  flex: 1;
+  color: #1D1D1F;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mobile-value-break {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 @media (max-width: 768px) {
   .audit-logs-container {
-    padding: var(--space-md);
-  }
-
-  .page-title {
-    font-size: var(--font-size-2xl);
+    padding: 10px;
   }
 
   .search-form {
-    flex-direction: column;
-    align-items: stretch;
+    display: none;
   }
 
-  .search-form .el-form-item {
-    margin-right: 0;
+  .search-form-mobile {
+    display: flex;
   }
 
-  .audit-date-picker {
-    width: 100%;
+  .el-table {
+    display: none;
+  }
+
+  .el-table.show-on-mobile {
+    display: table;
+  }
+
+  .mobile-label {
+    min-width: 70px;
+    font-size: 12px;
+  }
+
+  .mobile-value {
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .audit-logs-container {
-    padding: var(--space-sm);
+    padding: 8px;
   }
 
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  .card-header {
+    font-size: 16px;
+  }
+
+  .mobile-card-header {
+    padding: 10px 12px;
+  }
+
+  .mobile-card-body {
+    padding: 12px;
+  }
+
+  .mobile-label {
+    min-width: 60px;
+    font-size: 11px;
+  }
+
+  .mobile-value {
+    font-size: 12px;
+  }
+
+  .mobile-card-item {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
 }
 </style>

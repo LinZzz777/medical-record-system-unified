@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-// App.vue root component
+// App.vue 根组件
 </script>
 
 <style>
@@ -16,13 +16,13 @@
 }
 
 html, body {
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-page);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Display', 'SF Pro Text', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1D1D1F;
+  background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 30%, #E8F4FD 60%, #F5F5F7 100%);
   height: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,48 +33,29 @@ html, body {
   overflow: hidden;
 }
 
-/* Global Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
+  background: rgba(0, 122, 255, 0.3);
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: rgba(0, 122, 255, 0.5);
 }
 
-/* Responsive Font Sizes */
-@media (max-width: 768px) {
-  html {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  html {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 320px) {
-  html {
-    font-size: 11px;
-  }
-}
-
-/* Global Animations */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity var(--transition-normal);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-enter-from,
@@ -82,198 +63,165 @@ html, body {
   opacity: 0;
 }
 
-/* Element Plus Global Overrides */
 .el-button {
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-fast);
+  border-radius: 22px !important;
+  font-weight: 500;
+  transition: all 0.2s ease-out !important;
 }
 
 .el-button--primary {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: linear-gradient(135deg, #007AFF 0%, #1E90FF 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3) !important;
 }
 
-.el-button--primary:hover,
-.el-button--primary:focus {
-  background: var(--color-primary-light);
-  border-color: var(--color-primary-light);
+.el-button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4) !important;
+}
+
+.el-button--primary:active {
+  transform: scale(0.97);
 }
 
 .el-card {
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.2s ease-out !important;
+}
+
+.el-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12) !important;
 }
 
 .el-card__header {
-  border-bottom: 1px solid var(--color-divider);
-  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  padding: 20px 24px !important;
 }
 
 .el-table {
-  border-radius: var(--radius-md);
+  border-radius: 16px !important;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .el-table th {
-  background-color: var(--color-bg-secondary) !important;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-sm);
+  background: rgba(245, 245, 247, 0.8) !important;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .el-table td {
-  color: var(--color-text-primary);
-}
-
-.el-dialog {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-}
-
-.el-dialog__header {
-  padding: var(--space-lg);
-  border-bottom: 1px solid var(--color-divider);
-  margin-right: 0;
-}
-
-.el-dialog__body {
-  padding: var(--space-lg);
-}
-
-.el-dialog__footer {
-  padding: var(--space-md) var(--space-lg);
-  border-top: 1px solid var(--color-divider);
-}
-
-/* Responsive Dialog */
-@media (max-width: 768px) {
-  .el-dialog {
-    width: 92vw !important;
-    margin: 5vh auto !important;
-    max-height: 90vh;
-  }
-
-  .el-dialog__body {
-    max-height: calc(90vh - 120px);
-    overflow-y: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .el-dialog {
-    width: 96vw !important;
-    margin: 2vh auto !important;
-  }
-}
-
-/* Responsive Tables */
-.el-table {
-  overflow-x: auto;
-}
-
-.el-table .cell {
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .el-table {
-    font-size: var(--font-size-sm);
-  }
-
-  .el-table th,
-  .el-table td {
-    padding: 6px 0;
-  }
-
-  .el-table .el-table__fixed-right {
-    right: 0 !important;
-  }
-}
-
-/* Touch Target Minimum 44px */
-@media (max-width: 768px) {
-  .el-button {
-    min-height: var(--touch-target-min);
-    min-width: var(--touch-target-min);
-  }
-
-  .el-button + .el-button {
-    margin-left: 8px;
-  }
-
-  .el-radio__input,
-  .el-checkbox__input {
-    min-width: var(--touch-target-min);
-    min-height: var(--touch-target-min);
-  }
-}
-
-/* Responsive Pagination */
-@media (max-width: 768px) {
-  .el-pagination {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .el-pagination .el-pagination__sizes {
-    display: none;
-  }
-
-  .el-pagination .el-pagination__jump {
-    display: none;
-  }
-}
-
-/* Responsive Date Picker */
-@media (max-width: 768px) {
-  .el-date-editor--datetimerange {
-    width: 100% !important;
-  }
-
-  .el-date-editor--datetimerange .el-input__wrapper {
-    width: 100%;
-  }
+  color: #1D1D1F;
 }
 
 .el-form-item__label {
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
+  font-weight: 500;
+  color: #1D1D1F;
 }
 
 .el-input__wrapper {
-  border-radius: var(--radius-md);
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset !important;
+  transition: all 0.2s ease-out !important;
+}
+
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px rgba(0, 122, 255, 0.3) inset !important;
+}
+
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px #007AFF inset, 0 0 0 4px rgba(0, 122, 255, 0.15) !important;
+  background: #fff !important;
+}
+
+.el-select .el-input__wrapper {
+  min-height: 44px;
+}
+
+.el-dialog {
+  border-radius: 24px !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
 }
 
 .el-tag {
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-xs);
+  border-radius: 12px !important;
+  border: none !important;
+  padding: 4px 12px !important;
+  font-weight: 500;
 }
 
-.el-tag--dark {
-  border: none;
+.el-tag--success {
+  background: rgba(39, 174, 96, 0.15) !important;
+  color: #27AE60 !important;
 }
 
-/* Responsive Layout Helper */
+.el-tag--warning {
+  background: rgba(255, 149, 0, 0.15) !important;
+  color: #FF9500 !important;
+}
+
+.el-tag--danger {
+  background: rgba(255, 59, 48, 0.15) !important;
+  color: #FF3B30 !important;
+}
+
+.el-tag--info {
+  background: rgba(134, 134, 139, 0.15) !important;
+  color: #86868B !important;
+}
+
+.el-pagination {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 8px 16px;
+}
+
 .container {
   width: 100%;
-  padding: 0 var(--space-lg);
+  padding: 0 20px;
   margin: 0 auto;
 }
 
 @media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
   .container {
-    padding: 0 var(--space-md);
+    padding: 0 15px;
   }
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 0 var(--space-sm);
+  html {
+    font-size: 12px;
   }
+  .container {
+    padding: 0 10px;
+  }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-enter-from {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
 }
 </style>

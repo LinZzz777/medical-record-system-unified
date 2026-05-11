@@ -1,20 +1,19 @@
 package com.medical.record.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.medical.record.system.entity.User;
 import com.medical.record.system.mapper.UserMapper;
 import com.medical.record.system.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public User selectByUsername(String username) {
@@ -34,10 +33,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User login(String username, String password) {
         User user = baseMapper.selectByUsername(username);
-        log.debug("登录查询: username={}, userFound={}", username, user != null);
-        if (user != null) {
-            log.debug("登录校验: status={}, passwordMatch={}", user.getStatus(), user.getPassword().equals(password));
-            if (user.getPassword().equals(password) && !Integer.valueOf(0).equals(user.getStatus())) {
+        if (user == null) {
+            return null;
+        }
+
+        if (!Integer.valueOf(0).equals(user.getStatus())) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+            if (user.getPassword().equals(password)) {
+                String hashedPassword = passwordEncoder.encode(password);
+                user.setPassword(hashedPassword);
+                updateById(user);
                 return user;
             }
         }
@@ -50,6 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (user.getStatus() == null) {
             user.setStatus(1);
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return save(user);
     }
 
@@ -68,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public boolean resetPassword(Long userId, String newPassword) {
         User user = getById(userId);
         if (user != null) {
-            user.setPassword(newPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
             return updateById(user);
         }
         return false;
@@ -87,15 +95,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         user.setStatus(status);
         return updateById(user);
-    }
-
-    @Override
-    public User findDirectorByDepartment(String department) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getRole, "dept_director")
-               .eq(User::getDepartment, department)
-               .eq(User::getStatus, 1);
-        return getOne(wrapper);
     }
 
 }

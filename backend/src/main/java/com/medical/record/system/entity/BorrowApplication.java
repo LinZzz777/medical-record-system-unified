@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("borrowapplications")
+@TableName("BorrowApplications")
 public class BorrowApplication {
 
     @TableId(type = IdType.AUTO)
@@ -28,10 +28,22 @@ public class BorrowApplication {
 
     private String userName;
 
+    // 申请人科室
+    private String department;
+
+    // 科室审批相关字段
+    private String deptApprover;              // 科室审批人
+    private LocalDateTime deptApproveTime;   // 科室审批时间
+    private String deptRejectionReason;      // 科室驳回原因
+
+    // 病案室审批相关字段
+    private String archiveApprover;          // 病案室审批人
+    private LocalDateTime archiveApproveTime; // 病案室审批时间
+    private String archiveRejectionReason;   // 病案室驳回原因
+
+    // 兼容旧字段（保留用于向后兼容）
     private String approver;
-
     private LocalDateTime approveTime;
-
     private String rejectionReason;
 
     @TableField("returnTime")
@@ -39,14 +51,6 @@ public class BorrowApplication {
 
     @TableField(exist = false)
     private LocalDateTime cancelTime;
-
-    private String deptApprover;
-
-    private LocalDateTime deptApproveTime;
-
-    private String deptRejectionReason;
-
-    private String userDepartment;
 
     private LocalDateTime createdTime;
 

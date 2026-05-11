@@ -40,16 +40,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAdmin: true }
       },
       {
-        path: '/review',
-        name: 'Review',
-        component: () => import('../views/Review.vue'),
-        meta: { requiresAdmin: true }
-      },
-      {
         path: '/audit',
         name: 'AuditLogs',
         component: () => import('../views/AuditLogs.vue'),
         meta: { requiresAdmin: true }
+      },
+      {
+        path: '/test',
+        name: 'Test',
+        component: () => import('../views/Test.vue')
       }
     ]
   }
@@ -71,9 +70,7 @@ router.beforeEach((to, from, next) => {
       // 检查是否需要管理员权限
       if (to.matched.some(record => record.meta.requiresAdmin)) {
         const user = store.state.user
-        if (user?.role === 'admin' || user?.role === '主任') {
-          next()
-        } else if (user?.role === 'dept_director' && to.path === '/review') {
+        if (user?.role === 'admin') {
           next()
         } else {
           next({ name: 'Dashboard' })

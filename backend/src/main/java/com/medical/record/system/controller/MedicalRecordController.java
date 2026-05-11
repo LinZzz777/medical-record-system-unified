@@ -48,7 +48,7 @@ public class MedicalRecordController {
      * 添加病案
      */
     @PostMapping("/create")
-    @OperationLog(module = "Record", operation = "RECORD_CREATE", detail = "'recordNumber=' + #p0.recordNumber + ', patient=' + #p0.patientName")
+    @OperationLog(module = "Record", operation = "create", detail = "'recordNumber=' + #p0.recordNumber + ', patient=' + #p0.patientName")
     public Map<String, Object> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         boolean success = medicalRecordService.addMedicalRecord(medicalRecord);
         return Map.of("success", success);
@@ -58,7 +58,7 @@ public class MedicalRecordController {
      * 更新病案
      */
     @PutMapping("/update")
-    @OperationLog(module = "Record", operation = "RECORD_UPDATE", detail = "'id=' + #p0.id")
+    @OperationLog(module = "Record", operation = "update", detail = "'id=' + #p0.id")
     public Map<String, Object> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         boolean success = medicalRecordService.updateMedicalRecord(medicalRecord);
         return Map.of("success", success);
@@ -68,7 +68,7 @@ public class MedicalRecordController {
      * 删除病案
      */
     @DeleteMapping("/{id}")
-    @OperationLog(module = "Record", operation = "RECORD_DELETE", detail = "'id=' + #p0")
+    @OperationLog(module = "Record", operation = "delete", detail = "'id=' + #p0")
     public Map<String, Object> deleteMedicalRecord(@PathVariable Long id) {
         boolean success = medicalRecordService.deleteMedicalRecord(id);
         return Map.of("success", success);
@@ -78,7 +78,7 @@ public class MedicalRecordController {
      * 批量删除病案
      */
     @DeleteMapping("/batch")
-    @OperationLog(module = "Record", operation = "RECORD_BATCH_DELETE", detail = "'ids=' + #p0['ids']")
+    @OperationLog(module = "Record", operation = "batchDelete", detail = "'ids=' + #p0['ids']")
     public Map<String, Object> batchDeleteMedicalRecords(@RequestBody Map<String, List<Long>> params) {
         List<Long> ids = params.get("ids");
         boolean success = medicalRecordService.batchDeleteMedicalRecords(ids);
@@ -89,7 +89,7 @@ public class MedicalRecordController {
      * 更新病案状态
      */
     @PutMapping("/{id}/status")
-    @OperationLog(module = "Record", operation = "RECORD_STATUS", detail = "'id=' + #p0 + ', status=' + #p1['status']")
+    @OperationLog(module = "Record", operation = "updateStatus", detail = "'id=' + #p0 + ', status=' + #p1['status']")
     public Map<String, Object> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> params) {
         String status = params.get("status");
         boolean success = medicalRecordService.updateStatus(id, status);

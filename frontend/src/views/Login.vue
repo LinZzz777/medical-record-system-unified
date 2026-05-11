@@ -1,124 +1,56 @@
 <template>
   <div class="login-page">
-    <div class="medical-grid" aria-hidden="true"></div>
-    <div class="login-layout">
-      <section class="login-brand">
-        <div class="brand-top">
-          <span class="hospital-emblem" aria-hidden="true">
-            <i></i>
-            <i></i>
-          </span>
-          <div>
-            <div class="brand-tag">HOSPITAL ARCHIVE SYSTEM</div>
-            <h1>病案借阅管理系统</h1>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="medical-cross-logo">
+            <span class="cross-h"></span>
+            <span class="cross-v"></span>
           </div>
-        </div>
-        <p class="brand-summary">
-          统一管理病案借阅申请、审批流转、归还跟踪与操作留痕，
-          为医院日常病案流转提供规范、清晰、可追踪的工作入口。
-        </p>
-
-        <div class="brand-metrics">
-          <div class="metric-item">
-            <strong>24h</strong>
-            <span>审批状态可追踪</span>
-          </div>
-          <div class="metric-item">
-            <strong>3级</strong>
-            <span>角色权限管理</span>
-          </div>
-          <div class="metric-item">
-            <strong>100%</strong>
-            <span>关键操作留痕</span>
-          </div>
+          <h1 class="app-title">Medical Records Borrowing</h1>
         </div>
 
-        <div class="brand-notes">
-          <div class="note-item">
-            <span class="note-icon" aria-hidden="true"></span>
-            <div>
-              <strong>借阅流程在线化</strong>
-              <p>申请、审批、取件、归还状态清晰可见</p>
-            </div>
-          </div>
-          <div class="note-item">
-            <span class="note-icon" aria-hidden="true"></span>
-            <div>
-              <strong>角色权限区分明确</strong>
-              <p>管理员与普通用户根据职责进入不同视图</p>
-            </div>
-          </div>
-          <div class="note-item">
-            <span class="note-icon" aria-hidden="true"></span>
-            <div>
-              <strong>关键操作全程留痕</strong>
-              <p>便于日常管理、复核审查与责任追踪</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        <el-form
+          ref="loginFormRef"
+          :model="loginForm"
+          :rules="rules"
+          class="login-form"
+          @keyup.enter="handleLogin"
+        >
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginForm.username"
+              placeholder="Username"
+              size="large"
+              :prefix-icon="User"
+            />
+          </el-form-item>
 
-      <section class="login-panel">
-        <div class="login-card">
-          <div class="panel-watermark" aria-hidden="true">
-            <span><i></i><i></i></span>
-          </div>
-          <div class="login-card-header">
-            <div class="header-mark"></div>
-            <div>
-              <div class="login-caption">用户登录</div>
-              <h2>进入系统工作台</h2>
-            </div>
-          </div>
+          <el-form-item prop="password">
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              show-password
+              placeholder="Password"
+              size="large"
+              :prefix-icon="Lock"
+            />
+          </el-form-item>
 
-          <p class="login-description">请输入账号信息，继续处理病案借阅与审批业务。</p>
-          <div class="login-safe-tip">院内统一身份认证 · 数据加密传输</div>
+          <el-form-item>
+            <el-button
+              type="primary"
+              :loading="loading"
+              class="login-button"
+              @click="handleLogin"
+            >
+              Login
+            </el-button>
+          </el-form-item>
+        </el-form>
 
-          <el-form
-            ref="loginFormRef"
-            :model="loginForm"
-            :rules="rules"
-            label-position="top"
-            class="login-form"
-            @keyup.enter="handleLogin"
-          >
-            <el-form-item label="用户名" prop="username">
-              <el-input
-                v-model="loginForm.username"
-                placeholder="请输入用户名"
-                size="large"
-              />
-            </el-form-item>
-
-            <el-form-item label="密码" prop="password">
-              <el-input
-                v-model="loginForm.password"
-                type="password"
-                show-password
-                placeholder="请输入密码"
-                size="large"
-              />
-            </el-form-item>
-
-            <el-form-item class="submit-row">
-              <el-button
-                type="primary"
-                :loading="loading"
-                class="login-button"
-                @click="handleLogin"
-              >
-                登录系统
-              </el-button>
-            </el-form-item>
-          </el-form>
-
-          <div class="login-footer">
-            <span>安全登录</span>
-            <span class="divider"></span>
-            <span>病案借阅全流程可追踪</span>
-          </div>
-        </div>
-      </section>
+        <a class="forgot-link" href="javascript:;">Forgot password?</a>
+      </div>
     </div>
   </div>
 </template>
@@ -126,6 +58,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { User, Lock } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import service from '../api/request'
 import store from '../store'
@@ -140,8 +73,8 @@ const loginForm = reactive({
 })
 
 const rules = {
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+  username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
+  password: [{ required: true, message: 'Please enter password', trigger: 'blur' }]
 }
 
 const handleLogin = async () => {
@@ -162,15 +95,13 @@ const handleLogin = async () => {
           token: response.token,
           user: response.user
         })
-        ElMessage.success('登录成功')
+        ElMessage.success('Login successful')
         router.push('/dashboard')
-      } else if (response.error) {
-        ElMessage.error(response.error)
       } else {
-        ElMessage.error('登录失败：返回数据格式错误')
+        ElMessage.error('Login failed: Invalid response data')
       }
     } catch (error: any) {
-      ElMessage.error(error.response?.data?.error || '登录失败，请检查用户名和密码')
+      ElMessage.error(error.response?.data?.error || 'Login failed, please check your credentials')
     } finally {
       loading.value = false
     }
@@ -180,457 +111,218 @@ const handleLogin = async () => {
 
 <style scoped>
 .login-page {
-  position: relative;
-  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px;
-  background:
-    radial-gradient(circle at 8% 14%, rgba(30, 134, 186, 0.14), transparent 30%),
-    radial-gradient(circle at 90% 82%, rgba(48, 110, 173, 0.12), transparent 26%),
-    linear-gradient(145deg, #f4f9ff 0%, #eef6fd 45%, #eaf2fb 100%);
-}
-
-.medical-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image:
-    linear-gradient(to right, rgba(77, 133, 180, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(77, 133, 180, 0.12) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.82), transparent 86%);
-  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.82), transparent 86%);
-}
-
-.login-layout {
+  background: #ffffff;
   position: relative;
-  z-index: 1;
-  width: min(1120px, 100%);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 430px;
-  gap: 56px;
-  align-items: center;
+  overflow: hidden;
+  padding: 20px;
 }
 
-.login-brand {
-  max-width: 520px;
-}
-
-.brand-top {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.hospital-emblem {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: linear-gradient(165deg, #0f7fc0, #1fa2dd);
-  box-shadow: 0 12px 20px rgba(18, 122, 182, 0.22);
-  position: relative;
-}
-
-.hospital-emblem i {
-  position: absolute;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.hospital-emblem i:first-child {
-  top: 24px;
-  left: 14px;
-  width: 28px;
-  height: 8px;
-}
-
-.hospital-emblem i:last-child {
-  top: 14px;
-  left: 24px;
-  width: 8px;
-  height: 28px;
-}
-
-.brand-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: rgba(18, 120, 178, 0.1);
-  color: #216383;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-}
-
-.login-brand h1 {
-  margin: 16px 0 18px;
-  color: #0f3653;
-  font-size: 44px;
-  line-height: 1.18;
-}
-
-.brand-summary {
-  margin: 0 0 28px;
-  color: #4f6f83;
-  font-size: 16px;
-  line-height: 1.95;
-}
-
-.brand-metrics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 22px;
-}
-
-.metric-item {
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(53, 120, 164, 0.18);
-  box-shadow: 0 10px 20px rgba(38, 88, 126, 0.06);
-}
-
-.metric-item strong {
-  display: block;
-  margin-bottom: 3px;
-  color: #155278;
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.metric-item span {
-  color: #577286;
-  font-size: 13px;
-}
-
-.brand-notes {
-  display: grid;
-  gap: 14px;
-}
-
-.note-item {
-  display: grid;
-  grid-template-columns: 26px 1fr;
-  gap: 14px;
-  padding: 16px 18px 16px 14px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(53, 120, 164, 0.14);
-  box-shadow: 0 12px 22px rgba(27, 60, 75, 0.06);
-}
-
-.note-icon {
-  width: 22px;
-  height: 22px;
-  margin-top: 2px;
-  border-radius: 50%;
-  background: linear-gradient(140deg, #2197d2, #2f76b5);
-  position: relative;
-}
-
-.note-icon::before,
-.note-icon::after {
+.login-page::before {
   content: '';
   position: absolute;
-  border-radius: 999px;
-  background: #fff;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230F2C59'%3E%3Crect x='40' y='20' width='20' height='60' rx='4'/%3E%3Crect x='20' y='40' width='60' height='20' rx='4'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  pointer-events: none;
 }
 
-.note-icon::before {
-  top: 10px;
-  left: 6px;
-  width: 10px;
-  height: 2px;
+.login-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(15, 44, 89, 0.04), transparent 70%);
+  pointer-events: none;
 }
 
-.note-icon::after {
-  top: 6px;
-  left: 10px;
-  width: 2px;
-  height: 10px;
-}
-
-.note-item strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #0e3f61;
-  font-size: 17px;
-}
-
-.note-item p {
-  margin: 0;
-  color: #567387;
-  line-height: 1.7;
-}
-
-.login-panel {
-  display: flex;
-  justify-content: center;
+.login-container {
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  box-shadow: 0 2px 16px rgba(15, 44, 89, 0.08);
+  border: 1px solid rgba(15, 44, 89, 0.06);
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.medical-cross-logo {
+  width: 64px;
+  height: 64px;
+  background: #0F2C59;
+  border-radius: 14px;
   position: relative;
-  overflow: hidden;
-  width: 100%;
-  padding: 34px 32px 26px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.93);
-  border: 1px solid rgba(34, 113, 168, 0.18);
-  box-shadow: 0 24px 52px rgba(25, 77, 120, 0.16);
-  backdrop-filter: blur(6px);
-}
-
-.panel-watermark {
-  position: absolute;
-  top: -30px;
-  right: -14px;
-  width: 120px;
-  height: 120px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(54, 147, 198, 0.14), rgba(31, 130, 184, 0));
-}
-
-.panel-watermark span {
-  position: absolute;
-  top: 38px;
-  right: 34px;
-  width: 36px;
-  height: 36px;
-}
-
-.panel-watermark i {
-  position: absolute;
-  border-radius: 999px;
-  background: rgba(32, 124, 177, 0.28);
-}
-
-.panel-watermark i:first-child {
-  top: 15px;
-  left: 0;
-  width: 36px;
-  height: 6px;
-}
-
-.panel-watermark i:last-child {
-  top: 0;
-  left: 15px;
-  width: 6px;
-  height: 36px;
-}
-
-.login-card-header {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
-.header-mark {
-  width: 10px;
-  height: 46px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #0f87cb 0%, #4a78cc 100%);
+.medical-cross-logo::before,
+.medical-cross-logo::after {
+  content: '';
+  position: absolute;
+  background: #ffffff;
+  border-radius: 3px;
 }
 
-.login-caption {
-  margin-bottom: 4px;
-  color: #33759f;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.medical-cross-logo::before {
+  width: 32px;
+  height: 8px;
 }
 
-.login-card-header h2 {
+.medical-cross-logo::after {
+  width: 8px;
+  height: 32px;
+}
+
+.cross-h,
+.cross-v {
+  display: none;
+}
+
+.app-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #0F2C59;
+  text-align: center;
   margin: 0;
-  color: #0d3b5d;
-  font-size: 28px;
+  letter-spacing: -0.3px;
 }
 
-.login-description {
-  position: relative;
-  z-index: 1;
-  margin: 0 0 24px;
-  color: #5a7689;
-  line-height: 1.75;
-}
-
-.login-safe-tip {
-  position: relative;
-  z-index: 1;
-  margin-bottom: 18px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  color: #286587;
-  font-size: 13px;
-  background: rgba(50, 132, 180, 0.08);
-  border: 1px dashed rgba(43, 120, 167, 0.34);
+.login-form {
+  width: 100%;
 }
 
 .login-form :deep(.el-form-item) {
-  margin-bottom: 20px;
-}
-
-.login-form :deep(.el-form-item__label) {
-  padding-bottom: 8px;
-  color: #124667;
-  font-weight: 600;
+  margin-bottom: 16px;
 }
 
 .login-form :deep(.el-input__wrapper) {
-  min-height: 48px;
-  border-radius: 14px;
-  background: #fafdff;
-  box-shadow: inset 0 0 0 1px rgba(37, 120, 172, 0.18);
-  transition: box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.login-form :deep(.el-input__wrapper:hover) {
-  box-shadow: inset 0 0 0 1px rgba(22, 109, 163, 0.36);
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 0 0 1px rgba(15, 44, 89, 0.15) inset;
+  background: #fafbfc;
+  transition: all 0.2s ease;
 }
 
 .login-form :deep(.el-input__wrapper.is-focus) {
-  background: #fff;
-  box-shadow:
-    inset 0 0 0 1px rgba(22, 109, 163, 0.56),
-    0 0 0 4px rgba(71, 152, 204, 0.14);
+  box-shadow: 0 0 0 1px #0F2C59 inset;
+  background: #ffffff;
 }
 
 .login-form :deep(.el-input__inner) {
-  color: #103f61;
+  color: #0F2C59;
+  font-size: 15px;
 }
 
 .login-form :deep(.el-input__inner::placeholder) {
-  color: #87a3b4;
+  color: #8a9bb5;
 }
 
-.submit-row {
-  margin-top: 8px;
-  margin-bottom: 2px;
+.login-form :deep(.el-input__prefix) {
+  color: #0F2C59;
+  margin-right: 8px;
 }
 
 .login-button {
   width: 100%;
   height: 48px;
   border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0f87cb 0%, #1f7db8 52%, #456ec6 100%);
-  box-shadow: 0 12px 24px rgba(27, 99, 153, 0.24);
+  border-radius: 10px;
+  background: #0F2C59;
+  color: #ffffff;
   font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  margin-top: 8px;
   transition: all 0.2s ease;
 }
 
 .login-button:hover {
-  filter: brightness(1.02);
+  background: #1a3d6e;
   transform: translateY(-1px);
-  box-shadow: 0 16px 32px rgba(27, 99, 153, 0.3);
 }
 
 .login-button:active {
   transform: translateY(0);
 }
 
-.login-footer {
-  position: relative;
-  z-index: 1;
-  margin-top: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: #5b788b;
+.forgot-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #0F2C59;
   font-size: 13px;
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
 }
 
-.divider {
-  width: 1px;
-  height: 12px;
-  background: rgba(23, 98, 143, 0.22);
+.forgot-link:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
-@media (max-width: 980px) {
-  .login-layout {
-    grid-template-columns: 1fr;
-    gap: 28px;
+@media (max-width: 480px) {
+  .login-page {
+    padding: 16px;
+    background: #f5f7fa;
   }
 
-  .login-brand {
-    max-width: none;
-  }
-
-  .login-brand h1 {
-    font-size: 36px;
-  }
-
-  .login-panel {
-    justify-content: stretch;
+  .login-container {
+    max-width: 100%;
   }
 
   .login-card {
-    max-width: 540px;
-  }
-}
-
-@media (max-width: 640px) {
-  .login-page {
-    padding: 18px 14px;
+    padding: 28px 20px;
+    border-radius: 14px;
+    box-shadow: none;
+    border: none;
   }
 
-  .login-layout {
-    gap: 22px;
+  .medical-cross-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
   }
 
-  .login-brand h1 {
-    font-size: 30px;
+  .app-title {
+    font-size: 20px;
   }
 
-  .hospital-emblem {
-    width: 48px;
-    height: 48px;
+  .login-form :deep(.el-input__wrapper) {
+    padding: 10px 14px;
   }
 
-  .hospital-emblem i:first-child {
-    top: 20px;
-    left: 12px;
-    width: 24px;
-  }
-
-  .hospital-emblem i:last-child {
-    top: 12px;
-    left: 20px;
-    height: 24px;
-  }
-
-  .brand-summary {
+  .login-button {
+    height: 46px;
     font-size: 15px;
   }
+}
 
-  .brand-metrics {
-    gap: 8px;
-  }
-
-  .metric-item {
-    flex: 1 1 calc(50% - 8px);
-    min-width: 132px;
-  }
-
+@media (max-width: 360px) {
   .login-card {
-    padding: 28px 20px 22px;
-    border-radius: 20px;
+    padding: 24px 16px;
   }
 
-  .login-card-header h2 {
-    font-size: 24px;
+  .app-title {
+    font-size: 18px;
   }
 }
 </style>

@@ -38,7 +38,4 @@ public class User {
     @TableField("createdAt")
     private LocalDateTime createdAt;
 
-    @TableLogic
-    private Integer deleted;
-
 }

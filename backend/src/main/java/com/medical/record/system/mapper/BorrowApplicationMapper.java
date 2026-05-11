@@ -46,14 +46,4 @@ public interface BorrowApplicationMapper extends BaseMapper<BorrowApplication> {
                                              @Param("status") String status,
                                              @Param("updatedTime") LocalDateTime updatedTime);
 
-    /**
-     * 根据申请人科室查询借阅申请列表
-     */
-    List<BorrowApplication> selectByUserDepartment(String department);
-
-    /**
-     * 查询科室已审批待病案科终审的申请列表
-     */
-    List<BorrowApplication> selectDeptApprovedApplications();
-
 }

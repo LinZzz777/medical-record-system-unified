@@ -19,8 +19,7 @@ public class MedicalRecordServiceImpl extends ServiceImpl<MedicalRecordMapper, M
 
     @Override
     public int countByStatus(String status) {
-        List<MedicalRecord> records = baseMapper.selectByCondition(null, null, null, status);
-        return records.size();
+        return baseMapper.countByStatus(status);
     }
 
     @Override

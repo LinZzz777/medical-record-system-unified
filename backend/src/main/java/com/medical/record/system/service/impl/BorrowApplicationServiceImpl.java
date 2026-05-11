@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationMapper, BorrowApplication> implements BorrowApplicationService {
@@ -61,7 +62,10 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
     @Override
     public List<BorrowApplication> selectByUserId(Long userId) {
         List<BorrowApplication> applications = baseMapper.selectByUserId(userId);
-        populateRecordNumbers(applications);
+        // 为每个申请填充病案号
+        for (BorrowApplication application : applications) {
+            fillRecordNumbers(application);
+        }
         return applications;
     }
 
@@ -83,7 +87,10 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
     @Override
     public List<BorrowApplication> selectAllApplications() {
         List<BorrowApplication> applications = baseMapper.selectAllApplications();
-        populateRecordNumbers(applications);
+        // 为每个申请填充病案号
+        for (BorrowApplication application : applications) {
+            fillRecordNumbers(application);
+        }
         return applications;
     }
 
@@ -91,82 +98,97 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
     public BorrowApplication selectById(Long id) {
         BorrowApplication application = baseMapper.selectById(id);
         if (application != null) {
-            String recordIds = application.getRecordIds();
-            if (recordIds != null && !recordIds.isEmpty()) {
-                // 处理JSON格式的数组，如"[117,118]"
-                String cleanIds = recordIds.trim();
-                if (cleanIds.startsWith("[") && cleanIds.endsWith("]")) {
-                    cleanIds = cleanIds.substring(1, cleanIds.length() - 1);
-                }
-                String[] ids = cleanIds.split(",");
-                StringBuilder recordNumbers = new StringBuilder();
-                for (String recordId : ids) {
-                    try {
-                        Long idValue = Long.valueOf(recordId.trim());
-                        MedicalRecord record = medicalRecordService.getById(idValue);
-                        if (record != null) {
-                            if (recordNumbers.length() > 0) {
-                                recordNumbers.append(", ");
-                            }
-                            recordNumbers.append(record.getRecordNumber());
-                        }
-                    } catch (NumberFormatException e) {
-                        // 忽略无法转换的ID
-                        continue;
-                    }
-                }
-                application.setRecordNumbers(recordNumbers.toString());
-            }
+            fillRecordNumbers(application);
         }
         return application;
     }
 
+    /**
+     * 填充病案号信息
+     */
+    private void fillRecordNumbers(BorrowApplication application) {
+        String recordIds = application.getRecordIds();
+        if (recordIds != null && !recordIds.isEmpty()) {
+            // 处理JSON格式的数组，如"[117,118]"
+            String cleanIds = recordIds.trim();
+            if (cleanIds.startsWith("[") && cleanIds.endsWith("]")) {
+                cleanIds = cleanIds.substring(1, cleanIds.length() - 1);
+            }
+            String[] ids = cleanIds.split(",");
+            StringBuilder recordNumbers = new StringBuilder();
+            for (String id : ids) {
+                try {
+                    Long recordId = Long.valueOf(id.trim());
+                    MedicalRecord record = medicalRecordService.getById(recordId);
+                    if (record != null) {
+                        if (recordNumbers.length() > 0) {
+                            recordNumbers.append(", ");
+                        }
+                        recordNumbers.append(record.getRecordNumber());
+                    }
+                } catch (NumberFormatException e) {
+                    // 忽略无法转换的ID
+                    continue;
+                }
+            }
+            application.setRecordNumbers(recordNumbers.toString());
+        }
+    }
+
     @Override
     public boolean createBorrowApplication(BorrowApplication borrowApplication) {
+        // 新状态流转：提交后进入待科室审批状态
+        borrowApplication.setStatus("pending_dept");
         borrowApplication.setSubmitTime(LocalDateTime.now());
         borrowApplication.setCreatedTime(LocalDateTime.now());
         borrowApplication.setUpdatedTime(LocalDateTime.now());
         borrowApplication.setDeleted(0);
-        // 填充申请人科室信息并判断审批流程
-        if (borrowApplication.getUserId() != null) {
-            User applicant = userService.getById(borrowApplication.getUserId());
-            if (applicant != null) {
-                if (applicant.getDepartment() != null) {
-                    borrowApplication.setUserDepartment(applicant.getDepartment());
-                }
-                // 病案科主任申请：无需审批，直接通过
-                if ("dept_director".equals(applicant.getRole()) && "病案科".equals(applicant.getDepartment())) {
-                    borrowApplication.setStatus("approved");
-                    borrowApplication.setApprover("自动审批");
-                    borrowApplication.setApproveTime(LocalDateTime.now());
-                    // 更新关联的病案状态为已借出
-                    List<Long> ids = parseRecordIds(borrowApplication.getRecordIds());
-                    for (Long recordId : ids) {
-                        medicalRecordService.updateStatus(recordId, "已借出");
-                    }
-                    return save(borrowApplication);
-                }
-                // 科室主任申请：跳过科室审批，只需病案科主任终审
-                if ("dept_director".equals(applicant.getRole())) {
-                    borrowApplication.setStatus("dept_approved");
-                    borrowApplication.setDeptApprover("跳过科室审批");
-                    borrowApplication.setDeptApproveTime(LocalDateTime.now());
-                    return save(borrowApplication);
-                }
-            }
-        }
-        // 普通用户申请：需要科室主任一级审批
-        borrowApplication.setStatus("pending");
         return save(borrowApplication);
     }
 
+    /**
+     * 科室审批通过：pending_dept -> pending_archive
+     */
     @Override
-    public boolean approveBorrowApplication(Long id, String approver) {
+    public boolean deptApprove(Long id, String approver) {
         BorrowApplication borrowApplication = selectById(id);
-        if (borrowApplication != null && "dept_approved".equals(borrowApplication.getStatus())) {
+        if (borrowApplication != null && "pending_dept".equals(borrowApplication.getStatus())) {
+            borrowApplication.setStatus("pending_archive");
+            borrowApplication.setDeptApprover(approver);
+            borrowApplication.setDeptApproveTime(LocalDateTime.now());
+            borrowApplication.setUpdatedTime(LocalDateTime.now());
+            return updateById(borrowApplication);
+        }
+        return false;
+    }
+
+    /**
+     * 科室审批驳回：pending_dept -> rejected
+     */
+    @Override
+    public boolean deptReject(Long id, String approver, String rejectionReason) {
+        BorrowApplication borrowApplication = selectById(id);
+        if (borrowApplication != null && "pending_dept".equals(borrowApplication.getStatus())) {
+            borrowApplication.setStatus("rejected");
+            borrowApplication.setDeptApprover(approver);
+            borrowApplication.setDeptRejectionReason(rejectionReason);
+            borrowApplication.setDeptApproveTime(LocalDateTime.now());
+            borrowApplication.setUpdatedTime(LocalDateTime.now());
+            return updateById(borrowApplication);
+        }
+        return false;
+    }
+
+    /**
+     * 病案室审批通过：pending_archive -> approved（同时改变病案状态为"已借出"）
+     */
+    @Override
+    public boolean archiveApprove(Long id, String approver) {
+        BorrowApplication borrowApplication = selectById(id);
+        if (borrowApplication != null && "pending_archive".equals(borrowApplication.getStatus())) {
             borrowApplication.setStatus("approved");
-            borrowApplication.setApprover(approver);
-            borrowApplication.setApproveTime(LocalDateTime.now());
+            borrowApplication.setArchiveApprover(approver);
+            borrowApplication.setArchiveApproveTime(LocalDateTime.now());
             borrowApplication.setUpdatedTime(LocalDateTime.now());
 
             // 更新关联的病案状态为已借出
@@ -181,97 +203,76 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
         return false;
     }
 
+    /**
+     * 病案室审批驳回：pending_archive -> rejected
+     */
+    @Override
+    public boolean archiveReject(Long id, String approver, String rejectionReason) {
+        BorrowApplication borrowApplication = selectById(id);
+        if (borrowApplication != null && "pending_archive".equals(borrowApplication.getStatus())) {
+            borrowApplication.setStatus("rejected");
+            borrowApplication.setArchiveApprover(approver);
+            borrowApplication.setArchiveRejectionReason(rejectionReason);
+            borrowApplication.setArchiveApproveTime(LocalDateTime.now());
+            borrowApplication.setUpdatedTime(LocalDateTime.now());
+            return updateById(borrowApplication);
+        }
+        return false;
+    }
+
+    /**
+     * 审批借阅申请（兼容旧版，根据当前状态自动判断）
+     * - 如果状态是pending_dept，执行科室审批
+     * - 如果状态是pending_archive，执行病案室审批
+     */
+    @Override
+    public boolean approveBorrowApplication(Long id, String approver) {
+        BorrowApplication borrowApplication = selectById(id);
+        if (borrowApplication == null) {
+            return false;
+        }
+
+        String status = borrowApplication.getStatus();
+        if ("pending_dept".equals(status)) {
+            return deptApprove(id, approver);
+        } else if ("pending_archive".equals(status)) {
+            return archiveApprove(id, approver);
+        }
+        return false;
+    }
+
+    /**
+     * 驳回借阅申请（兼容旧版，根据当前状态自动判断）
+     * - 如果状态是pending_dept，执行科室驳回
+     * - 如果状态是pending_archive，执行病案室驳回
+     */
     @Override
     public boolean rejectBorrowApplication(Long id, String approver, String rejectionReason) {
         BorrowApplication borrowApplication = selectById(id);
-        if (borrowApplication != null && "dept_approved".equals(borrowApplication.getStatus())) {
-            borrowApplication.setStatus("rejected");
-            borrowApplication.setApprover(approver);
-            borrowApplication.setRejectionReason(rejectionReason);
-            borrowApplication.setApproveTime(LocalDateTime.now());
-            borrowApplication.setUpdatedTime(LocalDateTime.now());
-            return updateById(borrowApplication);
+        if (borrowApplication == null) {
+            return false;
+        }
+
+        String status = borrowApplication.getStatus();
+        if ("pending_dept".equals(status)) {
+            return deptReject(id, approver, rejectionReason);
+        } else if ("pending_archive".equals(status)) {
+            return archiveReject(id, approver, rejectionReason);
         }
         return false;
     }
 
-    @Override
-    public boolean deptApproveBorrowApplication(Long id, String deptApprover) {
-        BorrowApplication borrowApplication = selectById(id);
-        if (borrowApplication != null && "pending".equals(borrowApplication.getStatus())) {
-            borrowApplication.setStatus("dept_approved");
-            borrowApplication.setDeptApprover(deptApprover);
-            borrowApplication.setDeptApproveTime(LocalDateTime.now());
-            borrowApplication.setUpdatedTime(LocalDateTime.now());
-            return updateById(borrowApplication);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deptRejectBorrowApplication(Long id, String deptApprover, String rejectionReason) {
-        BorrowApplication borrowApplication = selectById(id);
-        if (borrowApplication != null && "pending".equals(borrowApplication.getStatus())) {
-            borrowApplication.setStatus("rejected");
-            borrowApplication.setDeptApprover(deptApprover);
-            borrowApplication.setDeptApproveTime(LocalDateTime.now());
-            borrowApplication.setDeptRejectionReason(rejectionReason);
-            borrowApplication.setUpdatedTime(LocalDateTime.now());
-            return updateById(borrowApplication);
-        }
-        return false;
-    }
-
-    @Override
-    public List<BorrowApplication> selectByUserDepartment(String department) {
-        List<BorrowApplication> applications = baseMapper.selectByUserDepartment(department);
-        populateRecordNumbers(applications);
-        return applications;
-    }
-
-    @Override
-    public List<BorrowApplication> selectDeptApprovedApplications() {
-        List<BorrowApplication> applications = baseMapper.selectDeptApprovedApplications();
-        populateRecordNumbers(applications);
-        return applications;
-    }
-
-    private void populateRecordNumbers(List<BorrowApplication> applications) {
-        for (BorrowApplication application : applications) {
-            String recordIds = application.getRecordIds();
-            if (recordIds != null && !recordIds.isEmpty()) {
-                String cleanIds = recordIds.trim();
-                if (cleanIds.startsWith("[") && cleanIds.endsWith("]")) {
-                    cleanIds = cleanIds.substring(1, cleanIds.length() - 1);
-                }
-                String[] ids = cleanIds.split(",");
-                StringBuilder recordNumbers = new StringBuilder();
-                for (String id : ids) {
-                    try {
-                        Long recordId = Long.valueOf(id.trim());
-                        MedicalRecord record = medicalRecordService.getById(recordId);
-                        if (record != null) {
-                            if (recordNumbers.length() > 0) {
-                                recordNumbers.append(", ");
-                            }
-                            recordNumbers.append(record.getRecordNumber());
-                        }
-                    } catch (NumberFormatException e) {
-                        continue;
-                    }
-                }
-                application.setRecordNumbers(recordNumbers.toString());
-            }
-        }
-    }
-
+    /**
+     * 取消借阅申请：pending_dept或pending_archive -> cancelled（仅申请人可操作）
+     */
     @Override
     public boolean cancelBorrowApplication(Long id, Long userId) {
         System.out.println("取消申请请求：id=" + id + ", userId=" + userId);
         BorrowApplication borrowApplication = selectById(id);
         if (borrowApplication != null) {
             System.out.println("申请存在：id=" + id + ", status=" + borrowApplication.getStatus() + ", userId=" + borrowApplication.getUserId());
-            if ("pending".equals(borrowApplication.getStatus()) || "dept_approved".equals(borrowApplication.getStatus())) {
+            // 只有在待审批状态下（pending_dept或pending_archive）才能取消
+            if ("pending_dept".equals(borrowApplication.getStatus()) || "pending_archive".equals(borrowApplication.getStatus())) {
                 // 验证用户权限，只有申请人才可以取消自己的申请
                 if (!userId.equals(borrowApplication.getUserId())) {
                     System.out.println("用户权限验证失败：当前用户id=" + userId + ", 申请用户id=" + borrowApplication.getUserId());
@@ -283,7 +284,7 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
                 System.out.println("取消申请结果：" + result);
                 return result;
             } else {
-                System.out.println("申请状态不是pending或dept_approved：" + borrowApplication.getStatus());
+                System.out.println("申请状态不是pending_dept或pending_archive：" + borrowApplication.getStatus());
                 return false;
             }
         } else {
@@ -292,6 +293,9 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
         }
     }
 
+    /**
+     * 取件操作：approved -> picked
+     */
     @Override
     public boolean pickupBorrowApplication(Long id) {
         BorrowApplication borrowApplication = selectById(id);
@@ -301,6 +305,9 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
         return false;
     }
 
+    /**
+     * 完成/归还：picked -> completed（联动病案状态变为"可借阅"）
+     */
     @Override
     public boolean completeBorrowApplication(Long id) {
         BorrowApplication borrowApplication = selectById(id);
@@ -322,6 +329,35 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
         return false;
     }
 
+    /**
+     * 批量科室审批通过
+     */
+    @Override
+    public boolean batchDeptApprove(List<Long> ids, String approver) {
+        for (Long id : ids) {
+            if (!deptApprove(id, approver)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 批量病案室审批通过
+     */
+    @Override
+    public boolean batchArchiveApprove(List<Long> ids, String approver) {
+        for (Long id : ids) {
+            if (!archiveApprove(id, approver)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 批量审批借阅申请（兼容旧版）
+     */
     @Override
     public boolean batchApproveBorrowApplications(List<Long> ids, String approver) {
         for (Long id : ids) {
@@ -332,6 +368,9 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
         return true;
     }
 
+    /**
+     * 批量驳回借阅申请（兼容旧版）
+     */
     @Override
     public boolean batchRejectBorrowApplications(List<Long> ids, String approver, String rejectionReason) {
         for (Long id : ids) {
@@ -340,6 +379,32 @@ public class BorrowApplicationServiceImpl extends ServiceImpl<BorrowApplicationM
             }
         }
         return true;
+    }
+
+    /**
+     * 根据科室查询待科室审批的申请列表
+     * 只返回申请人属于指定科室的待科室审批申请
+     */
+    @Override
+    public List<BorrowApplication> selectPendingDeptByDepartment(String department) {
+        // 先获取所有待科室审批的申请
+        List<BorrowApplication> allPending = baseMapper.selectByStatus("pending_dept");
+        
+        // 过滤出申请人属于指定科室的申请
+        return allPending.stream()
+            .filter(app -> {
+                User applicant = userService.getById(app.getUserId());
+                return applicant != null && department.equals(applicant.getDepartment());
+            })
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 查询所有待病案室审批的申请列表
+     */
+    @Override
+    public List<BorrowApplication> selectPendingArchiveAll() {
+        return baseMapper.selectByStatus("pending_archive");
     }
 
 }

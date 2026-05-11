@@ -1,24 +1,25 @@
 <template>
   <div class="borrow-history-container">
-    <div class="page-header">
-      <div>
-        <h1 class="page-title">借阅历史与状态跟踪</h1>
-        <p class="page-subtitle">查看所有借阅申请的审批状态和处理进度</p>
-      </div>
-      <el-tooltip content="查看所有借阅申请的审批状态和处理进度" placement="top">
-        <el-icon class="help-icon"><QuestionFilled /></el-icon>
-      </el-tooltip>
-    </div>
+    <el-card class="borrow-history-card">
+      <template #header>
+        <div class="card-header">
+          <span>&#20511;&#38405;&#21382;&#21490;&#19982;&#29366;&#24577;&#36319;&#36394;</span>
+          <el-tooltip
+            content="&#26597;&#30475;&#25152;&#26377;&#20511;&#38405;&#30003;&#35831;&#30340;&#23457;&#25209;&#29366;&#24577;&#21644;&#22788;&#29702;&#36827;&#24230;"
+            placement="top"
+          >
+            <el-icon><QuestionFilled /></el-icon>
+          </el-tooltip>
+        </div>
+      </template>
 
-    <el-card class="history-card" :body-style="{ padding: '24px' }">
-      <!-- Search Section -->
       <div class="search-section">
         <el-form :model="searchForm" :inline="true" class="search-form">
           <el-form-item :label="t.status">
-            <el-select v-model="searchForm.status" :placeholder="t.selectStatus" clearable style="width: 160px">
+            <el-select v-model="searchForm.status" :placeholder="t.selectStatus" clearable>
               <el-option :label="t.all" value="" />
-              <el-option :label="t.pending" value="pending" />
-              <el-option :label="t.deptApproved" value="dept_approved" />
+              <el-option :label="t.pendingDept" value="pending_dept" />
+              <el-option :label="t.pendingArchive" value="pending_archive" />
               <el-option :label="t.approved" value="approved" />
               <el-option :label="t.rejected" value="rejected" />
               <el-option :label="t.picked" value="picked" />
@@ -29,7 +30,7 @@
           </el-form-item>
 
           <el-form-item :label="t.borrowType">
-            <el-select v-model="searchForm.borrowType" :placeholder="t.selectBorrowType" clearable style="width: 160px">
+            <el-select v-model="searchForm.borrowType" :placeholder="t.selectBorrowType" clearable>
               <el-option :label="t.all" value="" />
               <el-option :label="t.internalBorrow" :value="t.internalBorrow" />
               <el-option :label="t.externalBorrow" :value="t.externalBorrow" />
@@ -37,11 +38,23 @@
           </el-form-item>
 
           <el-form-item :label="t.submitTimeLabel">
-            <el-date-picker v-model="searchForm.submitTimeStart" type="date" :placeholder="t.selectSubmitDate" clearable value-format="YYYY-MM-DD" style="width: 160px" />
+            <el-date-picker
+              v-model="searchForm.submitTimeStart"
+              type="date"
+              :placeholder="t.selectSubmitDate"
+              clearable
+              value-format="YYYY-MM-DD"
+            />
           </el-form-item>
 
           <el-form-item :label="t.expectedReturnDate">
-            <el-date-picker v-model="searchForm.expectedReturnDate" type="date" :placeholder="t.selectExactDate" clearable value-format="YYYY-MM-DD" style="width: 160px" />
+            <el-date-picker
+              v-model="searchForm.expectedReturnDate"
+              type="date"
+              :placeholder="t.selectExactDate"
+              clearable
+              value-format="YYYY-MM-DD"
+            />
           </el-form-item>
 
           <el-form-item>
@@ -49,144 +62,431 @@
             <el-button @click="resetSearch">{{ t.reset }}</el-button>
           </el-form-item>
         </el-form>
+
+        <div class="status-stats">
+          <div class="status-stat-item">
+            <span class="status-count">{{ pendingDeptCount }}</span>
+            <span class="status-label">{{ t.pendingDept }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ pendingArchiveCount }}</span>
+            <span class="status-label">{{ t.pendingArchive }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ approvedCount }}</span>
+            <span class="status-label">{{ t.approved }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ rejectedCount }}</span>
+            <span class="status-label">{{ t.rejected }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ pickedCount }}</span>
+            <span class="status-label">{{ t.picked }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ completedCount }}</span>
+            <span class="status-label">{{ t.completed }}</span>
+          </div>
+          <div class="status-stat-item">
+            <span class="status-count">{{ overdueCount }}</span>
+            <span class="status-label">{{ t.overdue }}</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Status Stats -->
-      <div class="status-stats">
-        <div class="status-stat-item">
-          <span class="status-count status-count--warning">{{ pendingCount }}</span>
-          <span class="status-label">{{ t.pending }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--primary">{{ deptApprovedCount }}</span>
-          <span class="status-label">{{ t.deptApproved }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--success">{{ approvedCount }}</span>
-          <span class="status-label">{{ t.approved }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--danger">{{ rejectedCount }}</span>
-          <span class="status-label">{{ t.rejected }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--info">{{ pickedCount }}</span>
-          <span class="status-label">{{ t.picked }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--default">{{ completedCount }}</span>
-          <span class="status-label">{{ t.completed }}</span>
-        </div>
-        <div class="status-stat-item">
-          <span class="status-count status-count--danger">{{ overdueCount }}</span>
-          <span class="status-label">{{ t.overdue }}</span>
-        </div>
+      <!-- 切换视图按钮（移动端） -->
+      <div v-if="isMobile" class="view-toggle">
+        <el-button size="small" @click="useTableView = !useTableView">
+          {{ useTableView ? t.cardView : t.tableView }}
+        </el-button>
       </div>
 
-      <!-- Table -->
-      <div class="table-scroll-wrapper">
-      <el-table :data="filteredApplications" style="width: 100%; height: 500px" border class="data-table">
+      <!-- 桌面端表格 / 移动端表格视图（可选） -->
+      <el-table
+        v-if="!isMobile || (isMobile && useTableView)"
+        :data="filteredApplications"
+        style="width: 100%"
+        border
+        height="500"
+        scrollbar-always-on
+        :class="{ 'show-on-mobile': isMobile && useTableView }"
+      >
         <el-table-column prop="id" :label="t.applicationId" width="80" />
-        <el-table-column prop="recordNumbers" :label="t.recordNumbers" show-overflow-tooltip />
-        <el-table-column prop="borrowType" :label="t.borrowType" width="120">
+        <el-table-column prop="recordNumbers" :label="t.recordNumbers" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="borrowType" :label="t.borrowType" width="100">
           <template #default="{ row }">
-            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" effect="plain" size="small">{{ row.borrowType }}</el-tag>
+            <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" size="small">
+              {{ row.borrowType }}
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="reason" :label="t.reason" show-overflow-tooltip />
-        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="130">
+        <el-table-column prop="reason" :label="t.reason" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="expectedReturnDate" :label="t.expectedReturnDate" width="110">
           <template #default="{ row }">
-            <span :class="{ 'text-danger': isOverdue(row.expectedReturnDate) }">{{ row.expectedReturnDate || '-' }}</span>
+            <span :class="{ overdue: isOverdue(row.expectedReturnDate) }">
+              {{ formatShortDate(row.expectedReturnDate) || '-' }}
+            </span>
           </template>
         </el-table-column>
-        <el-table-column :label="t.status" width="140">
+        <el-table-column :label="t.status" width="130">
           <template #default="{ row }">
-            <div class="status-cell">
-              <el-tag :type="getStatusType(row)" effect="dark" size="small">{{ getStatusText(row) }}</el-tag>
-              <el-tooltip :content="getStatusDescription(row)" placement="top">
-                <el-icon class="status-info-icon"><InfoFilled /></el-icon>
-              </el-tooltip>
+            <div class="status-container">
+              <el-tag :type="getStatusType(row)" effect="dark" size="small">
+                {{ getStatusText(row) }}
+              </el-tag>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="submitTime" :label="t.submitTime" width="160" />
-        <el-table-column prop="updatedTime" :label="t.updateTime" width="160" />
-        <el-table-column :label="t.actions" width="260" fixed="right">
+        <el-table-column prop="submitTime" :label="t.submitTime" width="160">
+          <template #default="{ row }">
+            {{ formatShortDate(row.submitTime) || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="updatedTime" :label="t.updateTime" width="160">
+          <template #default="{ row }">
+            {{ formatShortDate(row.updatedTime) || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column :label="t.actions" width="340" fixed="right">
           <template #default="{ row }">
             <div class="action-buttons">
               <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
-              <el-button v-if="isOwnApplication(row) && (row.status === 'pending' || row.status === 'dept_approved')" type="danger" size="small" @click="cancelApplication(row.id)">{{ t.cancel }}</el-button>
-              <el-button v-if="isOwnApplication(row) && row.status === 'approved'" type="primary" size="small" @click="pickupApplication(row.id)">{{ t.pickup }}</el-button>
-              <el-button v-if="isOwnApplication(row) && row.status === 'picked'" type="success" size="small" @click="completeApplication(row.id)">{{ t.complete }}</el-button>
+
+              <template v-if="store.state.user?.role === 'dept_approver'">
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="success"
+                  size="small"
+                  @click="deptApproveApplication(row.id)"
+                >
+                  {{ t.deptApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="danger"
+                  size="small"
+                  @click="deptRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else-if="store.state.user?.role === 'archive_approver'">
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="success"
+                  size="small"
+                  @click="archiveApproveApplication(row.id)"
+                >
+                  {{ t.archiveApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="archiveRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else-if="isAdmin">
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="success"
+                  size="small"
+                  @click="deptApproveApplication(row.id)"
+                >
+                  {{ t.deptApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_dept'"
+                  type="danger"
+                  size="small"
+                  @click="deptRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="success"
+                  size="small"
+                  @click="archiveApproveApplication(row.id)"
+                >
+                  {{ t.archiveApprove }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="archiveRejectApplication(row.id)"
+                >
+                  {{ t.reject }}
+                </el-button>
+              </template>
+
+              <template v-else>
+                <el-button
+                  v-if="row.status === 'pending_dept' || row.status === 'pending_archive'"
+                  type="danger"
+                  size="small"
+                  @click="cancelApplication(row.id)"
+                >
+                  {{ t.cancel }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'approved'"
+                  type="primary"
+                  size="small"
+                  @click="pickupApplication(row.id)"
+                >
+                  {{ t.pickup }}
+                </el-button>
+                <el-button
+                  v-if="row.status === 'picked'"
+                  type="success"
+                  size="small"
+                  @click="completeApplication(row.id)"
+                >
+                  {{ t.complete }}
+                </el-button>
+              </template>
             </div>
           </template>
         </el-table-column>
       </el-table>
-      </div>
-    </el-card>
 
-    <!-- Detail Dialog -->
-    <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" class="detail-dialog responsive-dialog">
-      <div v-if="selectedApplication" class="application-detail">
-        <div class="detail-section">
-          <h3 class="detail-section-title">{{ t.basicInfo }}</h3>
-          <div class="detail-grid">
-            <div class="detail-item">
-              <span class="detail-label">{{ t.applicationId }}</span>
-              <span class="detail-value">{{ selectedApplication.id }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">{{ t.recordNumbers }}</span>
-              <span class="detail-value">{{ selectedApplication.recordNumbers || '-' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">{{ t.borrowType }}</span>
-              <span class="detail-value">{{ selectedApplication.borrowType || '-' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">{{ t.expectedReturnDate }}</span>
-              <span class="detail-value">{{ selectedApplication.expectedReturnDate || '-' }}</span>
-            </div>
-            <div class="detail-item detail-item--full">
-              <span class="detail-label">{{ t.reason }}</span>
-              <span class="detail-value">{{ selectedApplication.reason || '-' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">{{ t.applicant }}</span>
-              <span class="detail-value">{{ selectedApplication.userName || '-' }}</span>
+      <!-- 移动端卡片布局 -->
+      <div v-else class="mobile-card-list">
+        <div v-for="row in filteredApplications" :key="row.id" class="mobile-card">
+          <div class="mobile-card-header">
+            <span class="app-id">{{ t.applicationId }}: {{ row.id }}</span>
+            <div class="mobile-card-header-right">
+              <span class="mobile-header-time">{{ formatShortDate(row.submitTime) }}</span>
+              <el-tag :type="getStatusType(row)" effect="dark" size="small">
+                {{ getStatusText(row) }}
+              </el-tag>
             </div>
           </div>
-        </div>
+          <div class="mobile-card-body">
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.recordNumbers }}:</span>
+              <span class="mobile-value mobile-value-break" :title="row.recordNumbers">{{ row.recordNumbers || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.borrowType }}:</span>
+              <span class="mobile-value">
+                <el-tag :type="row.borrowType === t.internalBorrow ? 'success' : 'info'" size="small">
+                  {{ row.borrowType || '-' }}
+                </el-tag>
+              </span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.reason }}:</span>
+              <span class="mobile-value mobile-value-break" :title="row.reason">{{ row.reason || '-' }}</span>
+            </div>
+            <div class="mobile-card-item">
+              <span class="mobile-label">{{ t.expectedReturnDate }}:</span>
+              <span class="mobile-value" :class="{ overdue: isOverdue(row.expectedReturnDate) }">
+                {{ formatShortDate(row.expectedReturnDate) || '-' }}
+              </span>
+            </div>
+            <div class="mobile-card-item mobile-card-item-collapsible" :class="{ collapsed: !showExtra[row.id] }">
+              <span class="mobile-label">{{ t.submitTime }}:</span>
+              <span class="mobile-value">{{ formatShortDate(row.submitTime) || '-' }}</span>
+            </div>
+            <div class="mobile-card-item mobile-card-item-collapsible" :class="{ collapsed: !showExtra[row.id] }">
+              <span class="mobile-label">{{ t.updateTime }}:</span>
+              <span class="mobile-value">{{ formatShortDate(row.updatedTime) || '-' }}</span>
+            </div>
+            <div v-if="!showExtra[row.id]" class="mobile-show-more" @click="showExtra[row.id] = true">
+              {{ t.showMore }}
+            </div>
+          </div>
+          <div class="mobile-card-footer">
+            <el-button size="small" @click="viewDetail(row)">{{ t.detail }}</el-button>
 
-        <div class="detail-section">
-          <h3 class="detail-section-title">{{ t.statusTimeline }}</h3>
-          <el-timeline>
-            <el-timeline-item
-              v-for="(event, index) in selectedApplication.statusHistory"
-              :key="index"
-              :timestamp="event.time"
-              :type="getStatusType(event.status)"
-            >
-              <div class="timeline-card">
-                <div class="timeline-title">{{ getStatusText(event.status) }}</div>
-                <div class="timeline-desc">{{ getStatusDescription(event.status) }}</div>
-                <div v-if="event.comment" class="timeline-comment">{{ t.comment }}: {{ event.comment }}</div>
-              </div>
-            </el-timeline-item>
-          </el-timeline>
+            <template v-if="store.state.user?.role === 'dept_approver'">
+              <el-button
+                v-if="row.status === 'pending_dept'"
+                type="success"
+                size="small"
+                @click="deptApproveApplication(row.id)"
+              >
+                {{ t.deptApprove }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'pending_dept'"
+                type="danger"
+                size="small"
+                @click="deptRejectApplication(row.id)"
+              >
+                {{ t.reject }}
+              </el-button>
+            </template>
+
+            <template v-else-if="store.state.user?.role === 'archive_approver'">
+              <el-button
+                v-if="row.status === 'pending_archive'"
+                type="success"
+                size="small"
+                @click="archiveApproveApplication(row.id)"
+              >
+                {{ t.archiveApprove }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'pending_archive'"
+                type="danger"
+                size="small"
+                @click="archiveRejectApplication(row.id)"
+              >
+                {{ t.reject }}
+              </el-button>
+            </template>
+
+            <template v-else-if="isAdmin">
+              <el-button
+                v-if="row.status === 'pending_dept'"
+                type="success"
+                size="small"
+                @click="deptApproveApplication(row.id)"
+              >
+                {{ t.deptApprove }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'pending_dept'"
+                type="danger"
+                size="small"
+                @click="deptRejectApplication(row.id)"
+              >
+                {{ t.reject }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'pending_archive'"
+                type="success"
+                size="small"
+                @click="archiveApproveApplication(row.id)"
+              >
+                {{ t.archiveApprove }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'pending_archive'"
+                type="danger"
+                size="small"
+                @click="archiveRejectApplication(row.id)"
+              >
+                {{ t.reject }}
+              </el-button>
+            </template>
+
+            <template v-else>
+              <el-button
+                v-if="row.status === 'pending_dept' || row.status === 'pending_archive'"
+                type="danger"
+                size="small"
+                @click="cancelApplication(row.id)"
+              >
+                {{ t.cancel }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'approved'"
+                type="primary"
+                size="small"
+                @click="pickupApplication(row.id)"
+              >
+                {{ t.pickup }}
+              </el-button>
+              <el-button
+                v-if="row.status === 'picked'"
+                type="success"
+                size="small"
+                @click="completeApplication(row.id)"
+              >
+                {{ t.complete }}
+              </el-button>
+            </template>
+          </div>
         </div>
       </div>
-    </el-dialog>
+
+      <el-dialog v-model="detailDialogVisible" :title="t.detailTitle" :width="isMobile ? '95%' : '800px'" class="detail-dialog">
+        <div v-if="selectedApplication" class="application-detail">
+          <div class="detail-section">
+            <h3>{{ t.basicInfo }}</h3>
+            <div class="detail-item">
+              <span class="label">{{ t.applicationId }}:</span>
+              <span class="value">{{ selectedApplication.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.recordNumbers }}:</span>
+              <span class="value">{{ selectedApplication.recordNumbers || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.borrowType }}:</span>
+              <span class="value">{{ selectedApplication.borrowType || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.reason }}:</span>
+              <span class="value">{{ selectedApplication.reason || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.expectedReturnDate }}:</span>
+              <span class="value">{{ selectedApplication.expectedReturnDate || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.applicant }}:</span>
+              <span class="value">{{ selectedApplication.userName || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">{{ t.department }}:</span>
+              <span class="value">{{ selectedApplication.department || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3>{{ t.statusTimeline }}</h3>
+            <el-timeline>
+              <el-timeline-item
+                v-for="(event, index) in selectedApplication.statusHistory"
+                :key="index"
+                :timestamp="event.time"
+                :type="getStatusType(event.status)"
+              >
+                <el-card shadow="hover" class="timeline-card">
+                  <div class="timeline-content">
+                    <div class="status-title">{{ getStatusText(event.status) }}</div>
+                    <div class="status-desc">{{ getStatusDescription(event.status) }}</div>
+                    <div v-if="event.comment" class="status-comment">{{ t.comment }}: {{ event.comment }}</div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+        </div>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { InfoFilled, QuestionFilled } from '@element-plus/icons-vue'
+import { QuestionFilled } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router'
 import service from '../api/request'
 import store from '../store'
+import dayjs from 'dayjs'
+
+const isMobile = ref(false)
+const useTableView = ref(false)
+const showExtra = reactive<Record<number, boolean>>({})
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) {
+    useTableView.value = false
+  }
+}
 
 interface BorrowApplication {
   id: number
@@ -200,11 +500,15 @@ interface BorrowApplication {
   returnTime?: string
   updatedTime?: string
   userName?: string
-  userId?: number
-  userDepartment?: string
+  department?: string
   deptApprover?: string
   deptApproveTime?: string
+  deptRejectionReason?: string
+  archiveApprover?: string
+  archiveApproveTime?: string
+  archiveRejectionReason?: string
   approver?: string
+  rejectionReason?: string
   statusHistory?: StatusEvent[]
 }
 
@@ -217,46 +521,54 @@ interface StatusEvent {
 const route = useRoute()
 
 const t = {
-  all: '全部',
-  status: '状态',
-  overdue: '已过期',
-  pending: '待审批',
-  deptApproved: '科室已批准',
-  approved: '已批准',
-  rejected: '已驳回',
-  picked: '已取件',
-  completed: '已完成',
-  cancelled: '已取消',
-  borrowType: '借阅类型',
-  internalBorrow: '院内借阅',
-  externalBorrow: '院外借阅',
-  submitTimeLabel: '申请时间',
-  expectedReturnDate: '预计归还日期',
-  selectStatus: '请选择状态',
-  selectBorrowType: '请选择借阅类型',
-  selectSubmitDate: '请选择申请日期',
-  selectExactDate: '请选择具体日期',
-  search: '查询',
-  reset: '重置',
-  applicationId: '申请ID',
-  recordNumbers: '病案号',
-  reason: '借阅原因',
-  submitTime: '提交时间',
-  updateTime: '更新时间',
-  actions: '操作',
-  detail: '详情',
-  approve: '批准',
-  reject: '驳回',
-  deptApprove: '科室审批',
-  finalApprove: '终审',
-  cancel: '取消',
-  pickup: '取件',
-  complete: '归还',
-  detailTitle: '申请详情',
-  basicInfo: '基本信息',
-  applicant: '申请人',
-  statusTimeline: '状态跟踪',
-  comment: '备注'
+  all: '\u5168\u90e8',
+  status: '\u72b6\u6001',
+  overdue: '\u5df2\u8fc7\u671f',
+  pendingDept: '\u5f85\u79d1\u5ba4\u5ba1\u6279',
+  pendingArchive: '\u5f85\u75c5\u6848\u5ba4\u5ba1\u6279',
+  pending: '\u5f85\u5ba1\u6279',
+  approved: '\u5df2\u6279\u51c6',
+  rejected: '\u5df2\u9a73\u56de',
+  picked: '\u5df2\u53d6\u4ef6',
+  completed: '\u5df2\u5b8c\u6210',
+  cancelled: '\u5df2\u53d6\u6d88',
+  borrowType: '\u501f\u9605\u7c7b\u578b',
+  internalBorrow: '\u9662\u5185\u501f\u9605',
+  externalBorrow: '\u9662\u5916\u501f\u9605',
+  submitTimeLabel: '\u7533\u8bf7\u65f6\u95f4',
+  expectedReturnDate: '\u9884\u8ba1\u5f52\u8fd8\u65e5\u671f',
+  selectStatus: '\u8bf7\u9009\u62e9\u72b6\u6001',
+  selectBorrowType: '\u8bf7\u9009\u62e9\u501f\u9605\u7c7b\u578b',
+  selectSubmitDate: '\u8bf7\u9009\u62e9\u7533\u8bf7\u65e5\u671f',
+  selectExactDate: '\u8bf7\u9009\u62e9\u5177\u4f53\u65e5\u671f',
+  search: '\u67e5\u8be2',
+  reset: '\u91cd\u7f6e',
+  applicationId: '\u7533\u8bf7ID',
+  recordNumbers: '\u75c5\u6848\u53f7',
+  reason: '\u501f\u9605\u539f\u56e0',
+  submitTime: '\u63d0\u4ea4\u65f6\u95f4',
+  updateTime: '\u66f4\u65b0\u65f6\u95f4',
+  actions: '\u64cd\u4f5c',
+  detail: '\u8be6\u60c5',
+  approve: '\u6279\u51c6',
+  deptApprove: '\u79d1\u5ba4\u540c\u610f',
+  archiveApprove: '\u75c5\u6848\u5ba4\u540c\u610f',
+  reject: '\u9a73\u56de',
+  cancel: '\u53d6\u6d88',
+  pickup: '\u53d6\u4ef6',
+  complete: '\u5f52\u8fd8',
+  detailTitle: '\u7533\u8bf7\u8be6\u60c5',
+  basicInfo: '\u57fa\u672c\u4fe1\u606f',
+  applicant: '\u7533\u8bf7\u4eba',
+  department: '\u79d1\u5ba4',
+  statusTimeline: '\u72b6\u6001\u8ddf\u8e2a',
+  comment: '\u5907\u6ce8',
+  deptApproval: '\u79d1\u5ba4\u5ba1\u6279',
+  archiveApproval: '\u75c5\u6848\u5ba4\u5ba1\u6279',
+  approvalInfo: '\u5ba1\u6279\u4fe1\u606f',
+  showMore: '\u5c55\u5f00\u66f4\u591a',
+  cardView: '\u5361\u7247\u89c6\u56fe',
+  tableView: '\u8868\u683c\u89c6\u56fe'
 }
 
 const searchForm = reactive({
@@ -276,109 +588,141 @@ const returnStatusFilter = ref('')
 const approvalBucketFilter = ref('')
 
 const isAdmin = computed(() => store.state.user?.role === 'admin')
-const isDeptDirector = computed(() => store.getters.isDeptDirector)
-const isMedRecordsDirector = computed(() => store.getters.isMedRecordsDirector)
-const currentUserDepartment = computed(() => store.getters.userDepartment)
-const currentUserId = computed(() => store.state.user?.id)
-
-const isOwnApplication = (app: BorrowApplication) => currentUserId.value != null && app.userId === currentUserId.value
+const isDeptApprover = computed(() => store.state.user?.role === 'dept_approver')
+const isArchiveApprover = computed(() => store.state.user?.role === 'archive_approver')
+const userDepartment = computed(() => store.state.user?.department || '')
 
 const isOverdue = (expectedReturnDate?: string) => {
   if (!expectedReturnDate) return false
-  const today = new Date(); today.setHours(0, 0, 0, 0)
-  const d = new Date(expectedReturnDate)
-  return !Number.isNaN(d.getTime()) && d < today
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const returnDate = new Date(expectedReturnDate)
+  if (Number.isNaN(returnDate.getTime())) return false
+  return returnDate < today
 }
 
-const isApplicationOverdue = (app: BorrowApplication | null | undefined) => {
-  if (!app) return false
-  if (['completed', 'cancelled', 'rejected'].includes(app.status)) return false
-  return isOverdue(app.expectedReturnDate)
+const formatShortDate = (date?: string) => {
+  if (!date) return null
+  const d = dayjs(date)
+  if (!d.isValid()) return date
+  return d.format('MM-DD HH:mm')
 }
 
-const isReturnedOnTime = (app: BorrowApplication) => {
-  if (app.status !== 'completed' || !app.expectedReturnDate) return false
-  const expectedDate = new Date(app.expectedReturnDate)
-  const completedDate = new Date(getApprovalProcessedTime(app))
+const isApplicationOverdue = (application: BorrowApplication | null | undefined) => {
+  if (!application) return false
+  if (['completed', 'cancelled', 'rejected'].includes(application.status)) return false
+  return isOverdue(application.expectedReturnDate)
+}
+
+const isReturnedOnTime = (application: BorrowApplication) => {
+  if (application.status !== 'completed' || !application.expectedReturnDate) return false
+  const expectedDate = new Date(application.expectedReturnDate)
+  const completedDate = new Date(getApprovalProcessedTime(application))
   if (Number.isNaN(expectedDate.getTime()) || Number.isNaN(completedDate.getTime())) return false
   expectedDate.setHours(23, 59, 59, 999)
   return completedDate.getTime() <= expectedDate.getTime()
 }
 
-const isReturnedOverdue = (app: BorrowApplication) => {
-  if (app.status !== 'completed' || !app.expectedReturnDate) return false
-  const expectedDate = new Date(app.expectedReturnDate)
-  const completedDate = new Date(getApprovalProcessedTime(app))
+const isReturnedOverdue = (application: BorrowApplication) => {
+  if (application.status !== 'completed' || !application.expectedReturnDate) return false
+  const expectedDate = new Date(application.expectedReturnDate)
+  const completedDate = new Date(getApprovalProcessedTime(application))
   if (Number.isNaN(expectedDate.getTime()) || Number.isNaN(completedDate.getTime())) return false
   expectedDate.setHours(23, 59, 59, 999)
   return completedDate.getTime() > expectedDate.getTime()
 }
 
-const isUnreturned = (app: BorrowApplication) => isApplicationOverdue(app)
+const isUnreturned = (application: BorrowApplication) => isApplicationOverdue(application)
 
-const getApprovalProcessedTime = (app: BorrowApplication) => {
-  if (app.status === 'completed' && app.returnTime) return app.returnTime
-  if (app.approveTime) return app.approveTime
-  if (app.updatedTime) return app.updatedTime
+const getApprovalProcessedTime = (application: BorrowApplication) => {
+  if (application.status === 'completed' && application.returnTime) {
+    return application.returnTime
+  }
+  if (application.approveTime) {
+    return application.approveTime
+  }
+  if (application.updatedTime) {
+    return application.updatedTime
+  }
   return ''
 }
 
-const getApprovalDurationHours = (app: BorrowApplication) => {
-  if (!app.submitTime || app.status === 'pending') return -1
-  const start = new Date(app.submitTime).getTime()
-  const end = new Date(getApprovalProcessedTime(app)).getTime()
+const getApprovalDurationHours = (application: BorrowApplication) => {
+  if (!application.submitTime) return -1
+  if (application.status === 'pending') return -1
+
+  const start = new Date(application.submitTime).getTime()
+  const end = new Date(getApprovalProcessedTime(application)).getTime()
   if (Number.isNaN(start) || Number.isNaN(end) || end < start) return -1
+
   return (end - start) / (1000 * 60 * 60)
 }
 
-const pendingCount = computed(() => applications.value.filter(a => a.status === 'pending').length)
-const deptApprovedCount = computed(() => applications.value.filter(a => a.status === 'dept_approved').length)
-const approvedCount = computed(() => applications.value.filter(a => a.status === 'approved').length)
-const rejectedCount = computed(() => applications.value.filter(a => a.status === 'rejected').length)
-const pickedCount = computed(() => applications.value.filter(a => a.status === 'picked').length)
-const completedCount = computed(() => applications.value.filter(a => a.status === 'completed').length)
-const overdueCount = computed(() => applications.value.filter(a => isApplicationOverdue(a)).length)
+const pendingDeptCount = computed(() => applications.value.filter((app) => app.status === 'pending_dept').length)
+const pendingArchiveCount = computed(() => applications.value.filter((app) => app.status === 'pending_archive').length)
+const pendingCount = computed(() => applications.value.filter((app) => ['pending', 'pending_dept', 'pending_archive'].includes(app.status)).length)
+const approvedCount = computed(() => applications.value.filter((app) => app.status === 'approved').length)
+const rejectedCount = computed(() => applications.value.filter((app) => app.status === 'rejected').length)
+const pickedCount = computed(() => applications.value.filter((app) => app.status === 'picked').length)
+const completedCount = computed(() => applications.value.filter((app) => app.status === 'completed').length)
+const overdueCount = computed(() => applications.value.filter((app) => isApplicationOverdue(app)).length)
 
 const filteredApplications = computed(() => {
   let filtered = applications.value.slice()
+
   if (searchForm.status) {
-    if (searchForm.status === 'overdue') filtered = filtered.filter(a => isApplicationOverdue(a))
-    else filtered = filtered.filter(a => a.status === searchForm.status)
+    if (searchForm.status === 'overdue') {
+      filtered = filtered.filter((app) => isApplicationOverdue(app))
+    } else {
+      filtered = filtered.filter((app) => app.status === searchForm.status)
+    }
   }
-  if (searchForm.borrowType) filtered = filtered.filter(a => a.borrowType === searchForm.borrowType)
+
+  if (searchForm.borrowType) {
+    filtered = filtered.filter((app) => app.borrowType === searchForm.borrowType)
+  }
+
   if (exactSubmitDate.value) {
     const start = new Date(`${exactSubmitDate.value}T00:00:00`).getTime()
     const end = new Date(`${exactSubmitDate.value}T23:59:59`).getTime()
-    filtered = filtered.filter(a => {
-      if (!a.submitTime) return false
-      const submit = new Date(a.submitTime).getTime()
+    filtered = filtered.filter((app) => {
+      if (!app.submitTime) return false
+      const submit = new Date(app.submitTime).getTime()
       return !Number.isNaN(submit) && submit >= start && submit <= end
     })
   }
+
   if (searchForm.submitTimeStart) {
     const start = new Date(`${searchForm.submitTimeStart}T00:00:00`).getTime()
     const end = new Date(`${searchForm.submitTimeStart}T23:59:59`).getTime()
-    filtered = filtered.filter(a => {
-      if (!a.submitTime) return false
-      const submit = new Date(a.submitTime).getTime()
+    filtered = filtered.filter((app) => {
+      if (!app.submitTime) return false
+      const submit = new Date(app.submitTime).getTime()
       return !Number.isNaN(submit) && submit >= start && submit <= end
     })
   }
+
   if (searchForm.expectedReturnDate) {
-    filtered = filtered.filter(a => {
-      if (!a.expectedReturnDate) return false
-      const d = new Date(a.expectedReturnDate)
-      if (Number.isNaN(d.getTime())) return false
-      const normalized = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-      return normalized === searchForm.expectedReturnDate
+    filtered = filtered.filter((app) => {
+      if (!app.expectedReturnDate) return false
+      const returnDate = new Date(app.expectedReturnDate)
+      if (Number.isNaN(returnDate.getTime())) return false
+      const normalizedDate = `${returnDate.getFullYear()}-${String(returnDate.getMonth() + 1).padStart(2, '0')}-${String(returnDate.getDate()).padStart(2, '0')}`
+      return normalizedDate === searchForm.expectedReturnDate
     })
   }
-  if (returnStatusFilter.value === 'onTime') filtered = filtered.filter(a => isReturnedOnTime(a))
-  else if (returnStatusFilter.value === 'overdueReturn') filtered = filtered.filter(a => isReturnedOverdue(a))
-  else if (returnStatusFilter.value === 'unreturned') filtered = filtered.filter(a => isUnreturned(a))
+
+  if (returnStatusFilter.value === 'onTime') {
+    filtered = filtered.filter((app) => isReturnedOnTime(app))
+  } else if (returnStatusFilter.value === 'overdueReturn') {
+    filtered = filtered.filter((app) => isReturnedOverdue(app))
+  } else if (returnStatusFilter.value === 'unreturned') {
+    filtered = filtered.filter((app) => isUnreturned(app))
+  }
+
   if (approvalBucketFilter.value) {
-    filtered = filtered.filter(a => {
-      const hours = getApprovalDurationHours(a)
+    filtered = filtered.filter((app) => {
+      const hours = getApprovalDurationHours(app)
       if (hours < 0) return false
       if (approvalBucketFilter.value === 'lt4h') return hours < 4
       if (approvalBucketFilter.value === '4to24h') return hours >= 4 && hours < 24
@@ -387,114 +731,216 @@ const filteredApplications = computed(() => {
       return true
     })
   }
-  if (onlyOverdue.value) filtered = filtered.filter(a => isApplicationOverdue(a))
+
+  if (onlyOverdue.value) {
+    filtered = filtered.filter((app) => isApplicationOverdue(app))
+  }
+
   return filtered
 })
 
 const getStatusType = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return 'danger'
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
+    return 'danger'
+  }
+
   switch (status) {
-    case 'pending': return 'warning'
-    case 'dept_approved': return 'primary'
-    case 'approved': return 'success'
-    case 'rejected': return 'danger'
-    case 'picked': return 'primary'
-    case 'completed': return 'info'
-    case 'cancelled': return 'info'
-    default: return ''
+    case 'pending_dept':
+      return 'warning'
+    case 'pending_archive':
+      return 'warning'
+    case 'pending':
+      return 'warning'
+    case 'approved':
+      return 'success'
+    case 'rejected':
+      return 'danger'
+    case 'picked':
+      return 'primary'
+    case 'completed':
+      return 'info'
+    case 'cancelled':
+      return 'info'
+    default:
+      return ''
   }
 }
 
 const getStatusText = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return t.overdue
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
+    return t.overdue
+  }
+
   switch (status) {
-    case 'pending': return t.pending
-    case 'dept_approved': return t.deptApproved
-    case 'approved': return t.approved
-    case 'rejected': return t.rejected
-    case 'picked': return t.picked
-    case 'completed': return t.completed
-    case 'cancelled': return t.cancelled
-    default: return status
+    case 'pending_dept':
+      return t.pendingDept
+    case 'pending_archive':
+      return t.pendingArchive
+    case 'pending':
+      return t.pending
+    case 'approved':
+      return t.approved
+    case 'rejected':
+      return t.rejected
+    case 'picked':
+      return t.picked
+    case 'completed':
+      return t.completed
+    case 'cancelled':
+      return t.cancelled
+    default:
+      return status
   }
 }
 
 const getStatusDescription = (target: BorrowApplication | StatusEvent | string) => {
   const status = typeof target === 'string' ? target : target.status
-  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) return '已超过预计归还日期，请尽快归还或处理'
+  if (typeof target !== 'string' && 'expectedReturnDate' in target && isApplicationOverdue(target as BorrowApplication)) {
+    return '\u5df2\u8d85\u8fc7\u9884\u8ba1\u5f52\u8fd8\u65e5\u671f\uff0c\u8bf7\u5c3d\u5feb\u5f52\u8fd8\u6216\u5904\u7406'
+  }
+
   switch (status) {
-    case 'pending': return '申请已提交，等待科室主任批准'
-    case 'dept_approved': return '等待病案科主任终审'
-    case 'approved': return '申请已批准，可以前往取件'
-    case 'rejected': return '申请已被驳回，请查看驳回原因'
-    case 'picked': return '已成功取件，请按时归还'
-    case 'completed': return '病案已成功归还'
-    case 'cancelled': return '申请已取消'
-    default: return ''
+    case 'pending_dept':
+      return '\u7533\u8bf7\u5df2\u63d0\u4ea4\uff0c\u7b49\u5f85\u79d1\u5ba4\u5ba1\u6279\u5458\u5ba1\u6279'
+    case 'pending_archive':
+      return '\u79d1\u5ba4\u5df2\u540c\u610f\uff0c\u7b49\u5f85\u75c5\u6848\u5ba4\u5ba1\u6279\u5458\u5ba1\u6279'
+    case 'pending':
+      return '\u7533\u8bf7\u5df2\u63d0\u4ea4\uff0c\u7b49\u5f85\u7ba1\u7406\u5458\u5ba1\u6279'
+    case 'approved':
+      return '\u7533\u8bf7\u5df2\u6279\u51c6\uff0c\u53ef\u4ee5\u524d\u5f80\u53d6\u4ef6'
+    case 'rejected':
+      return '\u7533\u8bf7\u5df2\u88ab\u9a73\u56de\uff0c\u8bf7\u67e5\u770b\u9a73\u56de\u539f\u56e0'
+    case 'picked':
+      return '\u5df2\u6210\u529f\u53d6\u4ef6\uff0c\u8bf7\u6309\u65f6\u5f52\u8fd8'
+    case 'completed':
+      return '\u75c5\u6848\u5df2\u6210\u529f\u5f52\u8fd8'
+    case 'cancelled':
+      return '\u7533\u8bf7\u5df2\u53d6\u6d88'
+    default:
+      return ''
   }
 }
 
-const generateStatusHistory = (app: BorrowApplication): StatusEvent[] => {
+const generateStatusHistory = (application: BorrowApplication): StatusEvent[] => {
   const history: StatusEvent[] = []
-  const isAutoApproved = app.approver === '自动审批'
-  const isSkipDept = app.deptApprover === '跳过科室审批'
-  if (!isAutoApproved && !isSkipDept) {
-    history.push({ status: 'pending', time: app.submitTime || '', comment: '申请已提交' })
+  const now = new Date()
+
+  // 提交申请
+  history.push({
+    status: 'pending_dept',
+    time: application.submitTime || now.toLocaleString(),
+    comment: '\u7533\u8bf7\u5df2\u63d0\u4ea4\uff0c\u7b49\u5f85\u79d1\u5ba4\u5ba1\u6279'
+  })
+
+  // 科室审批
+  if (['pending_archive', 'approved', 'picked', 'completed'].includes(application.status)) {
+    history.push({
+      status: 'pending_archive',
+      time: application.deptApproveTime || new Date(now.getTime() - 86400000).toLocaleString(),
+      comment: `\u79d1\u5ba4\u5df2\u540c\u610f${application.deptApprover ? '（审批人：' + application.deptApprover + '）' : ''}`
+    })
   }
-  if (['dept_approved', 'approved', 'picked', 'completed'].includes(app.status)) {
-    if (isSkipDept) {
-      history.push({ status: 'dept_approved', time: app.deptApproveTime || app.submitTime || '', comment: '科室主任申请，跳过科室审批' })
-    } else if (!isAutoApproved) {
-      history.push({ status: 'dept_approved', time: app.deptApproveTime || '', comment: `科室主任${app.deptApprover || ''}已审批通过` })
-    }
+
+  // 病案室审批
+  if (['approved', 'picked', 'completed'].includes(application.status)) {
+    history.push({
+      status: 'approved',
+      time: application.archiveApproveTime || new Date(now.getTime() - 43200000).toLocaleString(),
+      comment: `\u75c5\u6848\u5ba4\u5df2\u6279\u51c6${application.archiveApprover ? '（审批人：' + application.archiveApprover + '）' : ''}`
+    })
   }
-  if (['approved', 'picked', 'completed'].includes(app.status)) {
-    if (isAutoApproved) {
-      history.push({ status: 'approved', time: app.approveTime || '', comment: '病案科主任申请，自动审批通过' })
-    } else {
-      history.push({ status: 'approved', time: app.approveTime || '', comment: `病案科主任${app.approver || ''}已终审通过` })
-    }
+
+  // 取件
+  if (['picked', 'completed'].includes(application.status)) {
+    history.push({
+      status: 'picked',
+      time: new Date(now.getTime() - 21600000).toLocaleString(),
+      comment: '\u5df2\u6210\u529f\u53d6\u4ef6'
+    })
   }
-  if (['picked', 'completed'].includes(app.status)) {
-    history.push({ status: 'picked', time: app.updatedTime || '', comment: '已成功取件' })
+
+  // 归还
+  if (application.status === 'completed') {
+    history.push({
+      status: 'completed',
+      time: now.toLocaleString(),
+      comment: '\u5df2\u5f52\u8fd8\u75c5\u6848'
+    })
   }
-  if (app.status === 'completed') {
-    history.push({ status: 'completed', time: app.returnTime || '', comment: '已归还病案' })
+
+  // 驳回（科室驳回）
+  if (application.status === 'rejected' && application.deptRejectionReason) {
+    history.push({
+      status: 'rejected',
+      time: application.deptApproveTime || new Date(now.getTime() - 86400000).toLocaleString(),
+      comment: `\u79d1\u5ba4\u9a73\u56de\uff1a${application.deptRejectionReason}`
+    })
   }
-  if (app.status === 'rejected') {
-    history.push({ status: 'rejected', time: app.approveTime || app.deptApproveTime || '', comment: '申请被驳回' })
+
+  // 驳回（病案室驳回）
+  if (application.status === 'rejected' && application.archiveRejectionReason) {
+    history.push({
+      status: 'rejected',
+      time: application.archiveApproveTime || new Date(now.getTime() - 86400000).toLocaleString(),
+      comment: `\u75c5\u6848\u5ba4\u9a73\u56de\uff1a${application.archiveRejectionReason}`
+    })
   }
-  if (app.status === 'cancelled') {
-    history.push({ status: 'cancelled', time: app.updatedTime || '', comment: '申请人主动取消' })
+
+  // 兼容旧版驳回
+  if (application.status === 'rejected' && !application.deptRejectionReason && !application.archiveRejectionReason) {
+    history.push({
+      status: 'rejected',
+      time: application.approveTime || new Date(now.getTime() - 86400000).toLocaleString(),
+      comment: `\u7533\u8bf7\u88ab\u9a73\u56de${application.rejectionReason ? '：' + application.rejectionReason : ''}`
+    })
   }
+
+  // 取消
+  if (application.status === 'cancelled') {
+    history.push({
+      status: 'cancelled',
+      time: new Date(now.getTime() - 86400000).toLocaleString(),
+      comment: '\u7533\u8bf7\u4eba\u4e3b\u52a8\u53d6\u6d88'
+    })
+  }
+
   return history.reverse()
 }
 
 const searchApplications = async () => {
   try {
     const user = store.state.user
-    if (!user?.id) { ElMessage.error('用户信息不完整，请重新登录'); return }
+    if (!user?.id) {
+      ElMessage.error('\u7528\u6237\u4fe1\u606f\u4e0d\u5b8c\u6574\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55')
+      return
+    }
+
     let response: BorrowApplication[]
-    if (isMedRecordsDirector.value && !forceMine.value) {
-      const deptApproved = await service.get<BorrowApplication[]>('/borrow-applications/dept-approved') || []
-      const myOwn = await service.get<BorrowApplication[]>(`/borrow-applications/by-user/${user.id}`) || []
-      const merged = new Map<number, BorrowApplication>()
-      for (const app of deptApproved) merged.set(app.id, app)
-      for (const app of myOwn) merged.set(app.id, app)
-      response = Array.from(merged.values())
-    } else if (isDeptDirector.value && !forceMine.value) {
-      response = await service.get<BorrowApplication[]>(`/borrow-applications/by-dept/${encodeURIComponent(currentUserDepartment.value)}`)
-    } else if (isAdmin.value && !forceMine.value) {
+
+    // 根据角色获取不同的数据
+    if (isAdmin.value && !forceMine.value) {
+      // 管理员可以看到所有申请
       response = await service.get<BorrowApplication[]>('/borrow-applications/list')
+    } else if (isDeptApprover.value) {
+      // 科室审批员只能看到自己科室的待科室审批申请
+      response = await service.get<BorrowApplication[]>(`/borrow-applications/pending-dept/by-department/${encodeURIComponent(userDepartment.value)}`)
+    } else if (isArchiveApprover.value) {
+      // 病案室审批员可以看到所有待病案室审批的申请
+      response = await service.get<BorrowApplication[]>('/borrow-applications/pending-archive')
     } else {
+      // 普通用户只能看到自己的申请
       response = await service.get<BorrowApplication[]>(`/borrow-applications/by-user/${user.id}`)
     }
-    applications.value = (response || []).map(app => ({ ...app, statusHistory: generateStatusHistory(app) }))
+
+    applications.value = (response || []).map((app) => ({
+      ...app,
+      statusHistory: generateStatusHistory(app)
+    }))
   } catch (error) {
     console.error('Failed to load borrow applications:', error)
-    ElMessage.error('查询借阅申请失败')
+    ElMessage.error('\u67e5\u8be2\u501f\u9605\u7533\u8bf7\u5931\u8d25')
   }
 }
 
@@ -512,283 +958,605 @@ const resetSearch = () => {
 
 const cancelApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('确定要取消这个借阅申请吗？', '确认取消', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
+    await ElMessageBox.confirm('\u786e\u5b9a\u8981\u53d6\u6d88\u8fd9\u4e2a\u501f\u9605\u7533\u8bf7\u5417\uff1f', '\u786e\u8ba4\u53d6\u6d88', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'warning'
+    })
+
     const user = store.state.user
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/cancel`, { userId: user?.id })
-    if (response?.success) { ElMessage.success('申请已取消'); searchApplications() }
-    else ElMessage.error('取消申请失败')
+    if (response?.success) {
+      ElMessage.success('\u7533\u8bf7\u5df2\u53d6\u6d88')
+      searchApplications()
+    } else {
+      ElMessage.error('\u53d6\u6d88\u7533\u8bf7\u5931\u8d25')
+    }
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('取消申请失败')
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u53d6\u6d88\u7533\u8bf7\u5931\u8d25')
+    }
+  }
+}
+
+const approveApplication = async (id: number) => {
+  try {
+    await ElMessageBox.confirm('\u786e\u5b9a\u8981\u6279\u51c6\u8fd9\u4e2a\u501f\u9605\u7533\u8bf7\u5417\uff1f', '\u786e\u8ba4\u6279\u51c6', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'success'
+    })
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/approve`, {
+      approver: store.state.user?.name
+    })
+    if (response?.success) {
+      ElMessage.success('\u7533\u8bf7\u5df2\u6279\u51c6')
+      searchApplications()
+    } else {
+      ElMessage.error('\u6279\u51c6\u7533\u8bf7\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u6279\u51c6\u7533\u8bf7\u5931\u8d25')
+    }
+  }
+}
+
+const rejectApplication = async (id: number) => {
+  try {
+    const { value } = await ElMessageBox.prompt(
+      '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0',
+      '\u786e\u8ba4\u9a73\u56de',
+      {
+        confirmButtonText: '\u786e\u5b9a',
+        cancelButtonText: '\u53d6\u6d88',
+        type: 'warning',
+        inputPlaceholder: '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0'
+      }
+    )
+
+    if (!value?.trim()) {
+      ElMessage.warning('\u9a73\u56de\u539f\u56e0\u4e0d\u80fd\u4e3a\u7a7a')
+      return
+    }
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/reject`, {
+      approver: store.state.user?.name,
+      rejectionReason: value
+    })
+    if (response?.success) {
+      ElMessage.success('\u7533\u8bf7\u5df2\u9a73\u56de')
+      searchApplications()
+    } else {
+      ElMessage.error('\u9a73\u56de\u7533\u8bf7\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u9a73\u56de\u7533\u8bf7\u5931\u8d25')
+    }
   }
 }
 
 const pickupApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('确认已取到病案吗？', '确认取件', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
+    await ElMessageBox.confirm('\u786e\u8ba4\u5df2\u53d6\u5230\u75c5\u6848\u5417\uff1f', '\u786e\u8ba4\u53d6\u4ef6', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'warning'
+    })
+
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/pickup`, {})
-    if (response?.success) { ElMessage.success('取件成功'); searchApplications() }
-    else ElMessage.error('取件失败')
+    if (response?.success) {
+      ElMessage.success('\u53d6\u4ef6\u6210\u529f')
+      searchApplications()
+    } else {
+      ElMessage.error('\u53d6\u4ef6\u5931\u8d25')
+    }
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('取件失败')
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u53d6\u4ef6\u5931\u8d25')
+    }
   }
 }
 
 const completeApplication = async (id: number) => {
   try {
-    await ElMessageBox.confirm('确认已归还病案吗？', '确认归还', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
+    await ElMessageBox.confirm('\u786e\u8ba4\u5df2\u5f52\u8fd8\u75c5\u6848\u5417\uff1f', '\u786e\u8ba4\u5f52\u8fd8', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'warning'
+    })
+
     const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/complete`, {})
-    if (response?.success) { ElMessage.success('归还成功'); searchApplications() }
-    else ElMessage.error('归还失败')
+    if (response?.success) {
+      ElMessage.success('\u5f52\u8fd8\u6210\u529f')
+      searchApplications()
+    } else {
+      ElMessage.error('\u5f52\u8fd8\u5931\u8d25')
+    }
   } catch (error: any) {
-    if (error !== 'cancel' && error?.action !== 'cancel') ElMessage.error('归还失败')
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u5f52\u8fd8\u5931\u8d25')
+    }
   }
 }
 
-const viewDetail = (app: BorrowApplication) => {
-  selectedApplication.value = app
+// 科室审批通过
+const deptApproveApplication = async (id: number) => {
+  try {
+    await ElMessageBox.confirm('\u786e\u5b9a\u8981\u540c\u610f\u8fd9\u4e2a\u501f\u9605\u7533\u8bf7\u5417\uff1f', '\u786e\u8ba4\u79d1\u5ba4\u540c\u610f', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'success'
+    })
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/dept-approve`, {
+      approver: store.state.user?.name
+    })
+    if (response?.success) {
+      ElMessage.success('\u79d1\u5ba4\u5df2\u540c\u610f')
+      searchApplications()
+    } else {
+      ElMessage.error('\u79d1\u5ba4\u5ba1\u6279\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u79d1\u5ba4\u5ba1\u6279\u5931\u8d25')
+    }
+  }
+}
+
+// 科室审批驳回
+const deptRejectApplication = async (id: number) => {
+  try {
+    const { value } = await ElMessageBox.prompt(
+      '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0',
+      '\u786e\u8ba4\u79d1\u5ba4\u9a73\u56de',
+      {
+        confirmButtonText: '\u786e\u5b9a',
+        cancelButtonText: '\u53d6\u6d88',
+        type: 'warning',
+        inputPlaceholder: '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0'
+      }
+    )
+
+    if (!value?.trim()) {
+      ElMessage.warning('\u9a73\u56de\u539f\u56e0\u4e0d\u80fd\u4e3a\u7a7a')
+      return
+    }
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/dept-reject`, {
+      approver: store.state.user?.name,
+      rejectionReason: value
+    })
+    if (response?.success) {
+      ElMessage.success('\u79d1\u5ba4\u5df2\u9a73\u56de')
+      searchApplications()
+    } else {
+      ElMessage.error('\u79d1\u5ba4\u9a73\u56de\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u79d1\u5ba4\u9a73\u56de\u5931\u8d25')
+    }
+  }
+}
+
+// 病案室审批通过
+const archiveApproveApplication = async (id: number) => {
+  try {
+    await ElMessageBox.confirm('\u786e\u5b9a\u8981\u6279\u51c6\u8fd9\u4e2a\u501f\u9605\u7533\u8bf7\u5417\uff1f', '\u786e\u8ba4\u75c5\u6848\u5ba4\u6279\u51c6', {
+      confirmButtonText: '\u786e\u5b9a',
+      cancelButtonText: '\u53d6\u6d88',
+      type: 'success'
+    })
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/archive-approve`, {
+      approver: store.state.user?.name
+    })
+    if (response?.success) {
+      ElMessage.success('\u75c5\u6848\u5ba4\u5df2\u6279\u51c6')
+      searchApplications()
+    } else {
+      ElMessage.error('\u75c5\u6848\u5ba4\u5ba1\u6279\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u75c5\u6848\u5ba4\u5ba1\u6279\u5931\u8d25')
+    }
+  }
+}
+
+// 病案室审批驳回
+const archiveRejectApplication = async (id: number) => {
+  try {
+    const { value } = await ElMessageBox.prompt(
+      '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0',
+      '\u786e\u8ba4\u75c5\u6848\u5ba4\u9a73\u56de',
+      {
+        confirmButtonText: '\u786e\u5b9a',
+        cancelButtonText: '\u53d6\u6d88',
+        type: 'warning',
+        inputPlaceholder: '\u8bf7\u8f93\u5165\u9a73\u56de\u539f\u56e0'
+      }
+    )
+
+    if (!value?.trim()) {
+      ElMessage.warning('\u9a73\u56de\u539f\u56e0\u4e0d\u80fd\u4e3a\u7a7a')
+      return
+    }
+
+    const response = await service.put<{ success: boolean }>(`/borrow-applications/${id}/archive-reject`, {
+      approver: store.state.user?.name,
+      rejectionReason: value
+    })
+    if (response?.success) {
+      ElMessage.success('\u75c5\u6848\u5ba4\u5df2\u9a73\u56de')
+      searchApplications()
+    } else {
+      ElMessage.error('\u75c5\u6848\u5ba4\u9a73\u56de\u5931\u8d25')
+    }
+  } catch (error: any) {
+    if (error !== 'cancel' && error?.action !== 'cancel') {
+      ElMessage.error('\u75c5\u6848\u5ba4\u9a73\u56de\u5931\u8d25')
+    }
+  }
+}
+
+const viewDetail = (application: BorrowApplication) => {
+  selectedApplication.value = application
   detailDialogVisible.value = true
 }
 
 onMounted(() => {
-  if (route.query.mine === '1') forceMine.value = true
-  if (typeof route.query.status === 'string') searchForm.status = route.query.status
-  if (typeof route.query.borrowType === 'string') searchForm.borrowType = route.query.borrowType
-  if (typeof route.query.submitTimeStart === 'string') searchForm.submitTimeStart = route.query.submitTimeStart
-  if (typeof route.query.submitTimeDate === 'string') { exactSubmitDate.value = route.query.submitTimeDate; searchForm.submitTimeStart = route.query.submitTimeDate }
-  if (typeof route.query.expectedReturnDate === 'string') searchForm.expectedReturnDate = route.query.expectedReturnDate
-  if (typeof route.query.returnStatus === 'string') returnStatusFilter.value = route.query.returnStatus
-  if (typeof route.query.approvalBucket === 'string') approvalBucketFilter.value = route.query.approvalBucket
-  if (route.query.overdue === '1') { onlyOverdue.value = true; if (!searchForm.status) searchForm.status = 'overdue' }
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+  if (route.query.mine === '1') {
+    forceMine.value = true
+  }
+  if (typeof route.query.status === 'string') {
+    searchForm.status = route.query.status
+  }
+  if (typeof route.query.borrowType === 'string') {
+    searchForm.borrowType = route.query.borrowType
+  }
+  if (typeof route.query.submitTimeStart === 'string') {
+    searchForm.submitTimeStart = route.query.submitTimeStart
+  }
+  if (typeof route.query.submitTimeDate === 'string') {
+    exactSubmitDate.value = route.query.submitTimeDate
+    searchForm.submitTimeStart = route.query.submitTimeDate
+  }
+  if (typeof route.query.expectedReturnDate === 'string') {
+    searchForm.expectedReturnDate = route.query.expectedReturnDate
+  }
+  if (typeof route.query.returnStatus === 'string') {
+    returnStatusFilter.value = route.query.returnStatus
+  }
+  if (typeof route.query.approvalBucket === 'string') {
+    approvalBucketFilter.value = route.query.approvalBucket
+  }
+  if (route.query.overdue === '1') {
+    onlyOverdue.value = true
+    if (!searchForm.status) {
+      searchForm.status = 'overdue'
+    }
+  }
   searchApplications()
 })
 </script>
 
 <style scoped>
 .borrow-history-container {
-  padding: var(--space-lg);
+  padding: 20px;
+  min-height: calc(100vh - 64px);
+  overflow: auto;
 }
 
-.page-header {
+.borrow-history-card {
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-lg);
-}
-
-.page-title {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  margin: 0;
-}
-
-.page-subtitle {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-base);
-  margin: 4px 0 0;
-}
-
-.help-icon {
-  color: var(--color-text-tertiary);
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.help-icon:hover { color: var(--color-primary); }
-
-.history-card {
-  margin-bottom: var(--space-lg);
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .search-section {
-  margin-bottom: var(--space-lg);
+  margin-bottom: 24px;
 }
 
 .search-form {
+  margin-bottom: 24px;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
 }
 
-.search-form .el-form-item {
-  margin-bottom: 12px;
+.search-form .el-select {
+  min-width: 180px;
 }
 
-/* Status Stats */
+.search-form :deep(.el-date-editor.el-input__wrapper),
+.search-form :deep(.el-date-editor.el-range-editor) {
+  min-width: 220px;
+}
+
 .status-stats {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-  margin-bottom: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .status-stat-item {
   text-align: center;
-  padding: 16px 12px;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-light);
-  transition: all var(--transition-fast);
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-out;
 }
 
 .status-stat-item:hover {
-  border-color: var(--color-primary);
-  background: var(--color-primary-lighter);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .status-count {
   display: block;
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.2;
+  font-size: 28px;
+  font-weight: 700;
+  color: #007AFF;
+  font-variant-numeric: tabular-nums;
 }
-
-.status-count--warning { color: var(--color-warning); }
-.status-count--primary { color: var(--color-primary); }
-.status-count--success { color: var(--color-success); }
-.status-count--danger { color: var(--color-danger); }
-.status-count--info { color: var(--color-info); }
-.status-count--default { color: var(--color-text-primary); }
 
 .status-label {
   display: block;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  margin-top: 4px;
+  font-size: 13px;
+  color: #86868B;
+  margin-top: 6px;
+  font-weight: 500;
 }
 
-/* Table */
-.data-table {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.status-cell {
+.status-container {
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-.status-info-icon {
-  cursor: pointer;
-  color: var(--color-text-tertiary);
-  font-size: 14px;
-}
-
-.status-info-icon:hover { color: var(--color-primary); }
-
-.text-danger {
-  color: var(--color-danger);
-  font-weight: var(--font-weight-semibold);
-}
-
-.action-buttons {
-  display: flex;
   gap: 6px;
-  flex-wrap: wrap;
 }
 
-/* Table scroll wrapper */
-.table-scroll-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.status-icon {
+  cursor: pointer;
+  color: #86868B;
+  transition: color 0.2s ease-out;
 }
 
-/* Responsive dialog */
-.responsive-dialog {
-  max-width: 700px;
+.status-icon:hover {
+  color: #007AFF;
 }
 
-/* Detail Dialog */
+.overdue {
+  color: #FF3B30;
+  font-weight: 600;
+}
+
 .application-detail {
-  padding: 4px;
+  padding: 12px;
 }
 
 .detail-section {
-  margin-bottom: var(--space-lg);
+  margin-bottom: 32px;
 }
 
-.detail-section-title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin: 0 0 var(--space-md);
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--color-divider);
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+.detail-section h3 {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
 }
 
 .detail-item {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 14px;
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  align-items: flex-start;
 }
 
-.detail-item--full {
-  grid-column: 1 / -1;
+.detail-item .label {
+  width: 120px;
+  font-weight: 500;
+  color: #86868B;
+  font-size: 14px;
 }
 
-.detail-label {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-tertiary);
-  font-weight: var(--font-weight-medium);
-}
-
-.detail-value {
-  font-size: var(--font-size-base);
-  color: var(--color-text-primary);
+.detail-item .value {
+  flex: 1;
+  color: #1D1D1F;
   word-break: break-word;
+  font-size: 15px;
 }
 
 .timeline-card {
-  padding: 2px 0;
+  margin-bottom: 12px;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
-.timeline-title {
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin-bottom: 4px;
+.timeline-content {
+  padding: 16px;
 }
 
-.timeline-desc {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  margin-bottom: 4px;
+.status-title {
+  font-weight: 600;
+  color: #1D1D1F;
+  margin-bottom: 6px;
+  font-size: 15px;
 }
 
-.timeline-comment {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-tertiary);
+.status-desc {
+  font-size: 14px;
+  color: #86868B;
+  margin-bottom: 8px;
+}
+
+.status-comment {
+  font-size: 13px;
+  color: #AEAEB2;
   font-style: italic;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .status-stats {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.mobile-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px;
+}
+
+.mobile-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+}
+
+.mobile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+  color: white;
+}
+
+.app-id {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.mobile-card-body {
+  padding: 16px;
+}
+
+.mobile-card-item {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.mobile-label {
+  font-weight: 500;
+  color: #86868B;
+  font-size: 13px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.mobile-value {
+  flex: 1;
+  color: #1D1D1F;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mobile-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card-footer .el-button {
+  flex: 1;
+  min-width: auto;
+}
+
+.mobile-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-header-time {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.mobile-value-break {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.mobile-card-item-collapsible {
+  transition: all 0.2s ease-out;
+}
+
+.mobile-card-item-collapsible.collapsed {
+  display: none;
+}
+
+.mobile-show-more {
+  text-align: center;
+  padding: 8px 0;
+  color: #007AFF;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mobile-show-more:active {
+  opacity: 0.7;
+}
+
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.detail-dialog :deep(.el-dialog__body) {
+  padding: 16px;
 }
 
 @media (max-width: 768px) {
   .borrow-history-container {
-    padding: var(--space-md);
-  }
-
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .page-title {
-    font-size: var(--font-size-2xl);
+    padding: 10px;
   }
 
   .search-form {
@@ -798,30 +1566,42 @@ onMounted(() => {
 
   .search-form .el-form-item {
     margin-right: 0;
+    margin-bottom: 15px;
   }
 
   .status-stats {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .action-buttons {
+  .detail-item {
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
   }
 
-  .action-buttons .el-button {
-    width: 100%;
+  .detail-item .label {
+    width: auto;
+  }
+  
+  .el-table {
+    display: none;
+  }
+  
+  .el-table.show-on-mobile {
+    display: table;
+  }
+  
+  .mobile-label {
+    min-width: 85px;
+    font-size: 12px;
+  }
+  
+  .mobile-value {
+    font-size: 13px;
   }
 
-  .table-scroll-wrapper {
-    margin: 0 -24px;
-    padding: 0 24px;
+  .mobile-card-body {
+    padding: 12px;
   }
 }
 
@@ -830,14 +1610,47 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 
-  .table-scroll-wrapper {
-    margin: 0 -16px;
-    padding: 0 16px;
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .status-count {
+    font-size: 24px;
+  }
+  
+  .mobile-card-header {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .mobile-card-body {
+    padding: 10px;
+  }
+  
+  .mobile-card-footer {
+    padding: 10px 12px;
+  }
+  
+  .mobile-label {
+    min-width: 70px;
+    font-size: 11px;
+  }
+  
+  .mobile-value {
+    font-size: 12px;
   }
 
-  .responsive-dialog {
-    width: 96vw !important;
-    max-width: none;
+  .mobile-card-item {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .mobile-card-header-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 }
 </style>

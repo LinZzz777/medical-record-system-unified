@@ -23,13 +23,17 @@ const loginPath = `${import.meta.env.BASE_URL}login`
 service.interceptors.request.use(
   (config) => {
     const token = store.state.token
+    const user = store.state.user
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-    const user = store.state.user
-    if (user && user.username) {
+    
+    // 添加 X-User 请求头，用于审计日志记录操作人
+    if (user?.username) {
       config.headers['X-User'] = user.username
     }
+    
     return config
   },
   (error) => {
